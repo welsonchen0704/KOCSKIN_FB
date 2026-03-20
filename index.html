@@ -10,483 +10,390 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;background:#F0EDE8;color:#2C2C2C;font-size:14px;line-height:1.6}
-.header{background:linear-gradient(135deg,#C0392B,#96281B);color:#fff;padding:20px 16px;text-align:center}
+body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;background:#F0EDE8;color:#333;font-size:14px;line-height:1.6}
+.header{background:linear-gradient(135deg,#C0392B,#922B21);color:#fff;padding:20px 24px;text-align:center}
 .header h1{font-size:22px;font-weight:700;letter-spacing:1px}
 .header .period{font-size:13px;opacity:.85;margin-top:4px}
-.tab-nav{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid #E0D6CC;padding:0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-nav{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid #e0d6cc;padding:0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .tab-nav::-webkit-scrollbar{display:none}
-.tab-btn{flex-shrink:0;padding:12px 16px;font-size:13px;font-weight:600;color:#666;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;transition:.2s;white-space:nowrap}
-.tab-btn.active{color:#C0392B;border-bottom-color:#C0392B}
+.tab-btn{flex-shrink:0;padding:12px 16px;font-size:13px;font-weight:600;color:#666;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:.2s;white-space:nowrap}
 .tab-btn:hover{color:#C0392B}
+.tab-btn.active{color:#C0392B;border-bottom-color:#C0392B}
 .tab-content{display:none;padding:16px;max-width:1200px;margin:0 auto}
 .tab-content.active{display:block}
 .kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
-.kpi-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #C0392B}
+.kpi-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:center;border-left:4px solid #C0392B}
 .kpi-card .label{font-size:12px;color:#888;margin-bottom:4px}
 .kpi-card .value{font-size:22px;font-weight:700;color:#C0392B}
 .kpi-card .sub{font-size:11px;color:#999;margin-top:2px}
-.card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
-.card h3{font-size:15px;font-weight:700;color:#333;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #F0EDE8}
-.chart-container{position:relative;width:100%;max-height:400px}
-.chart-container canvas{width:100%!important}
+.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
+.card h3{font-size:15px;font-weight:700;color:#333;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #f0ede8}
+.chart-container{position:relative;width:100%;max-height:350px}
+canvas{max-height:350px}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th{background:#C0392B;color:#fff;padding:8px 6px;text-align:left;font-weight:600;position:sticky;top:0}
 td{padding:7px 6px;border-bottom:1px solid #eee}
-tr:nth-child(even){background:#FAFAFA}
-tr:hover{background:#FFF5F5}
+tr:hover td{background:#fdf6f4}
 .table-wrap{overflow-x:auto;max-height:500px;overflow-y:auto}
-.advice-card{background:#fff;border-radius:12px;padding:20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:5px solid #C0392B}
-.advice-card h4{font-size:16px;color:#C0392B;margin-bottom:8px}
-.advice-card p{font-size:13px;color:#555;line-height:1.7}
-.advice-card .kpi-ref{font-size:11px;color:#999;margin-top:8px;padding-top:8px;border-top:1px dashed #ddd}
 .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
-.badge-red{background:#FDECEA;color:#C0392B}
-.badge-green{background:#E8F5E9;color:#27AE60}
-.badge-blue{background:#E3F2FD;color:#2980B9}
-.footer{text-align:center;padding:20px 16px;font-size:11px;color:#999;border-top:1px solid #ddd;margin-top:20px;background:#fff}
+.badge-gold{background:#fff3cd;color:#856404}
+.badge-silver{background:#e2e3e5;color:#495057}
+.badge-bronze{background:#f8d7da;color:#842029}
+.suggest-grid{display:grid;gap:16px}
+.suggest-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-top:4px solid #C0392B}
+.suggest-card h4{font-size:15px;color:#C0392B;margin-bottom:8px}
+.suggest-card .kpi-ref{font-size:12px;color:#888;margin-top:8px;padding-top:8px;border-top:1px dashed #ddd}
 .two-col{display:grid;grid-template-columns:1fr;gap:16px}
+.footer{text-align:center;padding:20px;font-size:11px;color:#999;border-top:1px solid #ddd;margin-top:20px;background:#fff}
+.no-data-msg{text-align:center;padding:40px;color:#999;font-size:15px}
 @media(min-width:768px){
 .kpi-grid{grid-template-columns:repeat(4,1fr)}
 .two-col{grid-template-columns:1fr 1fr}
-.header h1{font-size:28px}
+.suggest-grid{grid-template-columns:1fr 1fr}
+.header h1{font-size:26px}
 }
 @media(min-width:1024px){
 .kpi-grid{grid-template-columns:repeat(4,1fr)}
 }
-.rank-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:11px;font-weight:700;color:#fff}
-.rank-1{background:#C0392B}.rank-2{background:#E74C3C}.rank-3{background:#E67E22}
-.rank-other{background:#BDC3C7;color:#555}
-.highlight-row{background:#FFF8F0!important}
 </style>
 </head>
 <body>
 
 <div class="header">
 <h1>KOCSKIN 克麗詩黛　行銷成效儀表板</h1>
-<div class="period">數據期間：2026/03/16 — 2026/03/20（含歷史趨勢 03/01 起）</div>
+<div class="period">數據期間：2026/03/16 — 2026/03/20</div>
 </div>
 
 <nav class="tab-nav">
-<button class="tab-btn active" onclick="switchTab(0)">📊 整體概覽</button>
-<button class="tab-btn" onclick="switchTab(1)">💰 銷售分析</button>
-<button class="tab-btn" onclick="switchTab(2)">📱 訂單來源</button>
-<button class="tab-btn" onclick="switchTab(3)">🚚 配送分析</button>
-<button class="tab-btn" onclick="switchTab(4)">❌ 取消分析</button>
-<button class="tab-btn" onclick="switchTab(5)">📣 FB廣告</button>
-<button class="tab-btn" onclick="switchTab(6)">🏆 銷售排行榜</button>
-<button class="tab-btn" onclick="switchTab(7)">💡 五大建議</button>
+<button class="tab-btn active" onclick="switchTab('overview')">整體概覽</button>
+<button class="tab-btn" onclick="switchTab('sales')">銷售分析</button>
+<button class="tab-btn" onclick="switchTab('source')">訂單來源</button>
+<button class="tab-btn" onclick="switchTab('delivery')">配送分析</button>
+<button class="tab-btn" onclick="switchTab('cancel')">取消分析</button>
+<button class="tab-btn" onclick="switchTab('fb')">FB廣告</button>
+<button class="tab-btn" onclick="switchTab('ranking')">銷售排行榜</button>
+<button class="tab-btn" onclick="switchTab('suggest')">五大建議</button>
 </nav>
 
-<!-- Tab 0: 整體概覽 -->
-<div class="tab-content active" id="tab0">
+<!-- ===== Tab 1: 整體概覽 ===== -->
+<div id="tab-overview" class="tab-content active">
 <div class="kpi-grid">
 <div class="kpi-card">
-<div class="label">本期淨銷售額 (03/16-03/19)</div>
+<div class="label">本期淨銷售額</div>
 <div class="value">$280,195</div>
-<div class="sub">4日合計（不含03/20尚無數據）</div>
+<div class="sub">03/16–03/20 合計</div>
 </div>
 <div class="kpi-card">
-<div class="label">本期訂單數 (TS)</div>
-<div class="value">246 筆</div>
-<div class="sub">日均 61.5 筆</div>
+<div class="label">本期訂單數(TS)</div>
+<div class="value">246</div>
+<div class="sub">取消前訂單筆數</div>
 </div>
 <div class="kpi-card">
-<div class="label">本期平均客單價</div>
+<div class="label">本期取消單數</div>
+<div class="value">21</div>
+<div class="sub">取消金額 $23,932</div>
+</div>
+<div class="kpi-card">
+<div class="label">平均客單價</div>
 <div class="value">$1,236</div>
-<div class="sub">訂單金額(折扣後)/訂單數</div>
+<div class="sub">淨銷售額÷有效訂單</div>
 </div>
 <div class="kpi-card">
-<div class="label">本期取消率</div>
-<div class="value">8.5%</div>
-<div class="sub">取消21筆 / 訂單246筆</div>
+<div class="label">本期商品數</div>
+<div class="value">257</div>
+<div class="sub">售出商品件數</div>
 </div>
 <div class="kpi-card">
-<div class="label">全月累計淨銷售 (03/01-03/19)</div>
-<div class="value">$1,575,082</div>
-<div class="sub">19天累計</div>
+<div class="label">本期折扣金額</div>
+<div class="value">$35,645</div>
+<div class="sub">折扣率 10.5%</div>
 </div>
 <div class="kpi-card">
-<div class="label">全月累計訂單數</div>
-<div class="value">1,305 筆</div>
-<div class="sub">日均 68.7 筆</div>
+<div class="label">平均毛利率</div>
+<div class="value">99.91%</div>
+<div class="sub">成本極低</div>
 </div>
 <div class="kpi-card">
-<div class="label">FB廣告總花費</div>
-<div class="value">$41,293</div>
-<div class="sub">03/01-03/20 累計</div>
-</div>
-<div class="kpi-card">
-<div class="label">FB整體ROAS</div>
-<div class="value">7.54</div>
-<div class="sub">每1元廣告帶回7.54元營收</div>
+<div class="label">購物車筆數(TG)</div>
+<div class="value">162</div>
+<div class="sub">本期不重複購物車</div>
 </div>
 </div>
-
 <div class="card">
-<h3>📈 每日淨銷售趨勢 (03/01 — 03/19)</h3>
+<h3>📈 每日淨銷售額趨勢（03/01–03/20）</h3>
 <div class="chart-container"><canvas id="overviewChart"></canvas></div>
 </div>
-
 <div class="card">
-<h3>📋 本期每日明細 (03/16 — 03/19)</h3>
+<h3>📊 本期 vs 前期 KPI 比較</h3>
 <div class="table-wrap">
 <table>
-<thead><tr><th>日期</th><th>訂單數</th><th>商品數</th><th>訂單金額</th><th>折扣金額</th><th>取消筆數</th><th>淨銷售額</th></tr></thead>
-<tbody>
-<tr><td>03/16</td><td>71</td><td>72</td><td>$80,346</td><td>$11,206</td><td>10</td><td>$70,699</td></tr>
-<tr><td>03/17</td><td>52</td><td>53</td><td>$67,256</td><td>$8,890</td><td>5</td><td>$59,674</td></tr>
-<tr><td>03/18</td><td>40</td><td>43</td><td>$55,393</td><td>$6,575</td><td>1</td><td>$53,458</td></tr>
-<tr><td>03/19</td><td>83</td><td>89</td><td>$101,132</td><td>$8,974</td><td>5</td><td>$96,364</td></tr>
-</tbody>
+<tr><th>指標</th><th>本期 (03/16–03/20)</th><th>前期 (03/11–03/15)</th><th>變化</th></tr>
+<tr><td>淨銷售額</td><td>$280,195</td><td>$865,310</td><td style="color:#C0392B">▼ -67.6%</td></tr>
+<tr><td>訂單數(TS)</td><td>246</td><td>561</td><td style="color:#C0392B">▼ -56.1%</td></tr>
+<tr><td>購物車數(TG)</td><td>162</td><td>393</td><td style="color:#C0392B">▼ -58.8%</td></tr>
+<tr><td>取消單數</td><td>21</td><td>34</td><td style="color:#27ae60">▼ -38.2%</td></tr>
+<tr><td>商品數</td><td>257</td><td>596</td><td style="color:#C0392B">▼ -56.9%</td></tr>
 </table>
 </div>
 </div>
 </div>
 
-<!-- Tab 1: 銷售分析 -->
-<div class="tab-content" id="tab1">
-<div class="kpi-grid">
-<div class="kpi-card">
-<div class="label">本期日均淨銷售</div>
-<div class="value">$70,049</div>
-<div class="sub">03/16-03/19 平均</div>
-</div>
-<div class="kpi-card">
-<div class="label">本期總折扣金額</div>
-<div class="value">$35,645</div>
-<div class="sub">平均折扣率 10.5%</div>
-</div>
-<div class="kpi-card">
-<div class="label">毛利率</div>
-<div class="value">99.9%</div>
-<div class="sub">成本極低（數位/輕資產）</div>
-</div>
-<div class="kpi-card">
-<div class="label">最高單日銷售</div>
-<div class="value">$96,364</div>
-<div class="sub">03/19（春日水感祭啟動）</div>
-</div>
-</div>
-
+<!-- ===== Tab 2: 銷售分析 ===== -->
+<div id="tab-sales" class="tab-content">
 <div class="card">
-<h3>💰 每日淨銷售額折線圖</h3>
+<h3>💰 每日淨銷售額折線圖（03/01–03/20）</h3>
 <div class="chart-container"><canvas id="salesLineChart"></canvas></div>
 </div>
-
 <div class="two-col">
 <div class="card">
-<h3>📉 每日折扣率趨勢</h3>
+<h3>📦 每日訂單數(TS)</h3>
+<div class="chart-container"><canvas id="orderBarChart"></canvas></div>
+</div>
+<div class="card">
+<h3>🏷️ 每日折扣率</h3>
 <div class="chart-container"><canvas id="discountChart"></canvas></div>
 </div>
-<div class="card">
-<h3>📦 每日訂單數趨勢</h3>
-<div class="chart-container"><canvas id="orderCountChart"></canvas></div>
 </div>
-</div>
-
 <div class="card">
-<h3>📊 全月每日銷售完整數據</h3>
+<h3>📋 每日銷售明細表</h3>
 <div class="table-wrap">
 <table>
-<thead><tr><th>日期</th><th>購物車</th><th>訂單數</th><th>商品數</th><th>商品金額</th><th>折扣金額</th><th>折扣率</th><th>訂單金額</th><th>取消筆</th><th>淨銷售額</th></tr></thead>
-<tbody id="salesTableBody"></tbody>
+<tr><th>日期</th><th>訂單數</th><th>商品數</th><th>商品金額</th><th>折扣金額</th><th>折扣率</th><th>訂單金額</th><th>取消數</th><th>淨銷售額</th></tr>
+<tr><td>03/02</td><td>41</td><td>45</td><td>$45,368</td><td>$9,315</td><td>20.5%</td><td>$36,053</td><td>5</td><td>$31,952</td></tr>
+<tr><td>03/03</td><td>25</td><td>28</td><td>$23,757</td><td>$1,781</td><td>7.5%</td><td>$21,976</td><td>0</td><td>$21,976</td></tr>
+<tr><td>03/04</td><td>28</td><td>29</td><td>$28,000</td><td>$4,723</td><td>16.9%</td><td>$23,277</td><td>2</td><td>$19,737</td></tr>
+<tr><td>03/05</td><td>43</td><td>49</td><td>$49,826</td><td>$7,316</td><td>14.7%</td><td>$42,510</td><td>2</td><td>$39,130</td></tr>
+<tr><td>03/06</td><td>89</td><td>115</td><td>$106,485</td><td>$22,227</td><td>20.9%</td><td>$84,258</td><td>4</td><td>$80,052</td></tr>
+<tr><td>03/07</td><td>57</td><td>60</td><td>$66,116</td><td>$9,621</td><td>14.6%</td><td>$56,495</td><td>10</td><td>$49,685</td></tr>
+<tr><td>03/08</td><td>57</td><td>62</td><td>$67,396</td><td>$8,569</td><td>12.7%</td><td>$58,827</td><td>6</td><td>$50,958</td></tr>
+<tr><td>03/09</td><td>65</td><td>70</td><td>$72,609</td><td>$9,671</td><td>13.3%</td><td>$62,938</td><td>6</td><td>$57,032</td></tr>
+<tr><td>03/10</td><td>23</td><td>24</td><td>$27,518</td><td>$3,479</td><td>12.6%</td><td>$24,039</td><td>3</td><td>$20,587</td></tr>
+<tr><td>03/11</td><td>70</td><td>71</td><td>$74,652</td><td>$10,476</td><td>14.0%</td><td>$64,176</td><td>6</td><td>$58,468</td></tr>
+<tr><td>03/12</td><td>86</td><td>90</td><td>$88,823</td><td>$14,271</td><td>16.1%</td><td>$74,552</td><td>3</td><td>$71,082</td></tr>
+<tr><td>03/13</td><td>219</td><td>233</td><td>$601,902</td><td>$121,083</td><td>20.1%</td><td>$480,819</td><td>15</td><td>$451,254</td></tr>
+<tr><td>03/14</td><td>88</td><td>92</td><td>$178,135</td><td>$34,181</td><td>19.2%</td><td>$143,954</td><td>6</td><td>$134,175</td></tr>
+<tr><td>03/15</td><td>80</td><td>87</td><td>$135,605</td><td>$21,256</td><td>15.7%</td><td>$114,349</td><td>5</td><td>$102,818</td></tr>
+<tr><td>03/16</td><td>88</td><td>94</td><td>$134,705</td><td>$22,699</td><td>16.8%</td><td>$112,006</td><td>5</td><td>$105,981</td></tr>
+<tr style="background:#fdf6f4"><td>03/17</td><td>71</td><td>72</td><td>$91,552</td><td>$11,206</td><td>12.2%</td><td>$80,346</td><td>10</td><td>$70,699</td></tr>
+<tr style="background:#fdf6f4"><td>03/18</td><td>52</td><td>53</td><td>$76,146</td><td>$8,890</td><td>11.7%</td><td>$67,256</td><td>5</td><td>$59,674</td></tr>
+<tr style="background:#fdf6f4"><td>03/19</td><td>40</td><td>43</td><td>$61,968</td><td>$6,575</td><td>10.6%</td><td>$55,393</td><td>1</td><td>$53,458</td></tr>
+<tr style="background:#fdf6f4"><td>03/20</td><td>83</td><td>89</td><td>$110,106</td><td>$8,974</td><td>8.2%</td><td>$101,132</td><td>5</td><td>$96,364</td></tr>
 </table>
 </div>
 </div>
 </div>
 
-<!-- Tab 2: 訂單來源 -->
-<div class="tab-content" id="tab2">
+<!-- ===== Tab 3: 訂單來源 ===== -->
+<div id="tab-source" class="tab-content">
 <div class="kpi-grid">
 <div class="kpi-card">
-<div class="label">iOS App 訂單</div>
-<div class="value">673 筆</div>
-<div class="sub">佔比 51.6% ｜淨銷售 $830,378</div>
+<div class="label">iOS App</div>
+<div class="value">673 單</div>
+<div class="sub">淨銷售 $830,378</div>
 </div>
 <div class="kpi-card">
-<div class="label">Android App 訂單</div>
-<div class="value">302 筆</div>
-<div class="sub">佔比 23.1% ｜淨銷售 $388,863</div>
+<div class="label">Android App</div>
+<div class="value">302 單</div>
+<div class="sub">淨銷售 $388,863</div>
 </div>
 <div class="kpi-card">
-<div class="label">官網 Mobile 訂單</div>
-<div class="value">307 筆</div>
-<div class="sub">佔比 23.5% ｜淨銷售 $329,121</div>
+<div class="label">官網 Mobile</div>
+<div class="value">307 單</div>
+<div class="sub">淨銷售 $329,121</div>
 </div>
 <div class="kpi-card">
-<div class="label">官網 PC 訂單</div>
-<div class="value">23 筆</div>
-<div class="sub">佔比 1.8% ｜淨銷售 $26,720</div>
+<div class="label">官網 PC</div>
+<div class="value">23 單</div>
+<div class="sub">淨銷售 $26,720</div>
 </div>
 </div>
-
 <div class="two-col">
 <div class="card">
 <h3>📱 訂單來源佔比（訂單數）</h3>
-<div class="chart-container"><canvas id="sourceOrderPie"></canvas></div>
+<div class="chart-container"><canvas id="sourcePieChart"></canvas></div>
 </div>
 <div class="card">
-<h3>💰 訂單來源佔比（淨銷售額）</h3>
-<div class="chart-container"><canvas id="sourceRevenuePie"></canvas></div>
+<h3>💵 各渠道淨銷售額比較</h3>
+<div class="chart-container"><canvas id="sourceBarChart"></canvas></div>
 </div>
 </div>
-
 <div class="card">
-<h3>❌ 各來源取消率比較</h3>
+<h3>📊 各渠道取消率比較</h3>
 <div class="chart-container"><canvas id="sourceCancelChart"></canvas></div>
 </div>
-
 <div class="card">
-<h3>📋 訂單來源完整數據</h3>
+<h3>📋 訂單來源明細表</h3>
 <div class="table-wrap">
 <table>
-<thead><tr><th>來源</th><th>購物車</th><th>訂單數</th><th>商品數</th><th>訂單金額</th><th>取消筆數</th><th>取消率</th><th>淨銷售額</th></tr></thead>
-<tbody>
-<tr><td>Android App</td><td>203</td><td>302</td><td>337</td><td>$437,430</td><td>34</td><td>11.3%</td><td>$388,863</td></tr>
-<tr><td>iOS App</td><td>415</td><td>673</td><td>718</td><td>$876,114</td><td>37</td><td>5.5%</td><td>$830,378</td></tr>
-<tr><td>官網(Mobile)</td><td>228</td><td>307</td><td>327</td><td>$359,461</td><td>25</td><td>8.1%</td><td>$329,121</td></tr>
-<tr><td>官網(PC)</td><td>16</td><td>23</td><td>24</td><td>$31,351</td><td>3</td><td>13.0%</td><td>$26,720</td></tr>
-</tbody>
+<tr><th>來源</th><th>購物車(TG)</th><th>訂單數(TS)</th><th>商品數</th><th>訂單金額</th><th>取消單</th><th>取消金額</th><th>退貨單</th><th>淨銷售額</th><th>取消率</th></tr>
+<tr><td>iOS App</td><td>415</td><td>673</td><td>718</td><td>$876,114</td><td>37</td><td>$44,736</td><td>1</td><td>$830,378</td><td>5.5%</td></tr>
+<tr><td>Android App</td><td>203</td><td>302</td><td>337</td><td>$437,430</td><td>34</td><td>$48,567</td><td>0</td><td>$388,863</td><td>11.3%</td></tr>
+<tr><td>官網(Mobile)</td><td>228</td><td>307</td><td>327</td><td>$359,461</td><td>25</td><td>$30,340</td><td>0</td><td>$329,121</td><td>8.1%</td></tr>
+<tr><td>官網(PC)</td><td>16</td><td>23</td><td>24</td><td>$31,351</td><td>3</td><td>$4,631</td><td>0</td><td>$26,720</td><td>13.0%</td></tr>
 </table>
 </div>
 </div>
 </div>
 
-<!-- Tab 3: 配送分析 -->
-<div class="tab-content" id="tab3">
-<div class="kpi-grid">
-<div class="kpi-card">
-<div class="label">最受歡迎配送</div>
-<div class="value">全家取貨付款</div>
-<div class="sub">496筆 佔37.9%</div>
-</div>
-<div class="kpi-card">
-<div class="label">超取合計佔比</div>
-<div class="value">78.4%</div>
-<div class="sub">超商取貨+取貨付款共1,025筆</div>
-</div>
-<div class="kpi-card">
-<div class="label">宅配訂單</div>
-<div class="value">232 筆</div>
-<div class="sub">佔比 17.7%</div>
-</div>
-<div class="kpi-card">
-<div class="label">貨到付款</div>
-<div class="value">37 筆</div>
-<div class="sub">佔比 2.8%</div>
-</div>
-</div>
-
+<!-- ===== Tab 4: 配送分析 ===== -->
+<div id="tab-delivery" class="tab-content">
 <div class="two-col">
 <div class="card">
-<h3>🚚 配送方式訂單數橫條圖</h3>
-<div class="chart-container"><canvas id="deliveryBar"></canvas></div>
+<h3>🚚 各配送方式訂單金額</h3>
+<div class="chart-container"><canvas id="deliveryBarChart"></canvas></div>
 </div>
 <div class="card">
-<h3>📊 配送方式金額佔比</h3>
-<div class="chart-container"><canvas id="deliveryPie"></canvas></div>
+<h3>📦 配送方式訂單數佔比</h3>
+<div class="chart-container"><canvas id="deliveryPieChart"></canvas></div>
 </div>
 </div>
-
 <div class="card">
-<h3>📋 配送方式完整數據</h3>
+<h3>📋 配送方式明細表</h3>
 <div class="table-wrap">
 <table>
-<thead><tr><th>配送方式</th><th>購物車</th><th>訂單數</th><th>商品數</th><th>訂單金額</th><th>金額佔比</th></tr></thead>
-<tbody>
-<tr><td>全家取貨付款</td><td>329</td><td>496</td><td>533</td><td>$573,523</td><td>33.5%</td></tr>
-<tr><td>7-11取貨付款</td><td>242</td><td>346</td><td>368</td><td>$413,886</td><td>24.2%</td></tr>
-<tr><td>宅配</td><td>138</td><td>232</td><td>258</td><td>$364,622</td><td>21.3%</td></tr>
-<tr><td>全家取貨</td><td>55</td><td>88</td><td>94</td><td>$125,651</td><td>7.3%</td></tr>
-<tr><td>7-11取貨</td><td>36</td><td>57</td><td>59</td><td>$96,239</td><td>5.6%</td></tr>
-<tr><td>貨到付款</td><td>29</td><td>37</td><td>38</td><td>$59,950</td><td>3.5%</td></tr>
-<tr><td>萊爾富取貨付款</td><td>27</td><td>39</td><td>42</td><td>$50,328</td><td>2.9%</td></tr>
+<tr><th>配送方式</th><th>購物車(TG)</th><th>訂單數(TS)</th><th>商品數</th><th>訂單金額</th><th>佔比</th></tr>
+<tr><td>全家取貨付款</td><td>329</td><td>496</td><td>533</td><td>$573,523</td><td>34.2%</td></tr>
+<tr><td>7-11取貨付款</td><td>242</td><td>346</td><td>368</td><td>$413,886</td><td>24.7%</td></tr>
+<tr><td>宅配</td><td>138</td><td>232</td><td>258</td><td>$364,622</td><td>21.8%</td></tr>
+<tr><td>全家取貨</td><td>55</td><td>88</td><td>94</td><td>$125,651</td><td>7.5%</td></tr>
+<tr><td>7-11取貨</td><td>36</td><td>57</td><td>59</td><td>$96,239</td><td>5.7%</td></tr>
+<tr><td>貨到付款</td><td>29</td><td>37</td><td>38</td><td>$59,950</td><td>3.6%</td></tr>
+<tr><td>萊爾富取貨付款</td><td>27</td><td>39</td><td>42</td><td>$50,328</td><td>3.0%</td></tr>
 <tr><td>國家/地區配送</td><td>3</td><td>5</td><td>9</td><td>$12,039</td><td>0.7%</td></tr>
 <tr><td>萊爾富取貨</td><td>3</td><td>5</td><td>5</td><td>$8,118</td><td>0.5%</td></tr>
-</tbody>
 </table>
 </div>
 </div>
 </div>
 
-<!-- Tab 4: 取消分析 -->
-<div class="tab-content" id="tab4">
+<!-- ===== Tab 5: 取消分析 ===== -->
+<div id="tab-cancel" class="tab-content">
 <div class="kpi-grid">
 <div class="kpi-card">
 <div class="label">取消總筆數</div>
 <div class="value">99 筆</div>
-<div class="sub">取消金額 $128,274</div>
+<div class="sub">全月累計</div>
+</div>
+<div class="kpi-card">
+<div class="label">取消總金額</div>
+<div class="value">$128,274</div>
+<div class="sub">佔訂單金額 7.5%</div>
 </div>
 <div class="kpi-card">
 <div class="label">最大取消原因</div>
 <div class="value">其他</div>
-<div class="sub">34筆 $55,773 佔43.5%</div>
+<div class="sub">34筆 / $55,773</div>
 </div>
 <div class="kpi-card">
-<div class="label">未取貨取消</div>
-<div class="value">28 筆</div>
-<div class="sub">$29,981 佔23.4%</div>
-</div>
-<div class="kpi-card">
-<div class="label">逾期未付款</div>
-<div class="value">21 筆</div>
-<div class="sub">$30,971 佔24.1%</div>
+<div class="label">平均取消金額</div>
+<div class="value">$1,296</div>
+<div class="sub">每筆取消均額</div>
 </div>
 </div>
-
 <div class="two-col">
 <div class="card">
-<h3>📊 取消原因筆數佔比</h3>
-<div class="chart-container"><canvas id="cancelPie"></canvas></div>
+<h3>❌ 取消原因佔比（筆數）</h3>
+<div class="chart-container"><canvas id="cancelPieChart"></canvas></div>
 </div>
 <div class="card">
-<h3>💰 取消原因金額比較</h3>
-<div class="chart-container"><canvas id="cancelBar"></canvas></div>
+<h3>💸 取消原因金額比較</h3>
+<div class="chart-container"><canvas id="cancelBarChart"></canvas></div>
 </div>
 </div>
-
 <div class="card">
-<h3>📋 取消原因明細</h3>
+<h3>📋 取消原因明細表</h3>
 <div class="table-wrap">
 <table>
-<thead><tr><th>取消原因</th><th>取消筆數</th><th>筆數佔比</th><th>取消金額</th><th>金額佔比</th><th>平均單價</th></tr></thead>
-<tbody>
-<tr><td>其他</td><td>34</td><td>34.3%</td><td>$55,773</td><td>43.5%</td><td>$1,640</td></tr>
-<tr><td>消費者未取貨</td><td>28</td><td>28.3%</td><td>$29,981</td><td>23.4%</td><td>$1,071</td></tr>
-<tr><td>消費者逾期未付款</td><td>21</td><td>21.2%</td><td>$30,971</td><td>24.1%</td><td>$1,475</td></tr>
-<tr><td>不想等太久</td><td>13</td><td>13.1%</td><td>$8,651</td><td>6.7%</td><td>$666</td></tr>
-<tr><td>衝動購買</td><td>3</td><td>3.0%</td><td>$2,898</td><td>2.3%</td><td>$966</td></tr>
-<tr style="font-weight:700;background:#FFF5F5"><td>合計</td><td>99</td><td>100%</td><td>$128,274</td><td>100%</td><td>$1,296</td></tr>
-</tbody>
+<tr><th>取消原因</th><th>取消筆數</th><th>取消金額</th><th>佔比(筆數)</th><th>佔比(金額)</th><th>平均每筆</th></tr>
+<tr><td>其他</td><td>34</td><td>$55,773</td><td>34.3%</td><td>43.5%</td><td>$1,640</td></tr>
+<tr><td>消費者逾期未付款</td><td>21</td><td>$30,971</td><td>21.2%</td><td>24.1%</td><td>$1,475</td></tr>
+<tr><td>消費者未取貨</td><td>28</td><td>$29,981</td><td>28.3%</td><td>23.4%</td><td>$1,071</td></tr>
+<tr><td>不想等太久</td><td>13</td><td>$8,651</td><td>13.1%</td><td>6.7%</td><td>$666</td></tr>
+<tr><td>衝動購買</td><td>3</td><td>$2,898</td><td>3.0%</td><td>2.3%</td><td>$966</td></tr>
 </table>
 </div>
 </div>
 </div>
 
-<!-- Tab 5: FB廣告 -->
-<div class="tab-content" id="tab5">
-<div class="kpi-grid">
-<div class="kpi-card">
-<div class="label">廣告總花費</div>
-<div class="value">$41,293</div>
-<div class="sub">03/01-03/20</div>
+<!-- ===== Tab 6: FB廣告 ===== -->
+<div id="tab-fb" class="tab-content">
+<div class="card">
+<div class="no-data-msg">
+<div style="font-size:48px;margin-bottom:16px">📭</div>
+<h3 style="color:#C0392B;margin-bottom:8px">本期（2026/03/16 — 2026/03/20）無 FB 廣告投放數據</h3>
+<p>本週期未提供 Facebook 廣告成效數據。<br>可能原因：暫停投放、數據延遲回傳或未設定追蹤。</p>
+<div style="margin-top:20px;padding:16px;background:#fdf6f4;border-radius:8px;text-align:left;max-width:500px;margin-left:auto;margin-right:auto">
+<strong>建議行動：</strong>
+<ul style="margin-top:8px;padding-left:20px">
+<li>確認 FB 廣告帳戶是否正常運作</li>
+<li>檢查 Pixel 追蹤碼是否正確安裝</li>
+<li>回顧上期廣告 ROAS 決定是否重啟投放</li>
+<li>考慮於 3/13 大促後進行再行銷投放</li>
+</ul>
 </div>
-<div class="kpi-card">
-<div class="label">整體ROAS</div>
-<div class="value">7.54</div>
-<div class="sub">每1元廣告=7.54元營收</div>
 </div>
-<div class="kpi-card">
-<div class="label">總觸及人數</div>
-<div class="value">296,711</div>
-<div class="sub">曝光次數 652,942</div>
-</div>
-<div class="kpi-card">
-<div class="label">連結點擊數</div>
-<div class="value">2,793</div>
-<div class="sub">平均CPC $14.78</div>
 </div>
 </div>
 
+<!-- ===== Tab 7: 銷售排行榜 ===== -->
+<div id="tab-ranking" class="tab-content">
+<div class="card">
+<h3>🏆 Top 10 商品銷售金額排行</h3>
+<div class="chart-container"><canvas id="rankingBarChart"></canvas></div>
+</div>
+<div class="card">
+<h3>📋 完整商品銷售排行表</h3>
+<div class="table-wrap">
+<table id="rankingTable">
+<tr><th>#</th><th>商品名稱</th><th>已售數量</th><th>訂單數</th><th>訂單金額</th><th>售價金額</th><th>折扣率</th></tr>
+</table>
+</div>
+</div>
+</div>
+
+<!-- ===== Tab 8: 五大建議 ===== -->
+<div id="tab-suggest" class="tab-content">
+<div class="suggest-grid">
+<div class="suggest-card">
+<h4>1️⃣ 降低「其他」取消原因佔比——優化取消原因分類</h4>
+<p>取消原因中「其他」佔 34.3%（34 筆，$55,773），為金額最高項目。建議細化取消原因選項（如「價格考量」「重複下單」「找到更好替代」等），以精準識別消費者痛點並針對性改善。</p>
+<div class="kpi-ref">📊 依據：取消分析——「其他」佔取消金額 43.5%，平均取消金額 $1,640 為最高</div>
+</div>
+<div class="suggest-card">
+<h4>2️⃣ 強化 App 推播與忠誠計畫——鞏固 iOS/Android 主力渠道</h4>
+<p>App 渠道（iOS + Android）合計貢獻 975 筆訂單（74.7%）及 $1,219,241 淨銷售額（77.4%）。但 Android 取消率 11.3% 遠高於 iOS 的 5.5%，建議針對 Android 用戶加強訂單確認流程、推播提醒付款，並透過 App 專屬優惠提升回購率。</p>
+<div class="kpi-ref">📊 依據：訂單來源——iOS 673 單 vs Android 302 單；Android 取消率 11.3% vs iOS 5.5%</div>
+</div>
+<div class="suggest-card">
+<h4>3️⃣ 把握紅麴納豆膠囊熱銷勢頭——擴大保健品線營收</h4>
+<p>「開環型紅麴納豆膠囊 x6」以 $660,872 訂單金額高居榜首，遠超第二名（$163,098）。建議推出「首購體驗組」與「訂閱制方案」，同時在氣墊粉餅等高流量商品頁面進行交叉推薦，擴大保健品客群。</p>
+<div class="kpi-ref">📊 依據：銷售排行——紅麴納豆膠囊 x6 售出 211 件，佔總訂單金額 38.8%</div>
+</div>
+<div class="suggest-card">
+<h4>4️⃣ 針對「消費者未取貨＋逾期未付款」啟動預防機制</h4>
+<p>「未取貨」（28 筆）與「逾期未付款」（21 筆）合計佔取消總數 49.5%，金額 $60,952。超商取貨付款為最大配送渠道（佔 61.9%），建議：到貨後 24/48/72 小時分三次推播取貨提醒；對逾期未付款者在下單後 2 小時發送付款催繳通知。</p>
+<div class="kpi-ref">📊 依據：取消分析——未取貨+逾期未付合計 49 筆 $60,952；配送分析——超商取貨付款佔 61.9%</div>
+</div>
+<div class="suggest-card">
+<h4>5️⃣ 啟動 FB/IG 再行銷廣告——承接 3/13 大促流量紅利</h4>
+<p>本期淨銷售額 $280,195 較前期（含 3/13 大促）的 $865,310 下降 67.6%，且本週無 FB 廣告投放。3/13 爆量日帶來大批新客與 Potential 會員（1,827 人），建議立即啟動 FB/IG 再行銷廣告，針對加入購物車未結帳、大促購買者進行追蹤投放，避免流量紅利流失。</p>
+<div class="kpi-ref">📊 依據：本期 vs 前期淨銷售 ▼67.6%；NAPL 會員——Potential 1,827人、New 1,495人；FB廣告本期無數據</div>
+</div>
+</div>
+<div class="card" style="margin-top:16px">
+<h3>👥 NAPL 會員分層（2026年2月底快照）</h3>
 <div class="two-col">
-<div class="card">
-<h3>📊 各廣告ROAS比較（有ROAS數據）</h3>
-<div class="chart-container"><canvas id="roasBar"></canvas></div>
-</div>
-<div class="card">
-<h3>💰 各廣告花費分布</h3>
-<div class="chart-container"><canvas id="adSpendBar"></canvas></div>
-</div>
-</div>
-
-<div class="card">
-<h3>📈 花費 vs 預估營收（ROAS×花費）</h3>
-<div class="chart-container"><canvas id="adRevenueChart"></canvas></div>
-</div>
-
-<div class="card">
-<h3>📋 FB廣告完整數據</h3>
-<div class="table-wrap">
+<div class="chart-container"><canvas id="naplPieChart"></canvas></div>
+<div>
 <table>
-<thead><tr><th>廣告名稱</th><th>狀態</th><th>觸及</th><th>曝光</th><th>連結點擊</th><th>CPC</th><th>花費</th><th>CTR%</th><th>CPM</th><th>ROAS</th></tr></thead>
-<tbody id="adTableBody"></tbody>
+<tr><th>分層</th><th>會員數</th><th>過往12個月淨額</th><th>平均貢獻</th></tr>
+<tr><td>🟢 Active（活躍）</td><td>1,340</td><td>$13,309,895</td><td>$9,933</td></tr>
+<tr><td>🟡 Potential（潛力）</td><td>1,827</td><td>$14,016,563</td><td>$7,672</td></tr>
+<tr><td>🔵 New（新客）</td><td>1,495</td><td>$2,012,445</td><td>$1,346</td></tr>
+<tr><td>🔴 Lost（流失）</td><td>4,695</td><td>$7,269,985</td><td>$1,549</td></tr>
 </table>
 </div>
 </div>
-</div>
-
-<!-- Tab 6: 銷售排行榜 -->
-<div class="tab-content" id="tab6">
-<div class="kpi-grid">
-<div class="kpi-card">
-<div class="label">TOP 1 商品</div>
-<div class="value">紅麴納豆x6</div>
-<div class="sub">$660,872 / 211件</div>
-</div>
-<div class="kpi-card">
-<div class="label">TOP 2 商品</div>
-<div class="value">氣墊粉餅x2</div>
-<div class="sub">$131,725 / 149件</div>
-</div>
-<div class="kpi-card">
-<div class="label">商品總銷售額</div>
-<div class="value">$1,704,356</div>
-<div class="sub">重複合計（含跨品項訂單）</div>
-</div>
-<div class="kpi-card">
-<div class="label">售出商品總數</div>
-<div class="value">1,406 件</div>
-<div class="sub">涵蓋 47 個品項</div>
-</div>
-</div>
-
-<div class="card">
-<h3>🏆 Top 10 商品銷售金額</h3>
-<div class="chart-container"><canvas id="topProductsBar"></canvas></div>
-</div>
-
-<div class="card">
-<h3>📋 完整商品銷售排行</h3>
-<div class="table-wrap">
-<table>
-<thead><tr><th>#</th><th>商品名稱</th><th>已售數量</th><th>訂單數</th><th>訂單金額</th><th>售價金額</th><th>折扣率</th></tr></thead>
-<tbody id="productTableBody"></tbody>
-</table>
-</div>
-</div>
-</div>
-
-<!-- Tab 7: 五大建議 -->
-<div class="tab-content" id="tab7">
-<div class="advice-card">
-<h4>1️⃣ 乘勝追擊「紅麴納豆」：放大高ROAS廣告預算</h4>
-<p>紅麴納豆系列是本月絕對爆品，單品銷售額 $660,872 佔全部商品銷售額的 38.8%。搭配的FB廣告「紅麴_轉換a」ROAS高達 21.02，「紅麴_轉換b」也達 16.40。建議將紅麴轉換廣告預算提升 30-50%，同時增加素材輪替避免疲勞，持續在 3 月底衝高銷量。</p>
-<div class="kpi-ref">📌 依據：紅麴納豆x6 銷售 $660,872 / 211件｜轉換a ROAS 21.02｜轉換b ROAS 16.40｜整體ROAS 7.54</div>
-</div>
-
-<div class="advice-card">
-<h4>2️⃣ 降低取消率：優化超取付款與催付流程</h4>
-<p>取消訂單共 99 筆、金額 $128,274，其中「未取貨」28筆+「逾期未付款」21筆合計佔 49.5%。這些為可挽回的損失。建議：(1) 取貨付款訂單在到店後第1天和第3天發送 LINE/簡訊提醒；(2) 逾期未付款者在下單30分鐘後自動推送付款提醒；(3) 針對「不想等太久」13筆，考慮加速備貨或標示預計出貨天數。</p>
-<div class="kpi-ref">📌 依據：取消99筆 $128,274｜未取貨28筆 $29,981｜逾期未付21筆 $30,971｜不想等太久13筆 $8,651</div>
-</div>
-
-<div class="advice-card">
-<h4>3️⃣ 「春日水感祭」剛起步，加強新活動廣告測試</h4>
-<p>春日水感祭廣告組合在 03/19 上線，目前「極光美白乳霜買1送1」兩組廣告ROAS分別為 3.20 與 4.57，「亮白保濕化妝水b」高達 24.67 但樣本極小（花費僅$122）。建議加大化妝水b和乳霜兩組預算至日花費 $500+，同步觀察 3-5 天 ROAS 穩定性。若化妝水b 維持高 ROAS，可作為春日水感祭主力素材。</p>
-<div class="kpi-ref">📌 依據：化妝水b ROAS 24.67（花費$122）｜乳霜a ROAS 3.20（花費$2,045）｜乳霜b ROAS 4.57（花費$1,187）｜03/19淨銷售 $96,364 為本期最高</div>
-</div>
-
-<div class="advice-card">
-<h4>4️⃣ 強化 App 導流：iOS 貢獻超過半數營收</h4>
-<p>iOS App 訂單 673 筆佔總訂單 51.6%，淨銷售 $830,378 佔 52.7%，且取消率僅 5.5%（最低）。Android App 取消率 11.3% 明顯偏高。建議：(1) 持續優化 Android App 付款流程與穩定度；(2) 在官網 Mobile（取消率 8.1%）加入 App 下載彈窗引導；(3) 官網 PC 僅佔 1.8%，可降低 PC 版行銷資源配比，集中資源於 App 與 Mobile。</p>
-<div class="kpi-ref">📌 依據：iOS 673筆 取消率5.5%｜Android 302筆 取消率11.3%｜Mobile 307筆 取消率8.1%｜PC 23筆 取消率13.0%</div>
-</div>
-
-<div class="advice-card">
-<h4>5️⃣ 品牌認知廣告效率檢討：CPC 高但無直接轉換</h4>
-<p>品牌認知廣告（3支素材）合計花費 $5,509，觸及 254,693 人，但 CTR 極低（0.07%~0.25%），且無任何 ROAS 數據回傳。雖然品牌認知以曝光為目的，但已運行近 11 個月（2025/04/19起），建議：(1) 更換創意素材，測試新的品牌影片或互動式素材；(2) 設定品牌搜尋量、App 安裝數等軟性 KPI 評估成效；(3) 若預算有限，可暫時縮減品牌認知預算，轉移至高 ROAS 的轉換型廣告。</p>
-<div class="kpi-ref">📌 依據：品牌認知3則合計花費$5,509｜觸及254,693｜CTR 0.07%-0.25%｜無ROAS數據｜投放時間自2025/04/19已近11個月</div>
 </div>
 </div>
 
@@ -496,285 +403,355 @@ KOCSKIN 克麗詩黛　行銷成效報告　2026/03/16 — 2026/03/20　行銷�
 
 <script>
 // Tab switching
-function switchTab(idx){
-document.querySelectorAll('.tab-content').forEach((t,i)=>{t.classList.toggle('active',i===idx)});
-document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',i===idx)});
+function switchTab(id){
+document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+document.getElementById('tab-'+id).classList.add('active');
+event.target.classList.add('active');
+// Trigger chart resize
+setTimeout(()=>window.dispatchEvent(new Event('resize')),100);
 }
 
-// Data
-const dailyData=[
-{d:'03/01',net:31952,orders:41,discount:9315,amount:45368,cart:24,items:45,cancel:5},
-{d:'03/02',net:21976,orders:25,discount:1781,amount:23757,cart:14,items:28,cancel:0},
-{d:'03/03',net:19737,orders:28,discount:4723,amount:28000,cart:16,items:29,cancel:2},
-{d:'03/04',net:39130,orders:43,discount:7316,amount:49826,cart:30,items:49,cancel:2},
-{d:'03/05',net:80052,orders:89,discount:22227,amount:106485,cart:51,items:115,cancel:4},
-{d:'03/06',net:49685,orders:57,discount:9621,amount:66116,cart:32,items:60,cancel:10},
-{d:'03/07',net:50958,orders:57,discount:8569,amount:67396,cart:35,items:62,cancel:6},
-{d:'03/08',net:57032,orders:65,discount:9671,amount:72609,cart:40,items:70,cancel:6},
-{d:'03/09',net:20587,orders:23,discount:3479,amount:27518,cart:17,items:24,cancel:3},
-{d:'03/10',net:58468,orders:70,discount:10476,amount:74652,cart:48,items:71,cancel:6},
-{d:'03/11',net:71082,orders:86,discount:14271,amount:88823,cart:48,items:90,cancel:3},
-{d:'03/12',net:451254,orders:219,discount:121083,amount:601902,cart:162,items:233,cancel:15},
-{d:'03/13',net:134175,orders:88,discount:34181,amount:178135,cart:67,items:92,cancel:6},
-{d:'03/14',net:102818,orders:80,discount:21256,amount:135605,cart:56,items:87,cancel:5},
-{d:'03/15',net:105981,orders:88,discount:22699,amount:134705,cart:60,items:94,cancel:5},
-{d:'03/16',net:70699,orders:71,discount:11206,amount:91552,cart:42,items:72,cancel:10},
-{d:'03/17',net:59674,orders:52,discount:8890,amount:76146,cart:36,items:53,cancel:5},
-{d:'03/18',net:53458,orders:40,discount:6575,amount:61968,cart:30,items:43,cancel:1},
-{d:'03/19',net:96364,orders:83,discount:8974,amount:110106,cart:54,items:89,cancel:5}
-];
-
-const thisWeekIdx=[15,16,17,18];
-
-// Color palette
 const brandRed='#C0392B';
-const brandRedLight='rgba(192,57,43,0.15)';
-const colors=['#C0392B','#E74C3C','#E67E22','#F39C12','#27AE60','#2980B9','#8E44AD','#1ABC9C','#34495E'];
+const colors=['#C0392B','#E74C3C','#F39C12','#27AE60','#2980B9','#8E44AD','#1ABC9C','#D35400','#34495E','#7F8C8D'];
 
-// ---- Tab 0: Overview Chart ----
+// Daily data
+const dailyDates=['03/02','03/03','03/04','03/05','03/06','03/07','03/08','03/09','03/10','03/11','03/12','03/13','03/14','03/15','03/16','03/17','03/18','03/19','03/20'];
+const dailyNet=[31952,21976,19737,39130,80052,49685,50958,57032,20587,58468,71082,451254,134175,102818,105981,70699,59674,53458,96364];
+const dailyOrders=[41,25,28,43,89,57,57,65,23,70,86,219,88,80,88,71,52,40,83];
+const dailyDiscount=[9315,1781,4723,7316,22227,9621,8569,9671,3479,10476,14271,121083,34181,21256,22699,11206,8890,6575,8974];
+const dailyGross=[45368,23757,28000,49826,106485,66116,67396,72609,27518,74652,88823,601902,178135,135605,134705,91552,76146,61968,110106];
+
+// Highlight period indices (03/17-03/20 = indices 15-18)
+const periodBg=dailyDates.map((_,i)=>i>=14?'rgba(192,57,43,0.15)':'rgba(192,57,43,0.6)');
+const periodBorder=dailyDates.map((_,i)=>i>=14?'#C0392B':'rgba(192,57,43,0.6)');
+
+// Overview chart
 new Chart(document.getElementById('overviewChart'),{
 type:'bar',
 data:{
-labels:dailyData.map(d=>d.d),
-datasets:[
-{type:'bar',label:'淨銷售額',data:dailyData.map(d=>d.net),backgroundColor:dailyData.map((_,i)=>thisWeekIdx.includes(i)?'#C0392B':'rgba(192,57,43,0.35)'),borderRadius:4,order:2},
-{type:'line',label:'訂單數',data:dailyData.map(d=>d.orders),borderColor:'#2980B9',backgroundColor:'rgba(41,128,185,0.1)',yAxisID:'y1',tension:.3,pointRadius:3,order:1}
-]
-},
-options:{
-responsive:true,
-plugins:{legend:{position:'bottom',labels:{font:{size:11}}}},
-scales:{
-y:{beginAtZero:true,title:{display:true,text:'淨銷售額 (TWD)'},ticks:{callback:v=>'$'+v.toLocaleString()}},
-y1:{position:'right',beginAtZero:true,title:{display:true,text:'訂單數'},grid:{display:false}}
-}
-}
-});
-
-// ---- Tab 1: Sales Line Chart ----
-new Chart(document.getElementById('salesLineChart'),{
-type:'line',
-data:{
-labels:dailyData.map(d=>d.d),
+labels:dailyDates,
 datasets:[{
 label:'淨銷售額',
-data:dailyData.map(d=>d.net),
+data:dailyNet,
+backgroundColor:dailyDates.map((_,i)=>i>=14?'rgba(192,57,43,0.85)':'rgba(192,57,43,0.35)'),
 borderColor:brandRed,
-backgroundColor:brandRedLight,
-fill:true,tension:.3,pointRadius:4,
-pointBackgroundColor:dailyData.map((_,i)=>thisWeekIdx.includes(i)?'#E74C3C':'#C0392B')
-}]
-},
-options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+v.toLocaleString()}}}}
-});
-
-// Discount Rate Chart
-new Chart(document.getElementById('discountChart'),{
-type:'line',
-data:{
-labels:dailyData.map(d=>d.d),
-datasets:[{
-label:'折扣率 %',
-data:dailyData.map(d=>((d.discount/d.amount)*100).toFixed(1)),
-borderColor:'#E67E22',backgroundColor:'rgba(230,126,34,0.1)',fill:true,tension:.3,pointRadius:3
-}]
-},
-options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'折扣率 %'}}}}
-});
-
-// Order Count Chart
-new Chart(document.getElementById('orderCountChart'),{
-type:'bar',
-data:{
-labels:dailyData.map(d=>d.d),
-datasets:[{
-label:'訂單數',
-data:dailyData.map(d=>d.orders),
-backgroundColor:dailyData.map((_,i)=>thisWeekIdx.includes(i)?'#2980B9':'rgba(41,128,185,0.35)'),
+borderWidth:1,
 borderRadius:4
 }]
 },
-options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{display:false},
+tooltip:{callbacks:{label:ctx=>'$'+ctx.raw.toLocaleString()}}
+},
+scales:{
+y:{ticks:{callback:v=>'$'+v.toLocaleString()},grid:{color:'#f0ede8'}},
+x:{grid:{display:false}}
+}
+}
 });
 
-// Sales Table
-const stb=document.getElementById('salesTableBody');
-dailyData.forEach((d,i)=>{
-const dr=((d.discount/d.amount)*100).toFixed(1);
-const cls=thisWeekIdx.includes(i)?'class="highlight-row"':'';
-stb.innerHTML+=`<tr ${cls}><td>${d.d}</td><td>${d.cart}</td><td>${d.orders}</td><td>${d.items}</td><td>$${d.amount.toLocaleString()}</td><td>$${d.discount.toLocaleString()}</td><td>${dr}%</td><td>$${(d.amount-d.discount).toLocaleString()}</td><td>${d.cancel}</td><td>$${d.net.toLocaleString()}</td></tr>`;
+// Sales line chart
+new Chart(document.getElementById('salesLineChart'),{
+type:'line',
+data:{
+labels:dailyDates,
+datasets:[{
+label:'淨銷售額',
+data:dailyNet,
+borderColor:brandRed,
+backgroundColor:'rgba(192,57,43,0.1)',
+fill:true,
+tension:.3,
+pointRadius:4,
+pointBackgroundColor:dailyDates.map((_,i)=>i>=14?brandRed:'#E74C3C')
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{tooltip:{callbacks:{label:ctx=>'$'+ctx.raw.toLocaleString()}}},
+scales:{
+y:{ticks:{callback:v=>'$'+v.toLocaleString()},grid:{color:'#f0ede8'}},
+x:{grid:{display:false}}
+}
+}
 });
 
-// ---- Tab 2: Order Source ----
-const srcLabels=['Android App','iOS App','官網(Mobile)','官網(PC)'];
-const srcOrders=[302,673,307,23];
-const srcRevenue=[388863,830378,329121,26720];
-const srcCancel=[34,37,25,3];
-const srcCancelRate=srcOrders.map((o,i)=>((srcCancel[i]/o)*100).toFixed(1));
+// Order bar chart
+new Chart(document.getElementById('orderBarChart'),{
+type:'bar',
+data:{
+labels:dailyDates,
+datasets:[{
+label:'訂單數',
+data:dailyOrders,
+backgroundColor:dailyDates.map((_,i)=>i>=14?'rgba(41,128,185,0.85)':'rgba(41,128,185,0.35)'),
+borderRadius:3
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:false}},
+scales:{y:{grid:{color:'#f0ede8'}},x:{grid:{display:false}}}
+}
+});
 
-new Chart(document.getElementById('sourceOrderPie'),{
+// Discount rate chart
+const discountRates=dailyDiscount.map((d,i)=>(d/dailyGross[i]*100).toFixed(1));
+new Chart(document.getElementById('discountChart'),{
+type:'line',
+data:{
+labels:dailyDates,
+datasets:[{
+label:'折扣率 %',
+data:discountRates,
+borderColor:'#F39C12',
+backgroundColor:'rgba(243,156,18,0.1)',
+fill:true,
+tension:.3,
+pointRadius:3,
+pointBackgroundColor:'#F39C12'
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{tooltip:{callbacks:{label:ctx=>ctx.raw+'%'}}},
+scales:{
+y:{ticks:{callback:v=>v+'%'},grid:{color:'#f0ede8'}},
+x:{grid:{display:false}}
+}
+}
+});
+
+// Source pie chart
+new Chart(document.getElementById('sourcePieChart'),{
 type:'doughnut',
-data:{labels:srcLabels,datasets:[{data:srcOrders,backgroundColor:['#27AE60','#2980B9','#E67E22','#8E44AD']}]},
-options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}
+data:{
+labels:['iOS App','Android App','官網(Mobile)','官網(PC)'],
+datasets:[{data:[673,302,307,23],backgroundColor:['#C0392B','#E74C3C','#F39C12','#2980B9'],borderWidth:2,borderColor:'#fff'}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{position:'bottom',labels:{font:{size:12}}},
+tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw+'單 ('+((ctx.raw/1305)*100).toFixed(1)+'%)'}}
+}
+}
 });
 
-new Chart(document.getElementById('sourceRevenuePie'),{
-type:'doughnut',
-data:{labels:srcLabels,datasets:[{data:srcRevenue,backgroundColor:['#27AE60','#2980B9','#E67E22','#8E44AD']}]},
-options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}
+// Source bar chart
+new Chart(document.getElementById('sourceBarChart'),{
+type:'bar',
+data:{
+labels:['iOS App','Android App','官網(Mobile)','官網(PC)'],
+datasets:[{
+label:'淨銷售額',
+data:[830378,388863,329121,26720],
+backgroundColor:['#C0392B','#E74C3C','#F39C12','#2980B9'],
+borderRadius:4
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+indexAxis:'horizontal',
+plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'$'+ctx.raw.toLocaleString()}}},
+scales:{y:{ticks:{callback:v=>'$'+v.toLocaleString()},grid:{color:'#f0ede8'}},x:{grid:{display:false}}}
+}
 });
 
+// Source cancel rate chart
 new Chart(document.getElementById('sourceCancelChart'),{
 type:'bar',
-data:{labels:srcLabels,datasets:[
-{label:'取消率 %',data:srcCancelRate,backgroundColor:['#27AE60','#2980B9','#E67E22','#8E44AD'],borderRadius:4}
-]},
-options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'取消率 %'}}}}
+data:{
+labels:['iOS App','Android App','官網(Mobile)','官網(PC)'],
+datasets:[{
+label:'取消率 %',
+data:[5.5,11.3,8.1,13.0],
+backgroundColor:['#C0392B','#E74C3C','#F39C12','#2980B9'],
+borderRadius:4
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw+'%'}}},
+scales:{y:{ticks:{callback:v=>v+'%'},grid:{color:'#f0ede8'}},x:{grid:{display:false}}}
+}
 });
 
-// ---- Tab 3: Delivery ----
+// Delivery bar chart
 const delLabels=['全家取貨付款','7-11取貨付款','宅配','全家取貨','7-11取貨','貨到付款','萊爾富取貨付款','國家/地區配送','萊爾富取貨'];
+const delAmounts=[573523,413886,364622,125651,96239,59950,50328,12039,8118];
+new Chart(document.getElementById('deliveryBarChart'),{
+type:'bar',
+data:{
+labels:delLabels,
+datasets:[{
+label:'訂單金額',
+data:delAmounts,
+backgroundColor:colors,
+borderRadius:4
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+indexAxis:'y',
+plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'$'+ctx.raw.toLocaleString()}}},
+scales:{x:{ticks:{callback:v=>'$'+v.toLocaleString()},grid:{color:'#f0ede8'}},y:{grid:{display:false}}}
+}
+});
+
+// Delivery pie chart
 const delOrders=[496,346,232,88,57,37,39,5,5];
-const delAmount=[573523,413886,364622,125651,96239,59950,50328,12039,8118];
-
-new Chart(document.getElementById('deliveryBar'),{
-type:'bar',
-data:{labels:delLabels,datasets:[{label:'訂單數',data:delOrders,backgroundColor:colors,borderRadius:4}]},
-options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}
-});
-
-new Chart(document.getElementById('deliveryPie'),{
+new Chart(document.getElementById('deliveryPieChart'),{
 type:'doughnut',
-data:{labels:delLabels,datasets:[{data:delAmount,backgroundColor:colors}]},
-options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}}}
+data:{
+labels:delLabels,
+datasets:[{data:delOrders,backgroundColor:colors,borderWidth:2,borderColor:'#fff'}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{position:'bottom',labels:{font:{size:10}}},
+tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw+'單'}}
+}
+}
 });
 
-// ---- Tab 4: Cancel ----
-const canLabels=['其他','消費者未取貨','消費者逾期未付款','不想等太久','衝動購買'];
-const canCount=[34,28,21,13,3];
-const canAmount=[55773,29981,30971,8651,2898];
-
-new Chart(document.getElementById('cancelPie'),{
+// Cancel pie chart
+new Chart(document.getElementById('cancelPieChart'),{
 type:'doughnut',
-data:{labels:canLabels,datasets:[{data:canCount,backgroundColor:['#E74C3C','#E67E22','#F39C12','#3498DB','#95A5A6']}]},
-options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}
+data:{
+labels:['其他','消費者未取貨','消費者逾期未付款','不想等太久','衝動購買'],
+datasets:[{data:[34,28,21,13,3],backgroundColor:['#C0392B','#E74C3C','#F39C12','#2980B9','#27AE60'],borderWidth:2,borderColor:'#fff'}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{position:'bottom',labels:{font:{size:11}}},
+tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw+'筆 ('+((ctx.raw/99)*100).toFixed(1)+'%)'}}
+}
+}
 });
 
-new Chart(document.getElementById('cancelBar'),{
+// Cancel bar chart
+new Chart(document.getElementById('cancelBarChart'),{
 type:'bar',
-data:{labels:canLabels,datasets:[{label:'取消金額',data:canAmount,backgroundColor:['#E74C3C','#E67E22','#F39C12','#3498DB','#95A5A6'],borderRadius:4}]},
-options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'$'+v.toLocaleString()}}}}
+data:{
+labels:['其他','逾期未付款','未取貨','不想等太久','衝動購買'],
+datasets:[{
+label:'取消金額',
+data:[55773,30971,29981,8651,2898],
+backgroundColor:['#C0392B','#E74C3C','#F39C12','#2980B9','#27AE60'],
+borderRadius:4
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+indexAxis:'y',
+plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'$'+ctx.raw.toLocaleString()}}},
+scales:{x:{ticks:{callback:v=>'$'+v.toLocaleString()},grid:{color:'#f0ede8'}},y:{grid:{display:false}}}
+}
 });
 
-// ---- Tab 5: FB Ads ----
-const adData=[
-{name:'紅麴_轉換a',reach:3032,imp:4659,clicks:90,cpc:9.98,spend:898,ctr:7.86,cpm:192.75,roas:21.02},
-{name:'亮白保濕化妝水b',reach:435,imp:584,clicks:11,cpc:11.09,spend:122,ctr:5.65,cpm:208.90,roas:24.67},
-{name:'紅麴_轉換b',reach:13967,imp:25694,clicks:259,cpc:15.70,spend:4066,ctr:4.36,cpm:158.25,roas:16.40},
-{name:'菁萃a',reach:2833,imp:6658,clicks:93,cpc:21.20,spend:1972,ctr:5.84,cpm:296.19,roas:12.09},
-{name:'紅麴_轉換e',reach:2114,imp:3308,clicks:25,cpc:19.36,spend:484,ctr:4.38,cpm:146.31,roas:11.69},
-{name:'紅麴_轉換f',reach:10736,imp:17441,clicks:268,cpc:13.84,spend:3708,ctr:3.77,cpm:212.60,roas:8.58},
-{name:'紅麴_轉換g',reach:37245,imp:95133,clicks:1190,cpc:14.26,spend:16964,ctr:5.79,cpm:178.32,roas:6.98},
-{name:'女神節活動e',reach:4320,imp:15105,clicks:108,cpc:29.06,spend:3139,ctr:2.54,cpm:207.81,roas:6.03},
-{name:'極光美白乳霜(a)',reach:7563,imp:12157,clicks:112,cpc:18.26,spend:2045,ctr:2.83,cpm:168.22,roas:3.20},
-{name:'極光美白乳霜(b)',reach:4426,imp:6361,clicks:113,cpc:10.50,spend:1187,ctr:4.29,cpm:186.61,roas:4.57},
-{name:'亮白保濕化妝水a',reach:2624,imp:3208,clicks:38,cpc:15.50,spend:589,ctr:4.86,cpm:183.60,roas:1.88},
-{name:'品牌認知_03',reach:245403,imp:448243,clicks:453,cpc:11.88,spend:5383,ctr:0.21,cpm:12.01,roas:null},
-{name:'品牌認知_02',reach:5566,imp:6063,clicks:4,cpc:17.00,spend:68,ctr:0.25,cpm:11.22,roas:null},
-{name:'品牌認知_01',reach:3724,imp:4275,clicks:2,cpc:29.00,spend:58,ctr:0.07,cpm:13.57,roas:null},
-{name:'毛孔洗面乳c',reach:446,imp:502,clicks:6,cpc:19.17,spend:115,ctr:2.59,cpm:229.08,roas:null},
-{name:'春日水感祭組合',reach:1550,imp:2825,clicks:20,cpc:19.85,spend:397,ctr:3.08,cpm:140.53,roas:null},
-{name:'春日水感祭b',reach:465,imp:703,clicks:1,cpc:93.00,spend:93,ctr:2.28,cpm:132.29,roas:null},
-{name:'毛孔洗面乳a',reach:20,imp:23,clicks:0,cpc:null,spend:5,ctr:0,cpm:217.39,roas:null}
+// Ranking bar chart - Top 10
+const top10Names=['紅麴納豆膠囊x6','3D全能亮白菁萃x3','3D亮白隔離防曬x3','氣墊粉餅x2','3D胺基酸潔顏乳x3','復活草保濕晶露x2','氣墊粉餅+防曬組合','氣墊粉餅(新朋友)','紅麴納豆膠囊x3','3D胺基酸潔顏乳(新朋友)'];
+const top10Amounts=[660872,163098,141685,131725,108956,55566,44731,37806,26350,24489];
+
+new Chart(document.getElementById('rankingBarChart'),{
+type:'bar',
+data:{
+labels:top10Names,
+datasets:[{
+label:'訂單金額',
+data:top10Amounts,
+backgroundColor:top10Amounts.map((_,i)=>i===0?'#C0392B':i<3?'#E74C3C':'rgba(192,57,43,0.5)'),
+borderRadius:4
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+indexAxis:'y',
+plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'$'+ctx.raw.toLocaleString()}}},
+scales:{x:{ticks:{callback:v=>'$'+v.toLocaleString()},grid:{color:'#f0ede8'}},y:{grid:{display:false}}}
+}
+});
+
+// Full ranking table
+const rankData=[
+{name:'【新品上市】開環型紅麴納豆膠囊 60粒膠囊/盒 x6 (360日份)',qty:211,orders:201,amt:660872,price:839780},
+{name:'【超人氣組合】KOCSKIN晶燦白皙氣墊粉餅自然色15g x2',qty:149,orders:131,amt:131725,price:149000},
+{name:'【APP限定】KOCSKIN 3D極緻亮白隔離防曬霜(經典黑)25ml x3',qty:120,orders:116,amt:141685,price:165600},
+{name:'【女神節限定】KOCSKIN 3D全能亮白菁萃30ml x3',qty:111,orders:102,amt:163098,price:186480},
+{name:'【APP限定】KOCSKIN 3D高濃度胺基酸潔顏乳100ml x3',qty:92,orders:82,amt:108956,price:126960},
+{name:'【新朋友限定】KOCSKIN晶燦白皙氣墊粉餅自然色15g',qty:86,orders:86,amt:37806,price:42140},
+{name:'【新朋友限定】KOCSKIN 3D高濃度胺基酸潔顏乳100ml',qty:58,orders:58,amt:24489,price:28420},
+{name:'【超人氣組合】氣墊粉餅x1 + 亮白隔離防曬霜x1',qty:52,orders:50,amt:44731,price:52000},
+{name:'【女神節限定】KOCSKIN 復活草保濕晶露100ml x2',qty:50,orders:48,amt:55566,price:64000},
+{name:'【新朋友限定】KOCSKIN 3D極緻亮白隔離防曬霜(經典黑)25ml',qty:44,orders:44,amt:19830,price:21560},
+{name:'【加價購】KOCSKIN 亮白保濕化妝水100ml',qty:36,orders:35,amt:20584,price:21564},
+{name:'【新朋友限定】KOCSKIN 亮白保濕化妝水100ml',qty:33,orders:33,amt:17365,price:20460},
+{name:'【加價購】KOCSKIN 3D極緻亮白隔離防曬霜(經典黑)25ml',qty:31,orders:29,amt:14319,price:15190},
+{name:'【會員日限定】KOCSKIN 極光美白乳霜30ml',qty:29,orders:16,amt:20650,price:25520},
+{name:'【新朋友限定】KOCSKIN 復活草保濕晶露100ml',qty:24,orders:24,amt:13784,price:16320},
+{name:'【潔凈＋補水組】3D胺基酸潔顏乳+亮白保濕化妝水',qty:23,orders:23,amt:22326,price:27140},
+{name:'【加價購】KOCSKIN 私密草本潔淨露 200ml',qty:22,orders:19,amt:10329,price:10780},
+{name:'【新品上市】KOC 開環型紅麴納豆膠囊 60粒(60日份)',qty:21,orders:19,amt:23190,price:25200},
+{name:'【加價購】KOCSKIN 100%植物纖維洗臉巾(30張)',qty:20,orders:19,amt:4739,price:4980},
+{name:'【會員日限定】KOCSKIN H7抗老緊緻精華100ml',qty:19,orders:13,amt:13006,price:16720},
+{name:'【新朋友限定】KOCSKIN B3淨膚調理精華30ml x2',qty:17,orders:17,amt:11458,price:13600},
+{name:'【加價購】KOCSKIN B3淨膚調理精華30ml',qty:17,orders:15,amt:6361,price:6783},
+{name:'【新朋友限定】KOCSKIN 私密草本潔淨露200ml',qty:14,orders:14,amt:5920,price:6860},
+{name:'【春日水感祭】KOCSKIN 極光美白乳霜30ml x2',qty:14,orders:13,amt:22069,price:23520},
+{name:'【新品上市】KOC 開環型紅麴納豆膠囊 x3 (180日份)',qty:10,orders:10,amt:26350,price:29800},
+{name:'【超人氣組合】KOCSKIN B3淨膚調理精華30ml x3',qty:10,orders:9,amt:11041,price:12800}
 ];
 
-const adsWithRoas=adData.filter(a=>a.roas!==null).sort((a,b)=>b.roas-a.roas);
+const tbody=document.getElementById('rankingTable');
+rankData.forEach((r,i)=>{
+const discRate=((1-r.amt/r.price)*100).toFixed(1);
+let badge='';
+if(i===0)badge='<span class="badge badge-gold">🥇</span>';
+else if(i===1)badge='<span class="badge badge-silver">🥈</span>';
+else if(i===2)badge='<span class="badge badge-bronze">🥉</span>';
+const tr=document.createElement('tr');
+tr.innerHTML=`<td>${badge} ${i+1}</td><td style="max-width:280px">${r.name}</td><td>${r.qty}</td><td>${r.orders}</td><td>$${r.amt.toLocaleString()}</td><td>$${r.price.toLocaleString()}</td><td>${discRate}%</td>`;
+tbody.appendChild(tr);
+});
 
-new Chart(document.getElementById('roasBar'),{
-type:'bar',
+// NAPL pie chart
+new Chart(document.getElementById('naplPieChart'),{
+type:'doughnut',
 data:{
-labels:adsWithRoas.map(a=>a.name),
-datasets:[{label:'ROAS',data:adsWithRoas.map(a=>a.roas),backgroundColor:adsWithRoas.map(a=>a.roas>=10?'#27AE60':a.roas>=5?'#F39C12':'#E74C3C'),borderRadius:4}]
+labels:['Active 活躍','Potential 潛力','New 新客','Lost 流失'],
+datasets:[{
+data:[1340,1827,1495,4695],
+backgroundColor:['#27AE60','#F39C12','#2980B9','#C0392B'],
+borderWidth:2,borderColor:'#fff'
+}]
 },
-options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'ROAS'}}}}
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{position:'bottom',labels:{font:{size:11}}},
+tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw.toLocaleString()+'人'}}
+}
+}
 });
-
-const topAdsSpend=adData.filter(a=>a.spend>=100).sort((a,b)=>b.spend-a.spend).slice(0,10);
-new Chart(document.getElementById('adSpendBar'),{
-type:'bar',
-data:{
-labels:topAdsSpend.map(a=>a.name),
-datasets:[{label:'花費 (TWD)',data:topAdsSpend.map(a=>a.spend),backgroundColor:'#2980B9',borderRadius:4}]
-},
-options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'$'+v.toLocaleString()}}}}
-});
-
-// Spend vs Revenue
-const adsRev=adsWithRoas.sort((a,b)=>b.spend-a.spend);
-new Chart(document.getElementById('adRevenueChart'),{
-type:'bar',
-data:{
-labels:adsRev.map(a=>a.name),
-datasets:[
-{label:'花費',data:adsRev.map(a=>a.spend),backgroundColor:'#3498DB',borderRadius:4},
-{label:'預估營收(ROAS×花費)',data:adsRev.map(a=>Math.round(a.spend*a.roas)),backgroundColor:'#27AE60',borderRadius:4}
-]
-},
-options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>'$'+v.toLocaleString()}}}}
-});
-
-// Ad Table
-const atb=document.getElementById('adTableBody');
-adData.sort((a,b)=>b.spend-a.spend).forEach(a=>{
-atb.innerHTML+=`<tr><td style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.name}</td><td>active</td><td>${a.reach.toLocaleString()}</td><td>${a.imp.toLocaleString()}</td><td>${a.clicks}</td><td>${a.cpc!==null?'$'+a.cpc.toFixed(2):'-'}</td><td>$${a.spend.toLocaleString()}</td><td>${a.ctr.toFixed(2)}%</td><td>$${a.cpm.toFixed(2)}</td><td>${a.roas!==null?a.roas.toFixed(2):'-'}</td></tr>`;
-});
-
-// ---- Tab 6: Product Ranking ----
-const products=[
-{name:'紅麴納豆膠囊x6 (360日份)',qty:211,orders:201,amount:660872,retail:839780},
-{name:'氣墊粉餅自然色x2',qty:149,orders:131,amount:131725,retail:149000},
-{name:'3D亮白隔離防曬霜x3',qty:120,orders:116,amount:141685,retail:165600},
-{name:'3D全能亮白菁萃x3',qty:111,orders:102,amount:163098,retail:186480},
-{name:'高濃度胺基酸潔顏乳x3',qty:92,orders:82,amount:108956,retail:126960},
-{name:'氣墊粉餅(新朋友限購)',qty:86,orders:86,amount:37806,retail:42140},
-{name:'胺基酸潔顏乳(新朋友限購)',qty:58,orders:58,amount:24489,retail:28420},
-{name:'氣墊粉餅+防曬霜組合',qty:52,orders:50,amount:44731,retail:52000},
-{name:'復活草保濕晶露x2',qty:50,orders:48,amount:55566,retail:64000},
-{name:'亮白隔離防曬霜(新朋友限購)',qty:44,orders:44,amount:19830,retail:21560},
-{name:'亮白保濕化妝水(加價購)',qty:36,orders:35,amount:20584,retail:21564},
-{name:'亮白保濕化妝水(新朋友限購)',qty:33,orders:33,amount:17365,retail:20460},
-{name:'亮白隔離防曬霜(加價購)',qty:31,orders:29,amount:14319,retail:15190},
-{name:'極光美白乳霜30ml',qty:29,orders:16,amount:20650,retail:25520},
-{name:'復活草保濕晶露(新朋友限購)',qty:24,orders:24,amount:13784,retail:16320},
-{name:'潔顏乳+化妝水組合',qty:23,orders:23,amount:22326,retail:27140},
-{name:'私密草本潔淨露(加價購)',qty:22,orders:19,amount:10329,retail:10780},
-{name:'紅麴納豆膠囊(60日份)',qty:21,orders:19,amount:23190,retail:25200},
-{name:'植物纖維洗臉巾(加價購)',qty:20,orders:19,amount:4739,retail:4980},
-{name:'H7抗老緊緻精華(會員限定)',qty:19,orders:13,amount:13006,retail:16720},
-{name:'B3淨膚調理精華x2(新朋友)',qty:17,orders:17,amount:11458,retail:13600},
-{name:'B3淨膚調理精華(加價購)',qty:17,orders:15,amount:6361,retail:6783},
-{name:'私密草本潔淨露(新朋友限購)',qty:14,orders:14,amount:5920,retail:6860},
-{name:'極光美白乳霜x2(春日水感祭)',qty:14,orders:13,amount:22069,retail:23520},
-{name:'紅麴納豆膠囊x3 (180日份)',qty:10,orders:10,amount:26350,retail:29800},
-{name:'B3淨膚調理精華x3',qty:10,orders:9,amount:11041,retail:12800},
-{name:'高效保濕卸妝水(加價購)',qty:9,orders:9,amount:3121,retail:3591},
-{name:'3D全能亮白菁萃(單瓶)',qty:9,orders:7,amount:7702,retail:8820},
-{name:'超淨化毛孔洗面乳x3(預購)',qty:9,orders:6,amount:8540,retail:9000},
-{name:'高效保濕卸妝水200ml',qty:8,orders:4,amount:2950,retail:4720},
-{name:'H7抗老緊緻精華100ml',qty:7,orders:7,amount:9131,retail:11760},
-{name:'亮白保濕化妝水x2(春日)',qty:7,orders:6,amount:7242,retail:8260},
-{name:'私密草本潔淨露200ml',qty:6,orders:4,amount:3510,retail:4140},
-{name:'讓夜好眠全能乳霜30g',qty:5,orders:4,amount:4532,retail:6400},
-{name:'SC亮白賦活精華30ml',qty:5,orders:4,amount:2304,retail:2950},
-{name:'亮白隔離防曬霜(單瓶)',qty:4,orders:4,amount:3650,retail:4554},
-{name:'植物纖維洗臉巾(單包)',qty:3,orders:3,amount:901,retail:1170},
-{name:'金箔微導逆齡精華30ml',qty:3,orders:3,amount:4598,retail:5040},
-{name:'亮白保濕化妝水(單瓶)',qty:3,orders:3,amount:2348,retail:2640},
-{name:'甜心花語香水30ml',qty:3,orders:3,amount:3099,retail:3840},
-{name:'氣墊粉餅+卸妝水組合',qty:2,orders:2,amount:1682,retail:2000},
-{name:'北歐之森香氛蠟燭(加價購)',qty:2,orders:2,amount:790,retail:798},
-{name:'B3淨膚調理精華(單瓶)',qty:2,orders:2,amount:992,retail:1180},
-{name:'高濃度胺基酸潔顏乳(單瓶)',qty:2,orders:2,amount:1116,retail:1380},
-{name:'復活草保濕晶露(單瓶)',qty:1,orders:1,amount:894,retail:980},
-{name:'晨光花園香氛蠟燭(加價購)',qty:1,orders:1,amount:390,retail:399},
-{name:'玫瑰
+</script>
+</body>
+</html>
