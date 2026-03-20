@@ -2,9 +2,20 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KOCSKIN 行銷成效總覽｜2026年3月</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* 字體備用方案：Google Fonts 載入失敗時自動切換 */
+:root {
+  --font-body: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+  --font-display: 'Bebas Neue', 'Arial Black', Impact, sans-serif;
+  --font-serif: 'Playfair Display', 'Georgia', serif;
+}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{
@@ -14,24 +25,24 @@
   --bg:#EFECE6;--card:#FFFFFF;--border:#E5E8E8;--text:#2C3E50;--muted:#7F8C8D;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);}
 
 /* NAV */
 .nav{background:var(--dark);padding:13px 48px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.3);}
-.nav-logo{font-family:'Bebas Neue';font-size:20px;color:#fff;letter-spacing:2px;}
+.nav-logo{font-family:var(--font-display);font-size:20px;color:#fff;letter-spacing:2px;}
 .nav-right{font-size:11px;color:rgba(255,255,255,0.45);}
 
 /* HERO */
 .hero{background:linear-gradient(135deg,var(--dark) 0%,#4A1010 55%,var(--red) 100%);padding:48px 48px 40px;position:relative;overflow:hidden;}
 .hero::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(183,149,11,0.1);}
 .hero-eyebrow{font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:10px;}
-.hero-title{font-family:'Playfair Display',serif;font-size:44px;color:#fff;line-height:1.1;margin-bottom:6px;}
+.hero-title{font-family:var(--font-serif);font-size:44px;color:#fff;line-height:1.1;margin-bottom:6px;}
 .hero-title em{color:#F0C27F;font-style:italic;}
 .hero-sub{font-size:12px;color:rgba(255,255,255,0.55);margin-bottom:32px;}
 .kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;position:relative;z-index:2;}
 .kpi{background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:14px 16px;}
 .kpi-l{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
-.kpi-v{font-family:'Bebas Neue';font-size:30px;color:#fff;line-height:1;}
+.kpi-v{font-family:var(--font-display);font-size:30px;color:#fff;line-height:1;}
 .kpi-v span{font-family:'Noto Sans TC';font-size:11px;color:rgba(255,255,255,0.55);margin-left:2px;}
 .kpi-s{font-size:10px;margin-top:3px;}
 .up{color:#7DCEA0;}.dn{color:#F1948A;}.nu{color:rgba(255,255,255,0.4);}
@@ -68,7 +79,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 
 /* METRIC */
 .metric{text-align:center;padding:18px 12px;}
-.mv{font-family:'Bebas Neue';font-size:48px;color:var(--clr,var(--red));line-height:1;}
+.mv{font-family:var(--font-display);font-size:48px;color:var(--clr,var(--red));line-height:1;}
 .mv span{font-family:'Noto Sans TC';font-size:13px;color:var(--muted);}
 .ml{font-size:12px;color:var(--muted);margin-top:3px;}
 .ms{font-size:11px;color:var(--muted);margin-top:2px;}
@@ -101,10 +112,10 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 
 /* CALLOUT */
 .callout{background:linear-gradient(135deg,var(--dark-red),var(--red));border-radius:13px;padding:22px 26px;color:#fff;margin-bottom:28px;}
-.callout-t{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:6px;}
+.callout-t{font-family:var(--font-serif);font-size:18px;margin-bottom:6px;}
 .callout-b{font-size:12px;line-height:1.7;color:rgba(255,255,255,0.85);}
 .callout-stats{display:flex;gap:28px;margin-top:14px;flex-wrap:wrap;}
-.cs-v{font-family:'Bebas Neue';font-size:32px;color:#F0C27F;line-height:1;}
+.cs-v{font-family:var(--font-display);font-size:32px;color:#F0C27F;line-height:1;}
 .cs-l{font-size:10px;color:rgba(255,255,255,0.6);}
 
 /* WARNING BOX */
@@ -122,14 +133,14 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .rec-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px;}
 .rec{background:var(--card);border-radius:13px;padding:18px 15px;border-top:4px solid var(--clr,#ccc);box-shadow:0 2px 12px rgba(0,0,0,0.05);transition:transform 0.2s;}
 .rec:hover{transform:translateY(-3px);}
-.rec-n{font-family:'Bebas Neue';font-size:26px;color:var(--clr);opacity:0.25;line-height:1;margin-bottom:5px;}
+.rec-n{font-family:var(--font-display);font-size:26px;color:var(--clr);opacity:0.25;line-height:1;margin-bottom:5px;}
 .rec-t{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:7px;line-height:1.4;}
 .rec-b{font-size:11px;color:#666;line-height:1.6;}
 .rec-tag{font-size:10px;font-weight:700;color:var(--clr);margin-top:8px;}
 
 .divider{height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:28px 0;}
 .sec-hd{margin-bottom:18px;}
-.sec-t{font-family:'Playfair Display',serif;font-size:24px;color:var(--dark);}
+.sec-t{font-family:var(--font-serif);font-size:24px;color:var(--dark);}
 .sec-t em{color:var(--red);font-style:italic;}
 .sec-s{font-size:12px;color:var(--muted);margin-top:2px;}
 
@@ -646,7 +657,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 <div class="footer">KOCSKIN 克麗詩黛　行銷成效整合報告　2026/03/01–03/20　行銷團隊內部參考</div>
 
 <script>
-Chart.defaults.font.family="'Noto Sans TC',sans-serif";
+Chart.defaults.font.family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif";
 Chart.defaults.color='#7F8C8D';
 
 // ── 資料 ──
