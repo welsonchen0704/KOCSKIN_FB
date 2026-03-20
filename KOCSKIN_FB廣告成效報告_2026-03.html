@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOCSKIN FB 廣告成效報告｜2026年3月</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --red: #C0392B;
+    --dark-red: #7B241C;
+    --gold: #B7950B;
+    --light-gold: #F9F3E3;
+    --dark: #1A1A2E;
+    --mid: #2C3E50;
+    --gray: #F4F6F7;
+    --white: #FFFFFF;
+    --green: #1E8449;
+    --orange: #D35400;
+    --blue: #1A5276;
+    --text: #2C3E50;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #F0EDE8;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--dark-red) 60%, var(--red) 100%);
+    padding: 48px 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content:'';
+    position:absolute;
+    top:-80px; right:-80px;
+    width:360px; height:360px;
+    border-radius:50%;
+    background: rgba(183,149,11,0.12);
+  }
+  .header::after {
+    content:'';
+    position:absolute;
+    bottom:-60px; left:40%;
+    width:200px; height:200px;
+    border-radius:50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .header-tag {
+    font-size:11px; letter-spacing:3px; color:rgba(255,255,255,0.6);
+    text-transform:uppercase; margin-bottom:12px;
+  }
+  .header-title {
+    font-family:'DM Serif Display', serif;
+    font-size:52px; color:#fff;
+    line-height:1.1; margin-bottom:8px;
+  }
+  .header-title span { color:#F0C27F; font-style:italic; }
+  .header-sub {
+    font-size:15px; color:rgba(255,255,255,0.7);
+    margin-bottom:32px;
+  }
+  .header-kpis {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
+    position:relative; z-index:2;
+  }
+  .kpi-card {
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:12px;
+    padding:18px 20px;
+    transition: transform 0.2s;
+  }
+  .kpi-card:hover { transform:translateY(-2px); }
+  .kpi-label { font-size:11px; color:rgba(255,255,255,0.6); letter-spacing:1px; margin-bottom:6px; }
+  .kpi-value { font-family:'Bebas Neue',sans-serif; font-size:38px; color:#fff; line-height:1; }
+  .kpi-value span { font-family:'Noto Sans TC',sans-serif; font-size:13px; color:rgba(255,255,255,0.7); margin-left:4px; }
+  .kpi-sub { font-size:11px; color:rgba(255,255,255,0.5); margin-top:4px; }
+  .kpi-up { color:#7DCEA0; }
+
+  /* ── MAIN CONTENT ── */
+  .content { padding:40px 60px; max-width:1400px; margin:0 auto; }
+
+  /* section title */
+  .section-title {
+    font-family:'DM Serif Display',serif;
+    font-size:28px; color:var(--dark);
+    margin-bottom:6px;
+  }
+  .section-title span { color:var(--red); font-style:italic; }
+  .section-sub { font-size:13px; color:#7F8C8D; margin-bottom:24px; }
+
+  /* ── ROAS RANKING ── */
+  .roas-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:48px; }
+  .roas-card {
+    background:#fff;
+    border-radius:14px;
+    padding:20px 22px;
+    position:relative;
+    overflow:hidden;
+    border-top:4px solid var(--clr,#ccc);
+    box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .roas-card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,0.1); }
+  .roas-card .rank {
+    position:absolute; top:14px; right:16px;
+    font-family:'Bebas Neue'; font-size:52px;
+    color:rgba(0,0,0,0.06); line-height:1;
+  }
+  .roas-name { font-size:13px; font-weight:700; color:var(--clr,#333); margin-bottom:4px; }
+  .roas-val { font-family:'Bebas Neue'; font-size:44px; color:var(--dark); line-height:1; }
+  .roas-val span { font-size:16px; color:#7F8C8D; font-family:'Noto Sans TC'; }
+  .roas-meta { display:flex; gap:12px; margin-top:10px; flex-wrap:wrap; }
+  .roas-meta-item { font-size:11px; color:#7F8C8D; }
+  .roas-meta-item strong { color:var(--text); font-size:12px; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:700; letter-spacing:0.5px; margin-bottom:8px; }
+  .badge-green { background:#D5F5E3; color:var(--green); }
+  .badge-orange { background:#FDEBD0; color:var(--orange); }
+  .badge-red { background:#FADBD8; color:var(--red); }
+
+  /* ── CHARTS ROW ── */
+  .charts-row { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:48px; }
+  .chart-card {
+    background:#fff;
+    border-radius:14px;
+    padding:28px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.06);
+  }
+  .chart-title { font-size:14px; font-weight:700; color:var(--dark); margin-bottom:4px; }
+  .chart-desc { font-size:11px; color:#95A5A6; margin-bottom:20px; }
+  .chart-wrap { position:relative; height:240px; }
+
+  /* ── TABLE ── */
+  .table-card {
+    background:#fff;
+    border-radius:14px;
+    padding:28px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    margin-bottom:48px;
+    overflow-x:auto;
+  }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  thead tr { background:var(--dark); }
+  thead th { color:#fff; padding:12px 14px; text-align:left; font-size:11px; letter-spacing:0.8px; font-weight:600; }
+  tbody tr { border-bottom:1px solid #F4F6F7; transition:background 0.15s; }
+  tbody tr:hover { background:#FDF9F0; }
+  tbody td { padding:12px 14px; color:var(--text); }
+  .status-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:6px; }
+  .dot-green { background:#2ECC71; }
+  .dot-gray { background:#BDC3C7; }
+  .dot-orange { background:#E67E22; }
+  .roas-pill {
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:20px;
+    font-weight:700;
+    font-size:12px;
+  }
+  .roas-high { background:#D5F5E3; color:#1E8449; }
+  .roas-mid { background:#FDEBD0; color:#D35400; }
+  .roas-low { background:#FADBD8; color:#C0392B; }
+
+  /* ── RECOMMENDATIONS ── */
+  .rec-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:48px; }
+  .rec-card {
+    background:#fff;
+    border-radius:14px;
+    padding:22px 18px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    border-left:4px solid var(--clr,#ccc);
+    transition:transform 0.2s;
+  }
+  .rec-card:hover { transform:translateY(-3px); }
+  .rec-num {
+    font-family:'Bebas Neue'; font-size:32px;
+    color:var(--clr); opacity:0.3; line-height:1; margin-bottom:8px;
+  }
+  .rec-title { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:8px; line-height:1.4; }
+  .rec-body { font-size:12px; color:#666; line-height:1.6; }
+  .rec-tag { font-size:10px; font-weight:700; color:var(--clr); margin-top:10px; letter-spacing:0.5px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background:var(--dark);
+    text-align:center;
+    padding:24px;
+    font-size:12px;
+    color:rgba(255,255,255,0.4);
+    margin-top:20px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider { height:1px; background:linear-gradient(to right,transparent,#D5D8DC,transparent); margin:40px 0; }
+
+  /* animations */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .fade-up { animation:fadeUp 0.5s ease forwards; }
+  .delay-1 { animation-delay:0.1s; opacity:0; }
+  .delay-2 { animation-delay:0.2s; opacity:0; }
+  .delay-3 { animation-delay:0.3s; opacity:0; }
+  .delay-4 { animation-delay:0.4s; opacity:0; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-tag">KOCSKIN 克麗詩黛｜Facebook 廣告成效分析</div>
+  <div class="header-title">Performance <span>Report</span></div>
+  <div class="header-sub">2026年 3月1日 — 3月20日｜數據來源：Meta Business Suite</div>
+  <div class="header-kpis">
+    <div class="kpi-card fade-up">
+      <div class="kpi-label">總廣告花費</div>
+      <div class="kpi-value">155,171<span>TWD</span></div>
+      <div class="kpi-sub">含品牌認知與宣傳活動</div>
+    </div>
+    <div class="kpi-card fade-up delay-1">
+      <div class="kpi-label">估算總營收</div>
+      <div class="kpi-value">989,835<span>TWD</span></div>
+      <div class="kpi-sub kpi-up">轉換廣告貢獻</div>
+    </div>
+    <div class="kpi-card fade-up delay-2">
+      <div class="kpi-label">整體 ROAS</div>
+      <div class="kpi-value">6.38<span>x</span></div>
+      <div class="kpi-sub">轉換廣告平均</div>
+    </div>
+    <div class="kpi-card fade-up delay-3">
+      <div class="kpi-label">總觸及人數</div>
+      <div class="kpi-value">830K<span>+</span></div>
+      <div class="kpi-sub">含品牌認知廣告</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ROAS RANKING -->
+  <div style="margin-bottom:8px; margin-top:8px;" class="fade-up delay-1">
+    <div class="section-title">廣告組合 <span>ROAS 排行</span></div>
+    <div class="section-sub">依廣告組合加總花費與估算營收計算（排除品牌認知與宣傳類）</div>
+  </div>
+  <div class="roas-grid fade-up delay-2">
+    <div class="roas-card" style="--clr:#1E8449">
+      <div class="rank">1</div>
+      <div class="badge badge-green">🏆 最高 ROAS</div>
+      <div class="roas-name">胺基酸潔顏乳活動</div>
+      <div class="roas-val">10.34<span>x</span></div>
+      <div class="roas-meta">
+        <div class="roas-meta-item">花費 <strong>$21,106</strong></div>
+        <div class="roas-meta-item">估算營收 <strong>$218,276</strong></div>
+        <div class="roas-meta-item">點擊 <strong>1,677</strong></div>
+      </div>
+    </div>
+    <div class="roas-card" style="--clr:#1A5276">
+      <div class="rank">2</div>
+      <div class="badge" style="background:#D6EAF8;color:#1A5276;">⭐ 新品強勢</div>
+      <div class="roas-name">紅麴_260312_轉換</div>
+      <div class="roas-val">7.94<span>x</span></div>
+      <div class="roas-meta">
+        <div class="roas-meta-item">花費 <strong>$34,240</strong></div>
+        <div class="roas-meta-item">估算營收 <strong>$271,869</strong></div>
+        <div class="roas-meta-item">點擊 <strong>2,354</strong></div>
+      </div>
+    </div>
+    <div class="roas-card" style="--clr:#6C3483">
+      <div class="rank">3</div>
+      <div class="badge" style="background:#E8DAEF;color:#6C3483;">💰 高效率</div>
+      <div class="roas-name">氣墊粉餅組合</div>
+      <div class="roas-val">8.72<span>x</span></div>
+      <div class="roas-meta">
+        <div class="roas-meta-item">花費 <strong>$12,306</strong></div>
+        <div class="roas-meta-item">估算營收 <strong>$107,288</strong></div>
+        <div class="roas-meta-item">點擊 <strong>1,959</strong></div>
+      </div>
+    </div>
+    <div class="roas-card" style="--clr:#D35400">
+      <div class="rank">4</div>
+      <div class="badge badge-orange">📊 觀察中</div>
+      <div class="roas-name">女神節活動</div>
+      <div class="roas-val">6.21<span>x</span></div>
+      <div class="roas-meta">
+        <div class="roas-meta-item">花費 <strong>$36,390</strong></div>
+        <div class="roas-meta-item">估算營收 <strong>$226,082</strong></div>
+        <div class="roas-meta-item">點擊 <strong>1,902</strong></div>
+      </div>
+    </div>
+    <div class="roas-card" style="--clr:#D35400">
+      <div class="rank">5</div>
+      <div class="badge badge-orange">📊 觀察中</div>
+      <div class="roas-name">會員日_260305</div>
+      <div class="roas-val">6.68<span>x</span></div>
+      <div class="roas-meta">
+        <div class="roas-meta-item">花費 <strong>$4,484</strong></div>
+        <div class="roas-meta-item">估算營收 <strong>$29,953</strong></div>
+        <div class="roas-meta-item">點擊 <strong>303</strong></div>
+      </div>
+    </div>
+    <div class="roas-card" style="--clr:#C0392B">
+      <div class="rank">6</div>
+      <div class="badge badge-red">⚠️ 需優化</div>
+      <div class="roas-name">APP防曬</div>
+      <div class="roas-val">4.03<span>x</span></div>
+      <div class="roas-meta">
+        <div class="roas-meta-item">花費 <strong>$29,504</strong></div>
+        <div class="roas-meta-item">估算營收 <strong>$118,981</strong></div>
+        <div class="roas-meta-item">點擊 <strong>2,190</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="charts-row fade-up delay-2">
+    <div class="chart-card">
+      <div class="chart-title">各廣告組合花費分佈</div>
+      <div class="chart-desc">轉換型廣告花費佔比（排除品牌認知類）</div>
+      <div class="chart-wrap"><canvas id="spendChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">花費 vs ROAS 對比</div>
+      <div class="chart-desc">轉換型廣告｜越高越右代表花費大且效益強</div>
+      <div class="chart-wrap"><canvas id="roasChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-row fade-up delay-3">
+    <div class="chart-card">
+      <div class="chart-title">CTR 點擊率對比</div>
+      <div class="chart-desc">廣告素材吸引力指標</div>
+      <div class="chart-wrap"><canvas id="ctrChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">估算營收貢獻</div>
+      <div class="chart-desc">各廣告組合貢獻的轉換營收</div>
+      <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TABLE -->
+  <div class="section-title" style="margin-bottom:6px">廣告明細 <span>完整數據表</span></div>
+  <div class="section-sub">所有廣告素材層級數據（3/1–3/20）</div>
+  <div class="table-card fade-up delay-2">
+    <table>
+      <thead>
+        <tr>
+          <th>廣告名稱</th>
+          <th>狀態</th>
+          <th>花費 (TWD)</th>
+          <th>觸及人數</th>
+          <th>曝光次數</th>
+          <th>連結點擊</th>
+          <th>CTR</th>
+          <th>CPC</th>
+          <th>ROAS</th>
+        </tr>
+      </thead>
+      <tbody id="adTable"></tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- RECOMMENDATIONS -->
+  <div class="section-title" style="margin-bottom:6px">五大 <span>操作建議</span></div>
+  <div class="section-sub">基於 3/1–3/20 數據分析，給廣告操作負責人的行動指引</div>
+  <div class="rec-grid fade-up delay-2">
+    <div class="rec-card" style="--clr:#1E8449">
+      <div class="rec-num">01</div>
+      <div class="rec-title">立即加碼<br>胺基酸潔顏乳</div>
+      <div class="rec-body">ROAS 10.34x 為全帳戶最高，且花費僅 $21K，仍有大幅放大空間。建議將日預算提升至目前 2 倍，並優先放大 _a 和 _c 素材（ROAS 分別達 13.8x 與 13.9x）。</div>
+      <div class="rec-tag">🚀 立即執行</div>
+    </div>
+    <div class="rec-card" style="--clr:#1A5276">
+      <div class="rec-num">02</div>
+      <div class="rec-title">紅麴轉換廣告<br>繼續放大</div>
+      <div class="rec-body">首賣後 ROAS 7.94x，表現強勁。紅麴_轉換a（ROAS 21x）和 轉換b（ROAS 16x）是隱藏冠軍，應單獨提高預算，將首賣熱度延續轉為常態購買。</div>
+      <div class="rec-tag">🔥 積極加碼</div>
+    </div>
+    <div class="rec-card" style="--clr:#6C3483">
+      <div class="rec-num">03</div>
+      <div class="rec-title">氣墊粉餅<br>重新啟動</div>
+      <div class="rec-body">ROAS 8.72x 表現優秀但多數素材目前為 not_delivering。建議重新啟動 _d 素材（歷史 ROAS 9.2x），這是流量引擎商品，長期投放有助穩定新客進站。</div>
+      <div class="rec-tag">⚡ 重新啟動</div>
+    </div>
+    <div class="rec-card" style="--clr:#D35400">
+      <div class="rec-num">04</div>
+      <div class="rec-title">APP 防曬<br>縮預算 + 換素材</div>
+      <div class="rec-body">花費 $29,504 但 ROAS 只有 4.03x，是本期最大效率漏洞。防曬_b 花費最高（$20K+）卻 ROAS 僅 4.2x。建議縮減至 $500/日觀察，或更換素材重新測試。</div>
+      <div class="rec-tag">⚠️ 縮減優化</div>
+    </div>
+    <div class="rec-card" style="--clr:#C0392B">
+      <div class="rec-num">05</div>
+      <div class="rec-title">女神節結束後<br>強制停止</div>
+      <div class="rec-body">女神節活動花費最高（$36K），整體 ROAS 6.21x 尚可，但活動時效已過。應立即停止所有女神節系列，將預算全數轉移至胺基酸潔顏乳與紅麴轉換，避免預算浪費。</div>
+      <div class="rec-tag">🛑 立即停止</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  KOCSKIN 克麗詩黛｜FB 廣告成效報告｜資料期間 2026/03/01 – 2026/03/20｜僅供內部簡報使用
+</div>
+
+<script>
+// ── 圖表資料 ──
+const groups = ['胺基酸潔顏乳','紅麴轉換','氣墊粉餅','女神節','會員日','APP防曬','春日水感祭'];
+const spends  = [21106, 34240, 12306, 36390, 4484, 29504, 4444];
+const roasVals= [10.34, 7.94, 8.72, 6.21, 6.68, 4.03, 3.98];
+const revenues= [218276, 271869, 107288, 226082, 29953, 118981, 17687];
+const ctrs    = [1.34, 1.26, 1.99, 1.21, 1.62, 1.37, 1.15];
+
+const colors = ['#1E8449','#1A5276','#6C3483','#D35400','#B7950B','#C0392B','#0E6655'];
+const light   = ['#D5F5E3','#D6EAF8','#E8DAEF','#FDEBD0','#FEF9E7','#FADBD8','#D1F2EB'];
+
+Chart.defaults.font.family = "'Noto Sans TC', sans-serif";
+
+// 1. 花費圓餅
+new Chart(document.getElementById('spendChart'), {
+  type: 'doughnut',
+  data: {
+    labels: groups,
+    datasets: [{
+      data: spends,
+      backgroundColor: colors,
+      borderWidth: 3,
+      borderColor: '#fff',
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position:'right', labels: { boxWidth:12, font:{size:11}, padding:12 } },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` $${ctx.raw.toLocaleString()} TWD (${(ctx.raw/spends.reduce((a,b)=>a+b)*100).toFixed(1)}%)`
+        }
+      }
+    }
+  }
+});
+
+// 2. 花費 vs ROAS 泡泡圖
+new Chart(document.getElementById('roasChart'), {
+  type: 'bubble',
+  data: {
+    datasets: groups.map((g,i) => ({
+      label: g,
+      data: [{ x: spends[i]/1000, y: roasVals[i], r: Math.sqrt(revenues[i])/40 }],
+      backgroundColor: colors[i]+'99',
+      borderColor: colors[i],
+      borderWidth: 2,
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display:false },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: 花費$${(ctx.raw.x*1000).toLocaleString()} ROAS ${roasVals[groups.indexOf(ctx.dataset.label)]}x` } }
+    },
+    scales: {
+      x: { title: { display:true, text:'花費（千元）', font:{size:11} }, grid:{color:'#F4F6F7'} },
+      y: { title: { display:true, text:'ROAS (x)', font:{size:11} }, grid:{color:'#F4F6F7'},
+           ticks: { callback: v => v+'x' } }
+    }
+  }
+});
+
+// 3. CTR 橫向條
+new Chart(document.getElementById('ctrChart'), {
+  type: 'bar',
+  data: {
+    labels: groups,
+    datasets: [{
+      label: 'CTR (%)',
+      data: ctrs,
+      backgroundColor: ctrs.map(v => v >= 1.8 ? '#1E8449' : v >= 1.3 ? '#D35400' : '#C0392B'),
+      borderRadius: 6, borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false},
+      tooltip: { callbacks: { label: ctx => ` CTR ${ctx.raw}%` } }
+    },
+    scales: {
+      x: { grid:{color:'#F4F6F7'}, ticks:{ callback: v=>v+'%' } },
+      y: { grid:{display:false} }
+    }
+  }
+});
+
+// 4. 營收貢獻條
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: groups,
+    datasets: [{
+      label: '估算營收 (TWD)',
+      data: revenues,
+      backgroundColor: colors.map(c=>c+'CC'),
+      borderRadius: 6, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false},
+      tooltip: { callbacks: { label: ctx => ` $${ctx.raw.toLocaleString()} TWD` } }
+    },
+    scales: {
+      x: { grid:{display:false} },
+      y: { grid:{color:'#F4F6F7'}, ticks:{ callback: v=>'$'+(v/1000).toFixed(0)+'K' } }
+    }
+  }
+});
+
+// ── 廣告明細表 ──
+const ads = [
+  ['APP防曬b','not_delivering',20324,44163,113708,1695,3.01,11.99,4.21],
+  ['紅麴_260312_轉換g','active',16972,37245,95173,1190,5.79,14.26,6.98],
+  ['氨基酸潔顏乳活動a','not_delivering',13675,40945,81201,1120,2.81,12.21,9.67],
+  ['菁萃b','inactive',12385,23118,55785,780,3.93,15.88,5.36],
+  ['氣墊粉餅d','not_delivering',10012,48165,84462,1775,4.54,5.64,9.25],
+  ['紅麴_260312_轉換（主）','inactive',6065,20646,28829,361,3.34,16.80,2.65],
+  ['女神節活動b','inactive',5673,6156,25061,212,2.07,26.76,4.75],
+  ['女神節活動a','inactive',5318,9123,21374,375,4.22,14.18,4.33],
+  ['氨基酸潔顏乳活動（舊）','not_delivering',4713,10854,26307,321,2.15,14.68,13.84],
+  ['紅麴_260312_轉換b','active',4066,13967,25694,259,4.36,15.70,16.40],
+  ['APP防曬e','not_delivering',3781,4261,22195,156,2.30,24.24,5.45],
+  ['紅麴_260312_轉換f','active',3709,10736,17442,268,3.77,13.84,8.58],
+  ['女神節活動c','inactive',3656,3365,17313,126,2.00,21.17,7.02],
+  ['會員日_260305b','not_delivering',3504,7417,14445,241,5.03,14.54,4.95],
+  ['女神節活動（主）','inactive',3288,5027,12006,189,5.02,17.40,9.29],
+  ['APP防曬a','inactive',3172,8976,13808,196,4.37,16.18,2.52],
+  ['女神節活動e','active',3140,4320,15106,108,2.54,29.07,6.03],
+  ['氣墊粉餅a','not_delivering',2218,8790,13820,175,2.79,12.67,6.66],
+  ['極光美白乳霜買1送1（a）','active',2049,7592,12195,113,2.82,18.13,3.98],
+  ['菁萃a','active',1972,2833,6658,93,5.84,21.20,12.09],
+  ['APP防曬d','inactive',1886,5581,9569,126,4.28,14.97,1.90],
+  ['紅麴_260312_轉換c','inactive',1342,4100,7217,130,5.83,10.32,7.80],
+  ['紅麴_260312_轉換a','active',898,3032,4659,90,7.86,9.98,21.02],
+  ['氨基酸潔顏乳活動g','inactive',817,3570,4740,67,3.46,12.19,5.10],
+  ['氨基酸潔顏乳活動c','not_delivering',776,1612,3836,132,4.67,5.88,13.90],
+  ['會員日_260305a','not_delivering',754,1402,3435,53,3.23,14.23,9.65],
+  ['紅麴_260312_轉換d','inactive',704,2385,4267,31,3.52,22.71,5.71],
+  ['女神節活動d','inactive',958,1262,3522,19,4.86,50.42,10.94],
+  ['亮白保濕化妝水a','active',590,2633,3215,39,4.91,15.13,1.88],
+  ['APP防曬c','inactive',341,588,1153,17,6.24,20.06,3.31],
+  ['會員日_260305（主）','not_delivering',226,395,865,9,3.58,25.11,23.54],
+  ['亮白保濕化妝水b','active',122,436,584,11,5.65,11.09,24.67],
+];
+
+function getStatusHTML(s) {
+  if(s==='active') return '<span class="status-dot dot-green"></span>投放中';
+  if(s==='inactive') return '<span class="status-dot dot-gray"></span>已停止';
+  return '<span class="status-dot dot-orange"></span>未投遞';
+}
+function getRoasHTML(r) {
+  if(r===0) return '<span style="color:#BDC3C7">—</span>';
+  if(r>=10) return `<span class="roas-pill roas-high">${r.toFixed(2)}x</span>`;
+  if(r>=6)  return `<span class="roas-pill roas-mid">${r.toFixed(2)}x</span>`;
+  return `<span class="roas-pill roas-low">${r.toFixed(2)}x</span>`;
+}
+
+const tbody = document.getElementById('adTable');
+ads.forEach(a => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="font-weight:500">${a[0]}</td>
+    <td style="font-size:12px;white-space:nowrap">${getStatusHTML(a[1])}</td>
+    <td>$${a[2].toLocaleString()}</td>
+    <td>${a[3].toLocaleString()}</td>
+    <td>${a[4].toLocaleString()}</td>
+    <td>${a[5].toLocaleString()}</td>
+    <td>${a[6].toFixed(2)}%</td>
+    <td>$${a[7].toFixed(1)}</td>
+    <td>${getRoasHTML(a[8])}</td>
+  `;
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>
