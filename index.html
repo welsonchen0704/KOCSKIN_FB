@@ -8,364 +8,287 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>KOCSKIN 克麗詩黛 行銷成效儀表板 2026/03/16 — 2026/03/20</title>
+<title>KOCSKIN 克麗詩黛 行銷成效儀表板 2026/03/16 — 2026/03/19</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
 --primary: #C0392B;
 --primary-dark: #96281B;
 --primary-light: #E74C3C;
---bg-dark: #1a1a2e;
---bg-card: #16213e;
---bg-card2: #1a1a3e;
---text-primary: #ffffff;
---text-secondary: #b0b0c0;
---accent-green: #2ecc71;
---accent-orange: #f39c12;
---accent-blue: #3498db;
---accent-purple: #9b59b6;
---border-color: rgba(192,57,43,0.3);
+--primary-pale: #FADBD8;
+--bg: #F5F5F5;
+--card-bg: #FFFFFF;
+--text-dark: #2C3E50;
+--text-muted: #7F8C8D;
+--border: #E0E0E0;
+--success: #27AE60;
+--warning: #F39C12;
+--danger: #E74C3C;
+--info: #2980B9;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-font-family: 'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;
-background: var(--bg-dark);
-color: var(--text-primary);
-min-height: 100vh;
+font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+background: var(--bg);
+color: var(--text-dark);
+line-height: 1.6;
 }
 .header {
-background: linear-gradient(135deg, var(--primary-dark), var(--primary), var(--primary-light));
-padding: 20px 24px;
+background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+color: #fff;
+padding: 24px 20px 16px;
 text-align: center;
-box-shadow: 0 4px 20px rgba(192,57,43,0.4);
-position: relative;
-overflow: hidden;
-}
-.header::before {
-content: '';
-position: absolute;
-top: -50%;
-left: -50%;
-width: 200%;
-height: 200%;
-background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-animation: headerShine 8s ease-in-out infinite;
-}
-@keyframes headerShine {
-0%,100% { transform: translate(0,0); }
-50% { transform: translate(20px, 10px); }
+box-shadow: 0 4px 20px rgba(192,57,43,0.3);
 }
 .header h1 {
-font-size: 24px;
+font-size: 1.6rem;
 font-weight: 700;
 letter-spacing: 2px;
-position: relative;
-z-index: 1;
+margin-bottom: 4px;
 }
 .header .subtitle {
-font-size: 13px;
-opacity: 0.85;
-margin-top: 6px;
-position: relative;
-z-index: 1;
+font-size: 0.85rem;
+opacity: 0.9;
+font-weight: 300;
 }
 .header .period {
 display: inline-block;
-background: rgba(255,255,255,0.15);
-border-radius: 20px;
-padding: 4px 16px;
-font-size: 12px;
 margin-top: 8px;
-position: relative;
-z-index: 1;
-backdrop-filter: blur(5px);
+background: rgba(255,255,255,0.2);
+padding: 4px 16px;
+border-radius: 20px;
+font-size: 0.8rem;
+font-weight: 500;
 }
-.tab-nav {
-background: var(--bg-card);
-border-bottom: 2px solid var(--border-color);
-overflow-x: auto;
-white-space: nowrap;
--webkit-overflow-scrolling: touch;
-scrollbar-width: thin;
-scrollbar-color: var(--primary) transparent;
+.tab-container {
+background: #fff;
+border-bottom: 2px solid var(--border);
 position: sticky;
 top: 0;
 z-index: 100;
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+white-space: nowrap;
+scrollbar-width: thin;
 }
-.tab-nav::-webkit-scrollbar { height: 3px; }
-.tab-nav::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
-.tab-nav::-webkit-scrollbar-track { background: transparent; }
+.tab-container::-webkit-scrollbar { height: 3px; }
+.tab-container::-webkit-scrollbar-thumb { background: var(--primary-pale); border-radius: 3px; }
+.tabs {
+display: inline-flex;
+min-width: 100%;
+padding: 0 8px;
+}
 .tab-btn {
-display: inline-block;
-padding: 12px 20px;
-font-size: 13px;
-font-weight: 600;
-color: var(--text-secondary);
-cursor: pointer;
+padding: 12px 18px;
 border: none;
-background: none;
+background: transparent;
+font-family: inherit;
+font-size: 0.85rem;
+font-weight: 500;
+color: var(--text-muted);
+cursor: pointer;
 border-bottom: 3px solid transparent;
 transition: all 0.3s;
-font-family: inherit;
+white-space: nowrap;
 }
-.tab-btn:hover { color: var(--text-primary); background: rgba(192,57,43,0.1); }
+.tab-btn:hover { color: var(--primary); }
 .tab-btn.active {
-color: var(--primary-light);
+color: var(--primary);
 border-bottom-color: var(--primary);
-background: rgba(192,57,43,0.08);
+font-weight: 700;
 }
-.tab-content { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
-.tab-content.active { display: block; }
-.kpi-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-gap: 16px;
-margin-bottom: 24px;
-}
-.kpi-card {
-background: linear-gradient(145deg, var(--bg-card), var(--bg-card2));
+.content { max-width: 1400px; margin: 0 auto; padding: 16px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.grid { display: grid; gap: 16px; margin-bottom: 16px; }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-1 { grid-template-columns: 1fr; }
+.card {
+background: var(--card-bg);
 border-radius: 12px;
 padding: 20px;
-border: 1px solid var(--border-color);
-text-align: center;
-transition: transform 0.3s, box-shadow 0.3s;
+box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+border: 1px solid var(--border);
 }
-.kpi-card:hover {
-transform: translateY(-3px);
-box-shadow: 0 8px 25px rgba(192,57,43,0.2);
-}
-.kpi-card .kpi-label {
-font-size: 12px;
-color: var(--text-secondary);
+.card-header {
+font-size: 0.8rem;
+color: var(--text-muted);
+font-weight: 500;
 margin-bottom: 8px;
 text-transform: uppercase;
 letter-spacing: 1px;
 }
-.kpi-card .kpi-value {
-font-size: 28px;
-font-weight: 700;
-background: linear-gradient(135deg, #fff, #e0e0e0);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
+.card-value {
+font-size: 1.8rem;
+font-weight: 900;
+color: var(--text-dark);
 }
-.kpi-card .kpi-sub {
-font-size: 11px;
-color: var(--text-secondary);
+.card-value.primary { color: var(--primary); }
+.card-change {
+font-size: 0.75rem;
 margin-top: 4px;
+font-weight: 500;
 }
-.kpi-card.highlight { border-color: var(--primary); }
-.kpi-card.highlight .kpi-value {
-background: linear-gradient(135deg, var(--primary-light), var(--accent-orange));
--webkit-background-clip: text;
-background-clip: text;
-}
-.chart-container {
-background: linear-gradient(145deg, var(--bg-card), var(--bg-card2));
-border-radius: 12px;
-padding: 20px;
-border: 1px solid var(--border-color);
-margin-bottom: 20px;
-}
-.chart-container h3 {
-font-size: 15px;
-margin-bottom: 16px;
-color: var(--text-primary);
+.card-change.up { color: var(--success); }
+.card-change.down { color: var(--danger); }
+.section-title {
+font-size: 1.1rem;
+font-weight: 700;
+color: var(--text-dark);
+margin-bottom: 12px;
+padding-bottom: 8px;
+border-bottom: 2px solid var(--primary-pale);
 display: flex;
 align-items: center;
 gap: 8px;
 }
-.chart-container h3::before {
+.section-title::before {
 content: '';
+display: inline-block;
 width: 4px;
-height: 18px;
+height: 20px;
 background: var(--primary);
 border-radius: 2px;
 }
-.chart-row {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-gap: 20px;
-margin-bottom: 20px;
+.chart-container {
+position: relative;
+width: 100%;
+max-height: 400px;
 }
-canvas { max-height: 350px; }
-table {
+.chart-container canvas {
+max-height: 400px;
+}
+table.data-table {
 width: 100%;
 border-collapse: collapse;
-font-size: 13px;
+font-size: 0.82rem;
 }
-table th {
-background: rgba(192,57,43,0.15);
+table.data-table thead th {
+background: var(--primary);
+color: #fff;
 padding: 10px 12px;
 text-align: left;
-font-weight: 600;
-color: var(--primary-light);
-border-bottom: 2px solid var(--border-color);
+font-weight: 500;
+white-space: nowrap;
+position: sticky;
+top: 0;
+}
+table.data-table tbody tr { border-bottom: 1px solid var(--border); }
+table.data-table tbody tr:hover { background: var(--primary-pale); }
+table.data-table tbody td {
+padding: 8px 12px;
 white-space: nowrap;
 }
-table td {
-padding: 10px 12px;
-border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-table tr:hover td { background: rgba(192,57,43,0.05); }
-.table-wrap {
-overflow-x: auto;
--webkit-overflow-scrolling: touch;
-}
-.rank-badge {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-width: 28px;
-height: 28px;
-border-radius: 50%;
-font-size: 12px;
-font-weight: 700;
-}
-.rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; }
-.rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: #333; }
-.rank-3 { background: linear-gradient(135deg, #CD7F32, #B8860B); color: #fff; }
-.rank-other { background: rgba(255,255,255,0.1); color: var(--text-secondary); }
-.advice-card {
-background: linear-gradient(145deg, var(--bg-card), var(--bg-card2));
-border-radius: 12px;
-padding: 24px;
-border-left: 4px solid var(--primary);
-margin-bottom: 16px;
-border: 1px solid var(--border-color);
-border-left: 4px solid var(--primary);
-}
-.advice-card h4 {
-color: var(--primary-light);
-margin-bottom: 10px;
-font-size: 16px;
-}
-.advice-card p {
-color: var(--text-secondary);
-line-height: 1.8;
-font-size: 14px;
-}
-.advice-card .tag {
+table.data-table tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.badge {
 display: inline-block;
-background: rgba(192,57,43,0.15);
-color: var(--primary-light);
 padding: 2px 10px;
 border-radius: 12px;
-font-size: 11px;
-margin-right: 6px;
+font-size: 0.72rem;
+font-weight: 700;
+}
+.badge-red { background: var(--primary-pale); color: var(--primary); }
+.badge-green { background: #D5F5E3; color: var(--success); }
+.badge-blue { background: #D6EAF8; color: var(--info); }
+.badge-orange { background: #FDEBD0; color: var(--warning); }
+.kpi-icon {
+font-size: 1.5rem;
+margin-bottom: 4px;
+}
+.insight-card {
+background: linear-gradient(135deg, #FDF2F2, #FFF);
+border-left: 4px solid var(--primary);
+padding: 16px 20px;
+margin-bottom: 12px;
+border-radius: 0 8px 8px 0;
+}
+.insight-card h4 {
+color: var(--primary);
+font-size: 0.95rem;
 margin-bottom: 6px;
 }
-.progress-bar {
-height: 8px;
-background: rgba(255,255,255,0.08);
-border-radius: 4px;
+.insight-card p {
+font-size: 0.85rem;
+color: var(--text-dark);
+line-height: 1.7;
+}
+.progress-bar-bg {
+background: #EEE;
+border-radius: 8px;
+height: 10px;
 overflow: hidden;
 margin-top: 6px;
 }
-.progress-bar .fill {
+.progress-bar-fill {
 height: 100%;
-border-radius: 4px;
-transition: width 1s ease;
+border-radius: 8px;
+transition: width 0.8s ease;
 }
+.no-data {
+text-align: center;
+padding: 60px 20px;
+color: var(--text-muted);
+}
+.no-data .icon { font-size: 3rem; margin-bottom: 12px; }
 .footer {
 text-align: center;
-padding: 24px;
-color: var(--text-secondary);
-font-size: 11px;
-border-top: 1px solid var(--border-color);
-margin-top: 20px;
-background: var(--bg-card);
+padding: 20px;
+font-size: 0.75rem;
+color: var(--text-muted);
+border-top: 1px solid var(--border);
+margin-top: 30px;
+background: #fff;
 }
-.no-data-msg {
-text-align: center;
-padding: 40px;
-color: var(--text-secondary);
-font-size: 14px;
-}
-.cancel-reason-bar {
-display: flex;
-align-items: center;
-gap: 10px;
-margin-bottom: 8px;
-}
-.cancel-reason-bar .label { min-width: 140px; font-size: 13px; }
-.cancel-reason-bar .bar-bg {
-flex: 1;
-height: 24px;
-background: rgba(255,255,255,0.06);
-border-radius: 4px;
-overflow: hidden;
-position: relative;
-}
-.cancel-reason-bar .bar-fill {
-height: 100%;
-border-radius: 4px;
-display: flex;
-align-items: center;
-padding-left: 8px;
-font-size: 11px;
-font-weight: 600;
-transition: width 1s ease;
-}
-.cancel-reason-bar .amount { min-width: 80px; text-align: right; font-size: 13px; }
-.section-title {
-font-size: 18px;
-font-weight: 700;
-margin-bottom: 20px;
-padding-bottom: 10px;
-border-bottom: 2px solid var(--border-color);
-display: flex;
-align-items: center;
-gap: 10px;
-}
-.section-title .icon {
-width: 32px;
-height: 32px;
-background: var(--primary);
-border-radius: 8px;
-display: flex;
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.rank-num {
+display: inline-flex;
 align-items: center;
 justify-content: center;
-font-size: 16px;
+width: 26px;
+height: 26px;
+border-radius: 50%;
+font-size: 0.72rem;
+font-weight: 700;
 }
-.napl-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-gap: 16px;
-margin-bottom: 24px;
-}
-.napl-card {
-border-radius: 12px;
-padding: 20px;
-text-align: center;
-border: 1px solid;
-}
-.napl-new { background: rgba(46,204,113,0.08); border-color: rgba(46,204,113,0.3); }
-.napl-active { background: rgba(52,152,219,0.08); border-color: rgba(52,152,219,0.3); }
-.napl-potential { background: rgba(243,156,18,0.08); border-color: rgba(243,156,18,0.3); }
-.napl-lost { background: rgba(231,76,60,0.08); border-color: rgba(231,76,60,0.3); }
-.napl-card .napl-label { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-.napl-card .napl-count { font-size: 32px; font-weight: 700; }
-.napl-card .napl-revenue { font-size: 12px; margin-top: 4px; opacity: 0.8; }
-.napl-new .napl-label, .napl-new .napl-count { color: #2ecc71; }
-.napl-active .napl-label, .napl-active .napl-count { color: #3498db; }
-.napl-potential .napl-label, .napl-potential .napl-count { color: #f39c12; }
-.napl-lost .napl-label, .napl-lost .napl-count { color: #e74c3c; }
-
+.rank-1 { background: #FFD700; color: #333; }
+.rank-2 { background: #C0C0C0; color: #333; }
+.rank-3 { background: #CD7F32; color: #fff; }
+.rank-other { background: #EEE; color: #666; }
 @media (max-width: 768px) {
-.header h1 { font-size: 18px; }
-.kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-.kpi-card { padding: 14px; }
-.kpi-card .kpi-value { font-size: 22px; }
-.chart-row { grid-template-columns: 1fr; }
-.tab-btn { padding: 10px 14px; font-size: 12px; }
-.tab-content { padding: 12px; }
-.napl-grid { grid-template-columns: repeat(2, 1fr); }
+.grid-4 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(2, 1fr); }
+.grid-2 { grid-template-columns: 1fr; }
+.header h1 { font-size: 1.2rem; }
+.card-value { font-size: 1.4rem; }
+.tab-btn { padding: 10px 14px; font-size: 0.8rem; }
+.content { padding: 12px; }
 }
 @media (max-width: 480px) {
-.kpi-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-.kpi-card .kpi-value { font-size: 18px; }
-.kpi-card .kpi-label { font-size: 10px; }
+.grid-4 { grid-template-columns: 1fr 1fr; }
+.grid-3 { grid-template-columns: 1fr; }
+.card { padding: 14px; }
+.card-value { font-size: 1.2rem; }
+}
+.donut-legend {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-top: 10px;
+justify-content: center;
+}
+.donut-legend-item {
+display: flex;
+align-items: center;
+gap: 4px;
+font-size: 0.75rem;
+}
+.donut-legend-color {
+width: 12px;
+height: 12px;
+border-radius: 3px;
 }
 </style>
 </head>
@@ -373,314 +296,290 @@ border: 1px solid;
 
 <div class="header">
 <h1>KOCSKIN 克麗詩黛</h1>
-<div class="subtitle">行銷成效數據儀表板</div>
-<div class="period">📅 數據期間：2026/03/01 — 2026/03/12（報告週期 2026/03/16 — 2026/03/20）</div>
+<div class="subtitle">行銷成效儀表板</div>
+<div class="period">📅 數據期間：2026/03/16 — 2026/03/19</div>
 </div>
 
-<nav class="tab-nav" id="tabNav">
-<button class="tab-btn active" data-tab="overview">📊 整體概覽</button>
-<button class="tab-btn" data-tab="sales">💰 銷售分析</button>
-<button class="tab-btn" data-tab="source">📱 訂單來源</button>
-<button class="tab-btn" data-tab="delivery">🚚 配送分析</button>
-<button class="tab-btn" data-tab="cancel">❌ 取消分析</button>
-<button class="tab-btn" data-tab="fb">📢 FB廣告</button>
-<button class="tab-btn" data-tab="ranking">🏆 銷售排行榜</button>
-<button class="tab-btn" data-tab="advice">💡 五大建議</button>
-</nav>
-
-<!-- ====== 整體概覽 ====== -->
-<div class="tab-content active" id="tab-overview">
-<div class="section-title"><div class="icon">📊</div> 整體營運概覽</div>
-
-<div class="kpi-grid">
-<div class="kpi-card highlight">
-<div class="kpi-label">總淨銷售額</div>
-<div class="kpi-value" id="kpi-total-net">$0</div>
-<div class="kpi-sub">折扣後扣除取消退貨</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">總訂單數 (TS)</div>
-<div class="kpi-value" id="kpi-total-orders">0</div>
-<div class="kpi-sub">含所有配送管道</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">總商品數</div>
-<div class="kpi-value" id="kpi-total-items">0</div>
-<div class="kpi-sub">售出商品總量</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">平均客單價</div>
-<div class="kpi-value" id="kpi-aov">$0</div>
-<div class="kpi-sub">淨銷售 ÷ 購物車筆數</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">總折扣金額</div>
-<div class="kpi-value" id="kpi-discount">$0</div>
-<div class="kpi-sub">優惠折扣總計</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">取消訂單數</div>
-<div class="kpi-value" id="kpi-cancel-count">0</div>
-<div class="kpi-sub">取消金額另見取消分析</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">平均毛利率</div>
-<div class="kpi-value" id="kpi-margin">0%</div>
-<div class="kpi-sub">成本極低，毛利極高</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">購物車筆數</div>
-<div class="kpi-value" id="kpi-cart">0</div>
-<div class="kpi-sub">不重複購物車</div>
+<div class="tab-container">
+<div class="tabs">
+<button class="tab-btn active" onclick="switchTab('overview')">📊 整體概覽</button>
+<button class="tab-btn" onclick="switchTab('sales')">💰 銷售分析</button>
+<button class="tab-btn" onclick="switchTab('source')">📱 訂單來源</button>
+<button class="tab-btn" onclick="switchTab('delivery')">🚚 配送分析</button>
+<button class="tab-btn" onclick="switchTab('cancel')">❌ 取消分析</button>
+<button class="tab-btn" onclick="switchTab('fb')">📣 FB廣告</button>
+<button class="tab-btn" onclick="switchTab('ranking')">🏆 銷售排行榜</button>
+<button class="tab-btn" onclick="switchTab('insights')">💡 五大建議</button>
 </div>
 </div>
 
-<!-- NAPL 會員分層 -->
-<div class="section-title" style="margin-top:30px;"><div class="icon">👥</div> NAPL 會員分層（2026/02）</div>
-<div class="napl-grid">
-<div class="napl-card napl-new">
-<div class="napl-label">🆕 New 新客</div>
-<div class="napl-count">1,495</div>
-<div class="napl-revenue">過往12月淨額 $2,012,445</div>
+<div class="content">
+
+<!-- ========== 整體概覽 ========== -->
+<div id="tab-overview" class="tab-panel active">
+<div class="section-title">本週核心 KPI（03/16 — 03/19）</div>
+<div class="grid grid-4">
+<div class="card">
+<div class="kpi-icon">🛒</div>
+<div class="card-header">購物車筆數</div>
+<div class="card-value primary">162</div>
+<div class="card-change">本週 4 日合計</div>
 </div>
-<div class="napl-card napl-active">
-<div class="napl-label">🔵 Active 活躍</div>
-<div class="napl-count">1,340</div>
-<div class="napl-revenue">過往12月淨額 資料載入中</div>
+<div class="card">
+<div class="kpi-icon">📦</div>
+<div class="card-header">訂單筆數（TS）</div>
+<div class="card-value primary">246</div>
+<div class="card-change">主單筆數 162</div>
 </div>
-<div class="napl-card napl-potential">
-<div class="napl-label">⚡ Potential 潛力</div>
-<div class="napl-count">1,827</div>
-<div class="napl-revenue">過往12月淨額 $14,016,563</div>
+<div class="card">
+<div class="kpi-icon">💰</div>
+<div class="card-header">訂單金額（折扣後）</div>
+<div class="card-value primary">$304,127</div>
+<div class="card-change">商品金額 $339,772</div>
 </div>
-<div class="napl-card napl-lost">
-<div class="napl-label">🔴 Lost 流失</div>
-<div class="napl-count">4,695</div>
-<div class="napl-revenue">過往12月淨額 $7,269,985</div>
+<div class="card">
+<div class="kpi-icon">📈</div>
+<div class="card-header">淨銷售額</div>
+<div class="card-value primary">$280,195</div>
+<div class="card-change">扣除取消與退貨後</div>
 </div>
 </div>
 
-<div class="chart-row">
+<div class="grid grid-4">
+<div class="card">
+<div class="kpi-icon">🎯</div>
+<div class="card-header">商品數</div>
+<div class="card-value">257</div>
+<div class="card-change">平均每單 1.04 件</div>
+</div>
+<div class="card">
+<div class="kpi-icon">💵</div>
+<div class="card-header">平均客單價</div>
+<div class="card-value">$1,236</div>
+<div class="card-change">折扣後金額/訂單</div>
+</div>
+<div class="card">
+<div class="kpi-icon">🏷️</div>
+<div class="card-header">折扣金額</div>
+<div class="card-value">$35,645</div>
+<div class="card-change">折扣率 10.5%</div>
+</div>
+<div class="card">
+<div class="kpi-icon">❌</div>
+<div class="card-header">取消筆數</div>
+<div class="card-value">21</div>
+<div class="card-change down">取消金額 $23,932</div>
+</div>
+</div>
+
+<div class="grid grid-2">
+<div class="card">
+<div class="section-title">每日淨銷售額趨勢（3月全月）</div>
 <div class="chart-container">
-<h3>每日淨銷售額趨勢</h3>
-<canvas id="chartDailyNet"></canvas>
+<canvas id="overviewDailyChart"></canvas>
 </div>
+</div>
+<div class="card">
+<div class="section-title">本週每日訂單數 vs 購物車數</div>
 <div class="chart-container">
-<h3>每日訂單數趨勢</h3>
-<canvas id="chartDailyOrders"></canvas>
+<canvas id="overviewOrderChart"></canvas>
 </div>
 </div>
+</div>
+
+<div class="grid grid-2">
+<div class="card">
+<div class="section-title">NAPL 會員分層（2026年2月）</div>
 <div class="chart-container">
-<h3>NAPL 會員結構佔比</h3>
-<div style="max-width:400px;margin:0 auto;">
-<canvas id="chartNAPL"></canvas>
+<canvas id="naplChart"></canvas>
 </div>
 </div>
-</div>
-
-<!-- ====== 銷售分析 ====== -->
-<div class="tab-content" id="tab-sales">
-<div class="section-title"><div class="icon">💰</div> 銷售分析</div>
-
-<div class="kpi-grid">
-<div class="kpi-card highlight">
-<div class="kpi-label">商品總金額（原價）</div>
-<div class="kpi-value" id="kpi-gross">$0</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">折扣總金額</div>
-<div class="kpi-value" id="kpi-disc2">$0</div>
-<div class="kpi-sub" id="kpi-disc-rate"></div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">折扣後訂單金額</div>
-<div class="kpi-value" id="kpi-after-disc">$0</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">取消 + 退貨金額</div>
-<div class="kpi-value" id="kpi-loss">$0</div>
-</div>
-</div>
-
-<div class="chart-row">
+<div class="card">
+<div class="section-title">NAPL 會員貢獻淨額（2月 vs 1月）</div>
 <div class="chart-container">
-<h3>每日商品金額 vs 折扣金額</h3>
-<canvas id="chartSalesDiscount"></canvas>
-</div>
-<div class="chart-container">
-<h3>每日淨銷售 vs 取消金額</h3>
-<canvas id="chartNetCancel"></canvas>
-</div>
-</div>
-
-<div class="chart-container">
-<h3>每日銷售明細表</h3>
-<div class="table-wrap">
-<table id="tableDailySales"></table>
+<canvas id="naplRevenueChart"></canvas>
 </div>
 </div>
 </div>
 
-<!-- ====== 訂單來源 ====== -->
-<div class="tab-content" id="tab-source">
-<div class="section-title"><div class="icon">📱</div> 訂單來源分析</div>
-
-<div class="kpi-grid" id="sourceKPI"></div>
-
-<div class="chart-row">
-<div class="chart-container">
-<h3>訂單來源 — 淨銷售額佔比</h3>
-<div style="max-width:400px;margin:0 auto;">
-<canvas id="chartSourcePie"></canvas>
-</div>
-</div>
-<div class="chart-container">
-<h3>訂單來源 — 訂單數與商品數</h3>
-<canvas id="chartSourceBar"></canvas>
-</div>
-</div>
-
-<div class="chart-container">
-<h3>訂單來源明細表</h3>
-<div class="table-wrap">
-<table id="tableSource"></table>
-</div>
-</div>
-</div>
-
-<!-- ====== 配送分析 ====== -->
-<div class="tab-content" id="tab-delivery">
-<div class="section-title"><div class="icon">🚚</div> 配送方式分析</div>
-
-<div class="chart-row">
-<div class="chart-container">
-<h3>配送方式 — 訂單金額佔比</h3>
-<div style="max-width:400px;margin:0 auto;">
-<canvas id="chartDeliveryPie"></canvas>
-</div>
-</div>
-<div class="chart-container">
-<h3>配送方式 — 訂單數比較</h3>
-<canvas id="chartDeliveryBar"></canvas>
-</div>
-</div>
-
-<div class="chart-container">
-<h3>配送方式明細表</h3>
-<div class="table-wrap">
-<table id="tableDelivery"></table>
-</div>
-</div>
-</div>
-
-<!-- ====== 取消分析 ====== -->
-<div class="tab-content" id="tab-cancel">
-<div class="section-title"><div class="icon">❌</div> 取消訂單分析</div>
-
-<div class="kpi-grid">
-<div class="kpi-card highlight">
-<div class="kpi-label">取消總筆數</div>
-<div class="kpi-value">99</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">取消總金額</div>
-<div class="kpi-value">$128,274</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">平均取消金額</div>
-<div class="kpi-value">$1,296</div>
-<div class="kpi-sub">每筆取消單平均金額</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">取消率</div>
-<div class="kpi-value" id="kpi-cancel-rate">0%</div>
-<div class="kpi-sub">取消筆數 ÷ 總訂單</div>
-</div>
-</div>
-
-<div class="chart-row">
-<div class="chart-container">
-<h3>取消原因 — 佔比分布</h3>
-<div style="max-width:400px;margin:0 auto;">
-<canvas id="chartCancelPie"></canvas>
-</div>
-</div>
-<div class="chart-container">
-<h3>取消原因 — 金額與筆數</h3>
-<div id="cancelBars" style="padding:10px;"></div>
-</div>
-</div>
-
-<div class="chart-container">
-<h3>取消原因明細</h3>
-<div class="table-wrap">
-<table>
-<thead><tr><th>取消原因</th><th>取消筆數</th><th>取消金額</th><th>佔比(金額)</th></tr></thead>
-<tbody id="tableCancelBody"></tbody>
+<div class="card" style="margin-top:16px;">
+<div class="section-title">NAPL 會員數據明細</div>
+<div class="table-scroll">
+<table class="data-table">
+<thead>
+<tr><th>月份</th><th>分層</th><th>會員數</th><th>佔比</th><th>過往12月淨額</th><th>人均貢獻</th></tr>
+</thead>
+<tbody>
+<tr><td>2026/02</td><td><span class="badge badge-green">Active</span></td><td class="num">1,340</td><td class="num">14.3%</td><td class="num">$13,309,895</td><td class="num">$9,933</td></tr>
+<tr><td>2026/02</td><td><span class="badge badge-blue">Potential</span></td><td class="num">1,827</td><td class="num">19.5%</td><td class="num">$14,016,563</td><td class="num">$7,672</td></tr>
+<tr><td>2026/02</td><td><span class="badge badge-orange">New</span></td><td class="num">1,495</td><td class="num">16.0%</td><td class="num">$2,012,445</td><td class="num">$1,346</td></tr>
+<tr><td>2026/02</td><td><span class="badge badge-red">Lost</span></td><td class="num">4,695</td><td class="num">50.2%</td><td class="num">$7,269,985</td><td class="num">$1,548</td></tr>
+<tr style="font-weight:700;background:#FDF2F2;"><td>2026/02</td><td>合計</td><td class="num">9,357</td><td class="num">100%</td><td class="num">$36,608,888</td><td class="num">$3,912</td></tr>
+</tbody>
 </table>
 </div>
 </div>
 </div>
 
-<!-- ====== FB廣告 ====== -->
-<div class="tab-content" id="tab-fb">
-<div class="section-title"><div class="icon">📢</div> FB 廣告成效</div>
-<div class="no-data-msg">
-<div style="font-size:48px;margin-bottom:16px;">📊</div>
-<h3 style="margin-bottom:10px;color:var(--text-primary);">Facebook 廣告數據暫未提供</h3>
-<p>本週報表中未包含 Facebook 廣告投放數據。<br>如需納入 FB Ads 數據，請將 Meta Ads Manager 數據匯出後提供。</p>
-<div style="margin-top:20px;padding:16px;background:rgba(192,57,43,0.08);border-radius:8px;display:inline-block;">
-<p style="font-size:12px;">建議追蹤指標：<strong>CPC、CPM、CTR、CPA、ROAS、Frequency、Reach</strong></p>
+<!-- ========== 銷售分析 ========== -->
+<div id="tab-sales" class="tab-panel">
+<div class="section-title">每日銷售詳細分析（03/16 — 03/19）</div>
+<div class="grid grid-4">
+<div class="card">
+<div class="card-header">總商品金額</div>
+<div class="card-value primary">$339,772</div>
 </div>
+<div class="card">
+<div class="card-header">總折扣金額</div>
+<div class="card-value">$35,645</div>
+<div class="card-change">折扣率 10.5%</div>
 </div>
+<div class="card">
+<div class="card-header">折扣後訂單金額</div>
+<div class="card-value primary">$304,127</div>
 </div>
-
-<!-- ====== 銷售排行榜 ====== -->
-<div class="tab-content" id="tab-ranking">
-<div class="section-title"><div class="icon">🏆</div> 商品銷售排行榜</div>
-
-<div class="kpi-grid">
-<div class="kpi-card highlight">
-<div class="kpi-label">🥇 銷售冠軍</div>
-<div class="kpi-value" style="font-size:16px;">開環型紅麴納豆膠囊 x6</div>
-<div class="kpi-sub">211件 / $660,872</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">TOP 5 商品合計營收</div>
-<div class="kpi-value" id="kpi-top5-rev">$0</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">TOP 5 商品佔比</div>
-<div class="kpi-value" id="kpi-top5-pct">0%</div>
-<div class="kpi-sub">佔總訂單金額比例</div>
+<div class="card">
+<div class="card-header">毛利率</div>
+<div class="card-value" style="color:var(--success)">99.91%</div>
 </div>
 </div>
 
+<div class="grid grid-2">
+<div class="card">
+<div class="section-title">每日銷售金額分解</div>
 <div class="chart-container">
-<h3>TOP 10 商品銷售數量</h3>
-<canvas id="chartRankBar" style="max-height:450px;"></canvas>
+<canvas id="salesBreakdownChart"></canvas>
 </div>
-
+</div>
+<div class="card">
+<div class="section-title">每日毛利率走勢</div>
 <div class="chart-container">
-<h3>完整銷售排行表</h3>
-<div class="table-wrap">
-<table id="tableRanking"></table>
+<canvas id="marginChart"></canvas>
 </div>
 </div>
 </div>
 
-<!-- ====== 五大建議 ====== -->
-<div class="tab-content" id="tab-advice">
-<div class="section-title"><div class="icon">💡</div> 五大行銷優化建議</div>
-
-<div class="advice-card">
-<h4>1️⃣ 降低取消率，挽回 $128,274 流失營收</h4>
-<div style="margin-bottom:8px;">
-<span class="tag">取消率 7.6%</span>
-<span class="tag">未取貨 28 筆</span>
-<span class="tag">逾期未付 21 筆</span>
+<div class="card" style="margin-top:16px;">
+<div class="section-title">每日銷售明細表</div>
+<div class="table-scroll">
+<table class="data-table">
+<thead>
+<tr><th>日期</th><th>購物車</th><th>訂單數</th><th>商品數</th><th>商品金額</th><th>折扣金額</th><th>訂單金額</th><th>取消筆數</th><th>取消金額</th><th>淨銷售額</th><th>毛利率</th></tr>
+</thead>
+<tbody>
+<tr><td>03/16</td><td class="num">42</td><td class="num">71</td><td class="num">72</td><td class="num">$91,552</td><td class="num">$11,206</td><td class="num">$80,346</td><td class="num">10</td><td class="num">$9,647</td><td class="num">$70,699</td><td class="num">99.90%</td></tr>
+<tr><td>03/17</td><td class="num">36</td><td class="num">52</td><td class="num">53</td><td class="num">$76,146</td><td class="num">$8,890</td><td class="num">$67,256</td><td class="num">5</td><td class="num">$7,582</td><td class="num">$59,674</td><td class="num">99.91%</td></tr>
+<tr><td>03/18</td><td class="num">30</td><td class="num">40</td><td class="num">43</td><td class="num">$61,968</td><td class="num">$6,575</td><td class="num">$55,393</td><td class="num">1</td><td class="num">$1,935</td><td class="num">$53,458</td><td class="num">99.92%</td></tr>
+<tr><td>03/19</td><td class="num">54</td><td class="num">83</td><td class="num">89</td><td class="num">$110,106</td><td class="num">$8,974</td><td class="num">$101,132</td><td class="num">5</td><td class="num">$4,768</td><td class="num">$96,364</td><td class="num">99.91%</td></tr>
+<tr style="font-weight:700;background:#FDF2F2;">
+<td>合計</td><td class="num">162</td><td class="num">246</td><td class="num">257</td><td class="num">$339,772</td><td class="num">$35,645</td><td class="num">$304,127</td><td class="num">21</td><td class="num">$23,932</td><td class="num">$280,195</td><td class="num">99.91%</td></tr>
+</tbody>
+</table>
 </div>
-<p>
-「消費者未取貨」(28筆/$29,981) 與「逾期未付款」(21筆/$30,971) 合計佔取消金額 <strong>47.5%</strong>。建議：<br>
-• 💬 取貨付款訂單在出貨後第1天、取貨截止前2天自動發送 LINE/簡訊提醒<br>
-• 💳 推廣線上付款優惠（如線上刷卡再折 $30），引導減
+</div>
+
+<div class="grid grid-2" style="margin-top:16px;">
+<div class="card">
+<div class="section-title">本週 vs 上週同期比較</div>
+<div class="table-scroll">
+<table class="data-table">
+<thead>
+<tr><th>指標</th><th>本週 (03/16-19)</th><th>上週 (03/09-12)</th><th>變化</th></tr>
+</thead>
+<tbody>
+<tr><td>購物車筆數</td><td class="num">162</td><td class="num">275</td><td class="num" style="color:var(--danger)">-41.1%</td></tr>
+<tr><td>訂單筆數</td><td class="num">246</td><td class="num">398</td><td class="num" style="color:var(--danger)">-38.2%</td></tr>
+<tr><td>淨銷售額</td><td class="num">$280,195</td><td class="num">$601,391</td><td class="num" style="color:var(--danger)">-53.4%</td></tr>
+<tr><td>平均客單價</td><td class="num">$1,236</td><td class="num">$1,614</td><td class="num" style="color:var(--danger)">-23.4%</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="card">
+<div class="section-title">3月累計銷售進度</div>
+<div style="margin-bottom:16px;">
+<div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;">
+<span>3月淨銷售累計</span>
+<span style="font-weight:700;">$1,575,082</span>
+</div>
+<div class="progress-bar-bg">
+<div class="progress-bar-fill" style="width:85%;background:linear-gradient(90deg,var(--primary),var(--primary-light));"></div>
+</div>
+<div style="text-align:right;font-size:0.72rem;color:var(--text-muted);margin-top:2px;">3月至今19天已完成</div>
+</div>
+<div style="margin-bottom:16px;">
+<div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;">
+<span>3月訂單數累計</span>
+<span style="font-weight:700;">1,305 筆</span>
+</div>
+<div class="progress-bar-bg">
+<div class="progress-bar-fill" style="width:75%;background:linear-gradient(90deg,var(--info),#5DADE2);"></div>
+</div>
+</div>
+<div>
+<div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;">
+<span>日均淨銷售額</span>
+<span style="font-weight:700;">$82,905</span>
+</div>
+<div class="progress-bar-bg">
+<div class="progress-bar-fill" style="width:70%;background:linear-gradient(90deg,var(--success),#58D68D);"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ========== 訂單來源 ========== -->
+<div id="tab-source" class="tab-panel">
+<div class="section-title">訂單來源分析（3月累計）</div>
+<div class="grid grid-4">
+<div class="card">
+<div class="card-header">📱 iOS App</div>
+<div class="card-value primary">$830,378</div>
+<div class="card-change">673 筆訂單 | 佔比 52.6%</div>
+</div>
+<div class="card">
+<div class="card-header">🤖 Android App</div>
+<div class="card-value">$388,863</div>
+<div class="card-change">302 筆訂單 | 佔比 24.6%</div>
+</div>
+<div class="card">
+<div class="card-header">📱 官網(Mobile)</div>
+<div class="card-value">$329,121</div>
+<div class="card-change">307 筆訂單 | 佔比 20.9%</td>
+</div>
+<div class="card">
+<div class="card-header">💻 官網(PC)</div>
+<div class="card-value">$26,720</div>
+<div class="card-change">23 筆訂單 | 佔比 1.7%</div>
+</div>
+</div>
+
+<div class="grid grid-2">
+<div class="card">
+<div class="section-title">訂單來源 — 淨銷售額分佈</div>
+<div class="chart-container" style="max-height:350px;">
+<canvas id="sourceRevenueChart"></canvas>
+</div>
+</div>
+<div class="card">
+<div class="section-title">訂單來源 — 訂單數分佈</div>
+<div class="chart-container" style="max-height:350px;">
+<canvas id="sourceOrderChart"></canvas>
+</div>
+</div>
+</div>
+
+<div class="card" style="margin-top:16px;">
+<div class="section-title">訂單來源明細表</div>
+<div class="table-scroll">
+<table class="data-table">
+<thead>
+<tr><th>來源</th><th>購物車</th><th>主單數</th><th>訂單數</th><th>商品數</th><th>訂單金額</th><th>取消筆數</th><th>取消金額</th><th>淨銷售額</th><th>佔比</th></tr>
+</thead>
+<tbody>
+<tr><td>iOS App</td><td class="num">415</td><td class="num">415</td><td class="num">673</td><td class="num">718</td><td class="num">$876,114</td><td class="num">37</td><td class="num">$44,736</td><td class="num">$830,378</td><td class="num">52.6%</td></tr>
+<tr><td>Android App</td><td class="num">203</td><td class="num">203</td><td class="num">302</td><td class="num">337</td><td class="num">$437,430</td><td class="num">34</td><td class="num">$48,567</td><td class="num">$388,863</td><td class="num">24.6%</td></tr>
+<tr><td>官網(Mobile)</td><td class="num">228</td><td class="num">228</td><td class="num">307</td><td class="num">327</td><td class="num">$359,461</td><td class="num">25</td><td class="num">$30,340</td><td class="num">$329,121</td><td class="num">20.9%</td></tr>
+<tr><td>官網(PC)</td><td class="num">16</td><td class="num">16</td><td class="num">23</td><td class="num">24</td><td class="num">$31,351</td><td class="num">3</td><td class="num">$4,631</td><td class="num">$26,720</td><td class="num">1.7%</td></tr>
+<tr style="font-weight:700;background:#FDF2F2;"><td>合計</td><td class="num">862</td><td class="num">862</td><td class="num">1,305</td><td class="num">1,406</td><td class="num
