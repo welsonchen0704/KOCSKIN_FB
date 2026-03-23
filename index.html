@@ -10,733 +10,461 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;background:#F0EDE8;color:#333;font-size:14px;line-height:1.6}
-.header{background:linear-gradient(135deg,#C0392B,#922B21);color:#fff;padding:20px 24px;text-align:center}
-.header h1{font-size:22px;letter-spacing:2px;margin-bottom:4px}
-.header .sub{font-size:13px;opacity:.85}
-.tab-nav{background:#fff;border-bottom:2px solid #eee;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;background:#F0EDE8;color:#2C2C2C;font-size:15px;line-height:1.6}
+.header{background:linear-gradient(135deg,#C0392B 0%,#922B21 100%);color:#fff;padding:24px 20px 16px;text-align:center}
+.header h1{font-size:22px;font-weight:700;letter-spacing:1px}
+.header .subtitle{font-size:13px;opacity:.85;margin-top:4px}
+.tab-nav{background:#fff;border-bottom:2px solid #e0d6cc;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(0,0,0,.08)}
 .tab-nav::-webkit-scrollbar{height:3px}
 .tab-nav::-webkit-scrollbar-thumb{background:#C0392B;border-radius:2px}
-.tab-btn{display:inline-block;padding:12px 18px;cursor:pointer;font-size:13px;font-weight:600;color:#666;border-bottom:3px solid transparent;transition:.2s}
+.tab-btn{display:inline-block;padding:12px 18px;font-size:13.5px;font-weight:600;color:#666;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s}
 .tab-btn:hover{color:#C0392B}
 .tab-btn.active{color:#C0392B;border-bottom-color:#C0392B}
 .tab-content{display:none;padding:20px;max-width:1200px;margin:0 auto}
 .tab-content.active{display:block}
-.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
-@media(min-width:768px){.kpi-grid{grid-template-columns:repeat(4,1fr)}}
-.kpi-card{background:#fff;border-radius:12px;padding:18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #C0392B}
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:24px}
+.kpi-card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #C0392B}
 .kpi-card .label{font-size:12px;color:#888;margin-bottom:4px}
 .kpi-card .value{font-size:22px;font-weight:700;color:#C0392B}
-.kpi-card .unit{font-size:11px;color:#999;margin-top:2px}
-.card{background:#fff;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.card h3{font-size:15px;color:#C0392B;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #f0f0f0}
-.chart-container{position:relative;width:100%;max-height:400px}
-.chart-container canvas{max-height:400px}
-.grid-2{display:grid;grid-template-columns:1fr;gap:20px}
-@media(min-width:768px){.grid-2{grid-template-columns:1fr 1fr}}
-.grid-3{display:grid;grid-template-columns:1fr;gap:20px}
-@media(min-width:768px){.grid-3{grid-template-columns:1fr 1fr 1fr}}
-table{width:100%;border-collapse:collapse;font-size:12px}
-table th{background:#C0392B;color:#fff;padding:10px 8px;text-align:left;font-weight:600;position:sticky;top:0}
-table td{padding:8px;border-bottom:1px solid #f0f0f0}
-table tr:hover{background:#fdf2f0}
-table tr:nth-child(even){background:#fafafa}
-table tr:nth-child(even):hover{background:#fdf2f0}
-.table-wrap{overflow-x:auto;max-height:500px;overflow-y:auto}
-.suggest-grid{display:grid;grid-template-columns:1fr;gap:16px}
-@media(min-width:768px){.suggest-grid{grid-template-columns:1fr 1fr}}
-.suggest-card{background:#fff;border-radius:12px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-top:4px solid #C0392B}
-.suggest-card .num{display:inline-block;background:#C0392B;color:#fff;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-weight:700;font-size:14px;margin-bottom:8px}
-.suggest-card h4{font-size:15px;margin-bottom:8px;color:#333}
-.suggest-card p{font-size:13px;color:#555;line-height:1.7}
-.suggest-card .kpi-ref{margin-top:10px;padding:8px 12px;background:#fdf2f0;border-radius:6px;font-size:12px;color:#C0392B}
-.footer{text-align:center;padding:20px;font-size:11px;color:#999;border-top:1px solid #e0e0e0;margin-top:20px}
-.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
-.badge-green{background:#e8f5e9;color:#2e7d32}
-.badge-red{background:#ffebee;color:#c62828}
-.badge-orange{background:#fff3e0;color:#e65100}
-.highlight-row{background:#fff8e1 !important}
+.kpi-card .sub{font-size:11px;color:#999;margin-top:2px}
+.chart-box{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.chart-box h3{font-size:15px;font-weight:700;color:#333;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #eee}
+.chart-box canvas{max-height:350px}
+.section-title{font-size:17px;font-weight:700;color:#C0392B;margin:20px 0 12px;padding-left:10px;border-left:4px solid #C0392B}
+table.data-table{width:100%;border-collapse:collapse;font-size:12.5px;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+table.data-table th{background:#C0392B;color:#fff;padding:10px 8px;text-align:left;font-weight:600;white-space:nowrap}
+table.data-table td{padding:9px 8px;border-bottom:1px solid #f0ebe5}
+table.data-table tr:hover td{background:#fdf5f3}
+table.data-table tr:last-child td{border-bottom:none}
+.advice-card{background:#fff;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:5px solid #C0392B}
+.advice-card .num{display:inline-block;background:#C0392B;color:#fff;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-weight:700;font-size:14px;margin-right:8px}
+.advice-card h4{display:inline;font-size:15px;color:#333}
+.advice-card p{margin-top:8px;font-size:13.5px;color:#555}
+.advice-card .kpi-ref{margin-top:8px;padding:8px 12px;background:#fdf5f3;border-radius:8px;font-size:12px;color:#C0392B}
+.footer{text-align:center;padding:24px 20px;font-size:11.5px;color:#999;border-top:1px solid #ddd;margin-top:20px}
+.two-col{display:grid;grid-template-columns:1fr;gap:16px}
+.scroll-table{overflow-x:auto}
+@media(min-width:768px){
+.kpi-grid{grid-template-columns:repeat(4,1fr)}
+.two-col{grid-template-columns:1fr 1fr}
+.kpi-card .value{font-size:26px}
+.header h1{font-size:28px}
+.tab-btn{padding:14px 22px;font-size:14.5px}
+}
+@media(min-width:1024px){
+.kpi-grid{grid-template-columns:repeat(4,1fr)}
+}
 </style>
 </head>
 <body>
 <div class="header">
 <h1>KOCSKIN 克麗詩黛　行銷成效儀表板</h1>
-<div class="sub">數據期間：2026/03/01 — 2026/03/20</div>
+<div class="subtitle">數據期間：2026/03/01 — 2026/03/23</div>
 </div>
-<div class="tab-nav" id="tabNav">
-<span class="tab-btn active" onclick="switchTab(0)">📊 整體概覽</span>
-<span class="tab-btn" onclick="switchTab(1)">💰 銷售分析</span>
-<span class="tab-btn" onclick="switchTab(2)">📱 訂單來源</span>
-<span class="tab-btn" onclick="switchTab(3)">🚚 配送分析</span>
-<span class="tab-btn" onclick="switchTab(4)">❌ 取消分析</span>
-<span class="tab-btn" onclick="switchTab(5)">📢 FB廣告</span>
-<span class="tab-btn" onclick="switchTab(6)">🏆 銷售排行榜</span>
-<span class="tab-btn" onclick="switchTab(7)">💡 五大建議</span>
+<div class="tab-nav">
+<span class="tab-btn active" onclick="switchTab(0)">整體概覽</span>
+<span class="tab-btn" onclick="switchTab(1)">銷售分析</span>
+<span class="tab-btn" onclick="switchTab(2)">訂單來源</span>
+<span class="tab-btn" onclick="switchTab(3)">配送分析</span>
+<span class="tab-btn" onclick="switchTab(4)">取消分析</span>
+<span class="tab-btn" onclick="switchTab(5)">FB廣告</span>
+<span class="tab-btn" onclick="switchTab(6)">銷售排行榜</span>
+<span class="tab-btn" onclick="switchTab(7)">五大建議</span>
 </div>
 
-<!-- Tab 0: 整體概覽 -->
 <div class="tab-content active" id="tab0">
 <div class="kpi-grid">
-<div class="kpi-card">
-<div class="label">淨銷售額</div>
-<div class="value">$1,575,082</div>
-<div class="unit">TWD（20天累計）</div>
+<div class="kpi-card"><div class="label">淨銷售額</div><div class="value" id="k-net-sales"></div><div class="sub">折扣後扣除取消退貨</div></div>
+<div class="kpi-card"><div class="label">總訂單數 (TS)</div><div class="value" id="k-orders"></div><div class="sub">含取消前</div></div>
+<div class="kpi-card"><div class="label">平均客單價</div><div class="value" id="k-aov"></div><div class="sub">淨銷售額 ÷ 有效訂單</div></div>
+<div class="kpi-card"><div class="label">取消率</div><div class="value" id="k-cancel-rate"></div><div class="sub">取消筆數 ÷ 總訂單數</div></div>
+<div class="kpi-card"><div class="label">總折扣金額</div><div class="value" id="k-discount"></div><div class="sub">佔商品金額比</div></div>
+<div class="kpi-card"><div class="label">毛利率 (平均)</div><div class="value" id="k-margin"></div><div class="sub">各日加權平均</div></div>
+<div class="kpi-card"><div class="label">會員總數 (2月底)</div><div class="value" id="k-members"></div><div class="sub">NAPL 四層加總</div></div>
+<div class="kpi-card"><div class="label">FB 廣告總花費</div><div class="value" id="k-fb-spend"></div><div class="sub">本月累計</div></div>
 </div>
-<div class="kpi-card">
-<div class="label">總訂單數</div>
-<div class="value">1,305</div>
-<div class="unit">筆（折扣後出貨）</div>
-</div>
-<div class="kpi-card">
-<div class="label">平均客單價</div>
-<div class="value">$1,307</div>
-<div class="unit">TWD / 訂單</div>
-</div>
-<div class="kpi-card">
-<div class="label">毛利率</div>
-<div class="value">99.89%</div>
-<div class="unit">加權平均</div>
-</div>
-<div class="kpi-card">
-<div class="label">總商品售出</div>
-<div class="value">1,406</div>
-<div class="unit">件</div>
-</div>
-<div class="kpi-card">
-<div class="label">取消訂單數</div>
-<div class="value">99</div>
-<div class="unit">筆（佔比 7.1%）</div>
-</div>
-<div class="kpi-card">
-<div class="label">總折扣金額</div>
-<div class="value">$306,032</div>
-<div class="unit">TWD</div>
-</div>
-<div class="kpi-card">
-<div class="label">FB 廣告總花費</div>
-<div class="value">$119,593</div>
-<div class="unit">TWD</div>
-</div>
-</div>
-<div class="card">
-<h3>📈 每日淨銷售額趨勢</h3>
-<div class="chart-container"><canvas id="overviewChart"></canvas></div>
-</div>
-<div class="grid-2">
-<div class="card">
-<h3>📊 每日訂單數趨勢</h3>
-<div class="chart-container"><canvas id="overviewOrderChart"></canvas></div>
-</div>
-<div class="card">
-<h3>🏷️ NAPL 會員分層（2026/02）</h3>
-<div class="chart-container"><canvas id="naplChart"></canvas></div>
-</div>
-</div>
+<div class="chart-box"><h3>📈 每日淨銷售額趨勢</h3><canvas id="overviewChart"></canvas></div>
+<div class="chart-box"><h3>📊 每日訂單數趨勢</h3><canvas id="overviewOrderChart"></canvas></div>
 </div>
 
-<!-- Tab 1: 銷售分析 -->
 <div class="tab-content" id="tab1">
-<div class="card">
-<h3>💰 每日淨銷售額 vs 訂單金額（折扣後）</h3>
-<div class="chart-container"><canvas id="salesLineChart"></canvas></div>
+<div class="chart-box"><h3>💰 每日淨銷售額</h3><canvas id="salesLineChart"></canvas></div>
+<div class="two-col">
+<div class="chart-box"><h3>🏷️ 每日折扣率 (折扣÷商品金額)</h3><canvas id="discountChart"></canvas></div>
+<div class="chart-box"><h3>📦 每日訂單筆數 (TS)</h3><canvas id="orderBarChart"></canvas></div>
 </div>
-<div class="grid-2">
-<div class="card">
-<h3>🏷️ 每日折扣率趨勢</h3>
-<div class="chart-container"><canvas id="discountChart"></canvas></div>
-</div>
-<div class="card">
-<h3>📦 每日訂單筆數 vs 購物車筆數</h3>
-<div class="chart-container"><canvas id="orderVsCartChart"></canvas></div>
-</div>
-</div>
-<div class="card">
-<h3>📋 每日銷售明細表</h3>
-<div class="table-wrap">
-<table id="dailySalesTable"></table>
+<div class="chart-box"><h3>📋 每日銷售明細</h3>
+<div class="scroll-table">
+<table class="data-table" id="dailyTable">
+<thead><tr><th>日期</th><th>訂單數</th><th>商品金額</th><th>折扣金額</th><th>訂單金額</th><th>取消金額</th><th>淨銷售額</th></tr></thead>
+<tbody></tbody>
+</table>
 </div>
 </div>
 </div>
 
-<!-- Tab 2: 訂單來源 -->
 <div class="tab-content" id="tab2">
-<div class="grid-2">
-<div class="card">
-<h3>📱 訂單來源佔比（訂單數）</h3>
-<div class="chart-container"><canvas id="sourceOrderPie"></canvas></div>
+<div class="two-col">
+<div class="chart-box"><h3>📱 各渠道訂單數 (TS)</h3><canvas id="channelPieChart"></canvas></div>
+<div class="chart-box"><h3>💵 各渠道淨銷售額</h3><canvas id="channelBarChart"></canvas></div>
 </div>
-<div class="card">
-<h3>💵 訂單來源佔比（淨銷售額）</h3>
-<div class="chart-container"><canvas id="sourceRevPie"></canvas></div>
-</div>
-</div>
-<div class="card">
-<h3>📊 各渠道訂單數 vs 取消數比較</h3>
-<div class="chart-container"><canvas id="sourceCancelBar"></canvas></div>
-</div>
-<div class="card">
-<h3>📋 訂單來源明細</h3>
-<div class="table-wrap">
-<table>
-<thead><tr><th>訂單來源</th><th>購物車</th><th>訂單數</th><th>商品數</th><th>訂單金額</th><th>取消數</th><th>淨銷售額</th></tr></thead>
-<tbody>
-<tr><td>iOS App</td><td>415</td><td>673</td><td>718</td><td>$876,114</td><td>37</td><td>$830,378</td></tr>
-<tr><td>Android App</td><td>203</td><td>302</td><td>337</td><td>$437,430</td><td>34</td><td>$388,863</td></tr>
-<tr><td>官網(Mobile)</td><td>228</td><td>307</td><td>327</td><td>$359,461</td><td>25</td><td>$329,121</td></tr>
-<tr><td>官網(PC)</td><td>16</td><td>23</td><td>24</td><td>$31,351</td><td>3</td><td>$26,720</td></tr>
-<tr style="font-weight:700;background:#fdf2f0"><td>合計</td><td>862</td><td>1,305</td><td>1,406</td><td>$1,704,356</td><td>99</td><td>$1,575,082</td></tr>
-</tbody>
+<div class="chart-box"><h3>📊 訂單來源明細</h3>
+<div class="scroll-table">
+<table class="data-table" id="channelTable">
+<thead><tr><th>來源</th><th>購物車</th><th>訂單數(TS)</th><th>訂單金額</th><th>取消筆數</th><th>淨銷售額</th></tr></thead>
+<tbody></tbody>
 </table>
 </div>
 </div>
 </div>
 
-<!-- Tab 3: 配送分析 -->
 <div class="tab-content" id="tab3">
-<div class="grid-2">
-<div class="card">
-<h3>🚚 各配送方式訂單金額</h3>
-<div class="chart-container"><canvas id="shipBar"></canvas></div>
+<div class="two-col">
+<div class="chart-box"><h3>🚚 各配送方式訂單金額</h3><canvas id="shipBarChart"></canvas></div>
+<div class="chart-box"><h3>📦 配送方式訂單數佔比</h3><canvas id="shipPieChart"></canvas></div>
 </div>
-<div class="card">
-<h3>📦 各配送方式訂單數佔比</h3>
-<div class="chart-container"><canvas id="shipPie"></canvas></div>
-</div>
-</div>
-<div class="card">
-<h3>📋 配送方式明細</h3>
-<div class="table-wrap">
-<table>
-<thead><tr><th>配送方式</th><th>購物車</th><th>訂單數</th><th>商品數</th><th>訂單金額</th><th>佔比</th></tr></thead>
-<tbody>
-<tr><td>全家取貨付款</td><td>329</td><td>496</td><td>533</td><td>$573,523</td><td>33.6%</td></tr>
-<tr><td>7-11取貨付款</td><td>242</td><td>346</td><td>368</td><td>$413,886</td><td>24.3%</td></tr>
-<tr><td>宅配</td><td>138</td><td>232</td><td>258</td><td>$364,622</td><td>21.4%</td></tr>
-<tr><td>全家取貨</td><td>55</td><td>88</td><td>94</td><td>$125,651</td><td>7.4%</td></tr>
-<tr><td>7-11取貨</td><td>36</td><td>57</td><td>59</td><td>$96,239</td><td>5.6%</td></tr>
-<tr><td>貨到付款</td><td>29</td><td>37</td><td>38</td><td>$59,950</td><td>3.5%</td></tr>
-<tr><td>萊爾富取貨付款</td><td>27</td><td>39</td><td>42</td><td>$50,328</td><td>3.0%</td></tr>
-<tr><td>國家/地區配送</td><td>3</td><td>5</td><td>9</td><td>$12,039</td><td>0.7%</td></tr>
-<tr><td>萊爾富取貨</td><td>3</td><td>5</td><td>5</td><td>$8,118</td><td>0.5%</td></tr>
-<tr style="font-weight:700;background:#fdf2f0"><td>合計</td><td>862</td><td>1,305</td><td>1,406</td><td>$1,704,356</td><td>100%</td></tr>
-</tbody>
+<div class="chart-box"><h3>📋 配送方式明細</h3>
+<div class="scroll-table">
+<table class="data-table" id="shipTable">
+<thead><tr><th>配送方式</th><th>購物車</th><th>訂單數(TS)</th><th>商品數</th><th>訂單金額</th></tr></thead>
+<tbody></tbody>
 </table>
 </div>
 </div>
 </div>
 
-<!-- Tab 4: 取消分析 -->
 <div class="tab-content" id="tab4">
-<div class="kpi-grid">
-<div class="kpi-card">
-<div class="label">取消總筆數</div>
-<div class="value">99</div>
-<div class="unit">筆</div>
+<div class="two-col">
+<div class="chart-box"><h3>❌ 取消原因分布</h3><canvas id="cancelPieChart"></canvas></div>
+<div class="chart-box"><h3>💸 各取消原因金額</h3><canvas id="cancelBarChart"></canvas></div>
 </div>
-<div class="kpi-card">
-<div class="label">取消總金額</div>
-<div class="value">$128,274</div>
-<div class="unit">TWD</div>
-</div>
-<div class="kpi-card">
-<div class="label">取消率</div>
-<div class="value">7.1%</div>
-<div class="unit">取消 / 總訂單</div>
-</div>
-<div class="kpi-card">
-<div class="label">平均取消金額</div>
-<div class="value">$1,296</div>
-<div class="unit">TWD / 筆</div>
-</div>
-</div>
-<div class="grid-2">
-<div class="card">
-<h3>❌ 取消原因佔比（筆數）</h3>
-<div class="chart-container"><canvas id="cancelPie"></canvas></div>
-</div>
-<div class="card">
-<h3>💸 取消原因金額分佈</h3>
-<div class="chart-container"><canvas id="cancelBar"></canvas></div>
-</div>
-</div>
-<div class="card">
-<h3>📋 取消原因明細</h3>
-<div class="table-wrap">
-<table>
-<thead><tr><th>取消原因</th><th>取消筆數</th><th>佔比</th><th>取消金額</th><th>金額佔比</th><th>平均每筆</th></tr></thead>
-<tbody>
-<tr><td>其他</td><td>34</td><td>34.3%</td><td>$55,773</td><td>43.5%</td><td>$1,640</td></tr>
-<tr><td>消費者逾期未付款</td><td>21</td><td>21.2%</td><td>$30,971</td><td>24.1%</td><td>$1,475</td></tr>
-<tr><td>消費者未取貨</td><td>28</td><td>28.3%</td><td>$29,981</td><td>23.4%</td><td>$1,071</td></tr>
-<tr><td>不想等太久</td><td>13</td><td>13.1%</td><td>$8,651</td><td>6.7%</td><td>$665</td></tr>
-<tr><td>衝動購買</td><td>3</td><td>3.0%</td><td>$2,898</td><td>2.3%</td><td>$966</td></tr>
-<tr style="font-weight:700;background:#fdf2f0"><td>合計</td><td>99</td><td>100%</td><td>$128,274</td><td>100%</td><td>$1,296</td></tr>
-</tbody>
+<div class="chart-box"><h3>📋 取消訂單明細</h3>
+<div class="scroll-table">
+<table class="data-table" id="cancelTable">
+<thead><tr><th>取消原因</th><th>取消筆數</th><th>取消金額</th><th>佔比</th></tr></thead>
+<tbody></tbody>
 </table>
 </div>
 </div>
 </div>
 
-<!-- Tab 5: FB廣告 -->
 <div class="tab-content" id="tab5">
-<div class="kpi-grid">
-<div class="kpi-card">
-<div class="label">廣告總花費</div>
-<div class="value">$119,593</div>
-<div class="unit">TWD</div>
-</div>
-<div class="kpi-card">
-<div class="label">總成果數（購買）</div>
-<div class="value">404</div>
-<div class="unit">次轉換</div>
-</div>
-<div class="kpi-card">
-<div class="label">平均 CPC</div>
-<div class="value">$13.63</div>
-<div class="unit">TWD</div>
-</div>
-<div class="kpi-card">
-<div class="label">平均 CPM</div>
-<div class="value">$173.45</div>
-<div class="unit">TWD</div>
-</div>
-</div>
-<div class="grid-2">
-<div class="card">
-<h3>📊 各廣告花費 vs 轉換數</h3>
-<div class="chart-container"><canvas id="fbSpendChart"></canvas></div>
-</div>
-<div class="card">
-<h3>💰 每次成果成本（CPA）比較</h3>
-<div class="chart-container"><canvas id="fbCpaChart"></canvas></div>
-</div>
-</div>
-<div class="card">
-<h3>🔗 各廣告連結點擊與 CTR</h3>
-<div class="chart-container"><canvas id="fbCtrChart"></canvas></div>
-</div>
-<div class="card">
-<h3>📋 FB 廣告完整成效表</h3>
-<div class="table-wrap">
-<table id="fbTable">
-<thead><tr><th>廣告名稱</th><th>狀態</th><th>觸及</th><th>曝光</th><th>花費</th><th>成果</th><th>CPA</th><th>點擊</th><th>CPC</th><th>CTR%</th><th>CPM</th></tr></thead>
+<div class="chart-box"><h3>📈 廣告 ROAS 比較 (有購買數據)</h3><canvas id="roasChart"></canvas></div>
+<div class="chart-box"><h3>💰 廣告花費 vs 曝光次數</h3><canvas id="fbSpendChart"></canvas></div>
+<div class="chart-box"><h3>📋 完整廣告成效表</h3>
+<div class="scroll-table">
+<table class="data-table" id="fbTable">
+<thead><tr><th>廣告名稱</th><th>狀態</th><th>花費(TWD)</th><th>曝光次數</th><th>觸及人數</th><th>購買次數</th><th>ROAS</th><th>CPM</th></tr></thead>
 <tbody></tbody>
 </table>
 </div>
 </div>
 </div>
 
-<!-- Tab 6: 銷售排行榜 -->
 <div class="tab-content" id="tab6">
-<div class="card">
-<h3>🏆 Top 10 商品銷售金額排行</h3>
-<div class="chart-container"><canvas id="topProductChart"></canvas></div>
-</div>
-<div class="card">
-<h3>📋 完整商品銷售排行表</h3>
-<div class="table-wrap">
-<table id="productTable">
-<thead><tr><th>#</th><th>商品名稱</th><th>售出數量</th><th>訂單數</th><th>訂單金額</th><th>售價金額</th><th>折扣率</th></tr></thead>
+<div class="chart-box"><h3>🏆 Top 10 商品銷售金額</h3><canvas id="topProductChart"></canvas></div>
+<div class="chart-box"><h3>📋 完整商品銷售排行</h3>
+<div class="scroll-table">
+<table class="data-table" id="productTable">
+<thead><tr><th>#</th><th>商品名稱</th><th>售出數量</th><th>訂單數</th><th>訂單金額</th></tr></thead>
 <tbody></tbody>
 </table>
 </div>
 </div>
 </div>
 
-<!-- Tab 7: 五大建議 -->
 <div class="tab-content" id="tab7">
-<div class="suggest-grid">
-<div class="suggest-card">
-<div class="num">1</div>
-<h4>🔴 降低「其他」取消原因佔比，優化取消流程</h4>
-<p>「其他」取消原因佔 34.3%（34筆），金額高達 $55,773（佔取消金額 43.5%），代表消費者取消時缺乏明確分類。建議在取消流程新增更細緻的原因選項（如價格因素、找到更好方案、重複下單等），並針對高金額取消單主動聯繫了解原因，以精準對策降低取消率。</p>
-<div class="kpi-ref">📌 KPI 依據：取消「其他」34筆 / $55,773；整體取消率 7.1%（99/1,305+99）</div>
-</div>
-<div class="suggest-card">
-<div class="num">2</div>
-<h4>🚀 加碼紅麴納豆膠囊投放，把握高轉換機會</h4>
-<p>紅麴納豆膠囊（6盒裝）以 $660,872 訂單金額穩居銷售冠軍，佔總營收 38.8%。3/12 上線廣告後當日淨銷售額暴增至 $451,254（前一日僅 $71,082，成長 534%）。紅麴轉換廣告（g版）CPA 僅 $334，建議持續加大預算並測試更多素材變體，同步優化 Landing Page 轉換率。</p>
-<div class="kpi-ref">📌 KPI 依據：紅麴6盒裝銷售額 $660,872（#1）；3/12 淨銷售 $451,254；紅麴廣告g CPA $334</div>
-</div>
-<div class="suggest-card">
-<div class="num">3</div>
-<h4>📱 強化 iOS App 體驗與推播策略</h4>
-<p>iOS App 貢獻淨銷售額 $830,378（佔 52.7%），訂單數 673 筆（佔 51.6%），是最大營收來源。但取消率 5.5%（37/673）仍有優化空間。建議針對 iOS 用戶強化推播提醒（付款截止、取貨通知），並優化 App 內結帳流程，減少「消費者未取貨」和「逾期未付款」的情形。Android App 取消率 11.3%（34/302）更需重點改善。</p>
-<div class="kpi-ref">📌 KPI 依據：iOS 淨銷售 $830,378（52.7%）；Android 取消率 11.3%（34/302）</div>
-</div>
-<div class="suggest-card">
-<div class="num">4</div>
-<h4>🎯 喚醒 Lost 會員，阻止流失擴大</h4>
-<p>2月 NAPL 數據顯示 Lost 會員達 4,695 人（佔總會員 50.2%），較1月增加 523 人（+12.5%）。Lost 會員過往12個月貢獻 $7,269,985，人均價值 $1,549。建議針對 Lost 會員推出「回歸專屬」優惠券（如滿額折扣、免運費），搭配 EDM + SMS 多渠道觸及，設定目標回購率 5%，預估可回收 $363,499 營收。</p>
-<div class="kpi-ref">📌 KPI 依據：Lost 4,695 人（+12.5% MoM）；Lost 人均年貢獻 $1,549；Active 從 1,849→1,340（-27.5%）</div>
-</div>
-<div class="suggest-card">
-<div class="num">5</div>
-<h4>💄 優化氣墊粉餅廣告 ROAS，擴大明星商品效益</h4>
-<p>氣墊粉餅組合廣告 CPA 僅 $105.57（全廣告最低），95 次轉換花費 $10,029，是成本效益最高的廣告。氣墊粉餅（x2 組合）售出 149 件、金額 $131,725（#2 商品）。建議將氣墊粉餅作為「流量入口品」，搭配交叉銷售（如防曬霜+粉餅組合已有 52 件成績），設計更多捆綁方案以拉高客單價，同時增加氣墊粉餅廣告預算。</p>
-<div class="kpi-ref">📌 KPI 依據：氣墊粉餅廣告 CPA $105.57（最低）；95 轉換 / $10,029 花費；粉餅+防曬組合 52 件 $44,731</div>
-</div>
-</div>
+<h2 class="section-title">五大行銷優化建議</h2>
+<div id="adviceContainer"></div>
 </div>
 
-<div class="footer">
-KOCSKIN 克麗詩黛　行銷成效報告　2026/03/01 — 2026/03/20　行銷團隊內部參考
-</div>
+<div class="footer">KOCSKIN 克麗詩黛　行銷成效報告　2026/03/01 — 2026/03/23　行銷團隊內部參考</div>
 
 <script>
-// ===== DATA =====
-const dailyData = [
-{date:'3/1',cart:24,orders:41,items:45,gross:45368,discount:9315,orderAmt:36053,cancel:5,cancelAmt:4101,net:31952,margin:0.998623},
-{date:'3/2',cart:14,orders:25,items:28,gross:23757,discount:1781,orderAmt:21976,cancel:0,cancelAmt:0,net:21976,margin:0.998817},
-{date:'3/3',cart:16,orders:28,items:29,gross:28000,discount:4723,orderAmt:23277,cancel:2,cancelAmt:3540,net:19737,margin:0.998531},
-{date:'3/4',cart:30,orders:43,items:49,gross:49826,discount:7316,orderAmt:42510,cancel:2,cancelAmt:2380,net:39130,margin:0.998824},
-{date:'3/5',cart:51,orders:89,items:115,gross:106485,discount:22227,orderAmt:84258,cancel:4,cancelAmt:4206,net:80052,margin:0.998613},
-{date:'3/6',cart:32,orders:57,items:60,gross:66116,discount:9621,orderAmt:56495,cancel:10,cancelAmt:6810,net:49685,margin:0.998792},
-{date:'3/7',cart:35,orders:57,items:62,gross:67396,discount:8569,orderAmt:58827,cancel:6,cancelAmt:7869,net:50958,margin:0.998823},
-{date:'3/8',cart:40,orders:65,items:70,gross:72609,discount:9671,orderAmt:62938,cancel:6,cancelAmt:5906,net:57032,margin:0.998843},
-{date:'3/9',cart:17,orders:23,items:24,gross:27518,discount:3479,orderAmt:24039,cancel:3,cancelAmt:3452,net:20587,margin:0.998834},
-{date:'3/10',cart:48,orders:70,items:71,gross:74652,discount:10476,orderAmt:64176,cancel:6,cancelAmt:5708,net:58468,margin:0.998786},
-{date:'3/11',cart:48,orders:86,items:90,gross:88823,discount:14271,orderAmt:74552,cancel:3,cancelAmt:3470,net:71082,margin:0.998776},
-{date:'3/12',cart:162,orders:219,items:233,gross:601902,discount:121083,orderAmt:480819,cancel:15,cancelAmt:29565,net:451254,margin:0.999508},
-{date:'3/13',cart:67,orders:88,items:92,gross:178135,discount:34181,orderAmt:143954,cancel:6,cancelAmt:9779,net:134175,margin:0.999322},
-{date:'3/14',cart:56,orders:80,items:87,gross:135605,discount:21256,orderAmt:114349,cancel:5,cancelAmt:11531,net:102818,margin:0.999164},
-{date:'3/15',cart:60,orders:88,items:94,gross:134705,discount:22699,orderAmt:112006,cancel:5,cancelAmt:6025,net:105981,margin:0.999122},
-{date:'3/16',cart:42,orders:71,items:72,gross:91552,discount:11206,orderAmt:80346,cancel:10,cancelAmt:9647,net:70699,margin:0.998982},
-{date:'3/17',cart:36,orders:52,items:53,gross:76146,discount:8890,orderAmt:67256,cancel:5,cancelAmt:7582,net:59674,margin:0.999112},
-{date:'3/18',cart:30,orders:40,items:43,gross:61968,discount:6575,orderAmt:55393,cancel:1,cancelAmt:1935,net:53458,margin:0.999196},
-{date:'3/19',cart:54,orders:83,items:89,gross:110106,discount:8974,orderAmt:101132,cancel:5,cancelAmt:4768,net:96364,margin:0.999108}
-];
-
-const sourceData = [
-{name:'iOS App',cart:415,orders:673,items:718,amt:876114,cancel:37,cancelAmt:44736,net:830378},
-{name:'Android App',cart:203,orders:302,items:337,amt:437430,cancel:34,cancelAmt:48567,net:388863},
-{name:'官網(Mobile)',cart:228,orders:307,items:327,amt:359461,cancel:25,cancelAmt:30340,net:329121},
-{name:'官網(PC)',cart:16,orders:23,items:24,amt:31351,cancel:3,cancelAmt:4631,net:26720}
-];
-
-const shipData = [
-{name:'全家取貨付款',cart:329,orders:496,items:533,amt:573523},
-{name:'7-11取貨付款',cart:242,orders:346,items:368,amt:413886},
-{name:'宅配',cart:138,orders:232,items:258,amt:364622},
-{name:'全家取貨',cart:55,orders:88,items:94,amt:125651},
-{name:'7-11取貨',cart:36,orders:57,items:59,amt:96239},
-{name:'貨到付款',cart:29,orders:37,items:38,amt:59950},
-{name:'萊爾富取貨付款',cart:27,orders:39,items:42,amt:50328},
-{name:'國家/地區配送',cart:3,orders:5,items:9,amt:12039},
-{name:'萊爾富取貨',cart:3,orders:5,items:5,amt:8118}
-];
-
-const cancelData = [
-{reason:'其他',count:34,amount:55773},
-{reason:'消費者未取貨',count:28,amount:29981},
-{reason:'消費者逾期未付款',count:21,amount:30971},
-{reason:'不想等太久',count:13,amount:8651},
-{reason:'衝動購買',count:3,amount:2898}
-];
-
-const fbData = [
-{name:'APP防曬b',status:'not_delivering',reach:44183,imp:113751,results:60,cpa:338.9,spend:20334,clicks:1698,cpc:11.98,ctr:1.49,cpm:178.76},
-{name:'紅麴_轉換g',status:'active',reach:37679,imp:97320,results:52,cpa:334,spend:17368,clicks:1207,cpc:14.39,ctr:1.24,cpm:178.46},
-{name:'胺基酸潔顏乳a',status:'not_delivering',reach:40945,imp:81201,results:72,cpa:189.93,spend:13675,clicks:1120,cpc:12.21,ctr:1.38,cpm:168.41},
-{name:'菁萃b',status:'inactive',reach:23140,imp:55895,results:27,cpa:459.81,spend:12415,clicks:781,cpc:15.90,ctr:1.40,cpm:222.11},
-{name:'氣墊粉餅d',status:'not_delivering',reach:48249,imp:84544,results:95,cpa:105.57,spend:10029,clicks:1775,cpc:5.65,ctr:2.10,cpm:118.62},
-{name:'紅麴_轉換(原)',status:'inactive',reach:20646,imp:28829,results:6,cpa:1010.83,spend:6065,clicks:361,cpc:16.80,ctr:1.25,cpm:210.38},
-{name:'女神節活動b',status:'inactive',reach:6161,imp:25087,results:15,cpa:378.67,spend:5680,clicks:213,cpc:26.67,ctr:0.85,cpm:226.41},
-{name:'品牌認知_03',status:'not_delivering',reach:245403,imp:448360,results:245403,cpa:0.02,spend:5384,clicks:453,cpc:11.89,ctr:0.10,cpm:12.01},
-{name:'女神節活動a',status:'inactive',reach:9123,imp:21374,results:10,cpa:531.80,spend:5318,clicks:375,cpc:14.18,ctr:1.75,cpm:248.81},
-{name:'胺基酸潔顏乳(原)',status:'not_delivering',reach:10854,imp:26307,results:31,cpa:152.03,spend:4713,clicks:321,cpc:14.68,ctr:1.22,cpm:179.15},
-{name:'紅麴_轉換b',status:'active',reach:14790,imp:27499,results:24,cpa:183.54,spend:4405,clicks:279,cpc:15.79,ctr:1.01,cpm:160.19},
-{name:'紅麴宣傳_01',status:'not_delivering',reach:202362,imp:331504,results:202362,cpa:0.02,spend:4323,clicks:7,cpc:617.57,ctr:0.002,cpm:13.04},
-{name:'紅麴_轉換f',status:'active',reach:10929,imp:18120,results:12,cpa:323.67,spend:3884,clicks:279,cpc:13.92,ctr:1.54,cpm:214.35}
-];
-
-const productData = [
-{name:'紅麴納豆膠囊 x6 (360日)',qty:211,orders:201,amt:660872,retail:839780},
-{name:'氣墊粉餅自然色 x2',qty:149,orders:131,amt:131725,retail:149000},
-{name:'3D亮白隔離防曬霜 x3',qty:120,orders:116,amt:141685,retail:165600},
-{name:'3D全能亮白菁萃 x3',qty:111,orders:102,amt:163098,retail:186480},
-{name:'胺基酸潔顏乳 x3',qty:92,orders:82,amt:108956,retail:126960},
-{name:'氣墊粉餅(新朋友限定)',qty:86,orders:86,amt:37806,retail:42140},
-{name:'胺基酸潔顏乳(新朋友)',qty:58,orders:58,amt:24489,retail:28420},
-{name:'粉餅+防曬組合',qty:52,orders:50,amt:44731,retail:52000},
-{name:'復活草保濕晶露 x2',qty:50,orders:48,amt:55566,retail:64000},
-{name:'3D亮白防曬霜(新朋友)',qty:44,orders:44,amt:19830,retail:21560},
-{name:'亮白保濕化妝水(加購)',qty:36,orders:35,amt:20584,retail:21564},
-{name:'亮白保濕化妝水(新朋友)',qty:33,orders:33,amt:17365,retail:20460},
-{name:'3D防曬霜(加購)',qty:31,orders:29,amt:14319,retail:15190},
-{name:'極光美白乳霜',qty:29,orders:16,amt:20650,retail:25520},
-{name:'復活草保濕晶露(新朋友)',qty:24,orders:24,amt:13784,retail:16320},
-{name:'潔顏乳+化妝水組合',qty:23,orders:23,amt:22326,retail:27140},
-{name:'私密草本潔淨露(加購)',qty:22,orders:19,amt:10329,retail:10780},
-{name:'紅麴納豆膠囊(60日)',qty:21,orders:19,amt:23190,retail:25200},
-{name:'植物纖維洗臉巾(加購)',qty:20,orders:19,amt:4739,retail:4980},
-{name:'H7抗老緊緻精華',qty:19,orders:13,amt:13006,retail:16720},
-{name:'B3淨膚調理精華 x2(新朋友)',qty:17,orders:17,amt:11458,retail:13600},
-{name:'B3淨膚調理精華(加購)',qty:17,orders:15,amt:6361,retail:6783},
-{name:'私密草本潔淨露(新朋友)',qty:14,orders:14,amt:5920,retail:6860},
-{name:'極光美白乳霜 x2(春日)',qty:14,orders:13,amt:22069,retail:23520},
-{name:'紅麴納豆膠囊 x3 (180日)',qty:10,orders:10,amt:26350,retail:29800},
-{name:'B3淨膚調理精華 x3',qty:10,orders:9,amt:11041,retail:12800}
-];
-
-// NAPL data
-const naplFeb = {Active:1340,Potential:1827,New:1495,Lost:4695};
-const naplJan = {Active:1849,Potential:1335,New:2104,Lost:4172};
-
-// ===== TAB SWITCH =====
-function switchTab(i){
-document.querySelectorAll('.tab-content').forEach((t,idx)=>{t.classList.toggle('active',idx===i)});
-document.querySelectorAll('.tab-btn').forEach((b,idx)=>{b.classList.toggle('active',idx===i)});
+// ===== TAB SWITCHING =====
+function switchTab(idx){
+document.querySelectorAll('.tab-content').forEach((el,i)=>{el.classList.toggle('active',i===idx)});
+document.querySelectorAll('.tab-btn').forEach((el,i)=>{el.classList.toggle('active',i===idx)});
 }
 
-// ===== HELPERS =====
-const fmt = n => n.toLocaleString('en-US');
-const fmtMoney = n => '$'+fmt(n);
-const colors = ['#C0392B','#E74C3C','#F39C12','#27AE60','#2980B9','#8E44AD','#1ABC9C','#D35400','#34495E','#16A085','#C0392B','#E67E22','#2C3E50'];
-const alphaColors = colors.map(c=>c+'88');
+// ===== DATA =====
+const dailyData=[
+{date:'03/02',orders:41,items:45,gross:45368,discount:9315,orderAmt:36053,cancelAmt:4101,returnAmt:0,net:31952,cost:44,margin:0.998622934401602},
+{date:'03/03',orders:25,items:28,gross:23757,discount:1781,orderAmt:21976,cancelAmt:0,returnAmt:0,net:21976,cost:26,margin:0.998816891153986},
+{date:'03/04',orders:28,items:29,gross:28000,discount:4723,orderAmt:23277,cancelAmt:3540,returnAmt:0,net:19737,cost:29,margin:0.998530678421239},
+{date:'03/05',orders:43,items:49,gross:49826,discount:7316,orderAmt:42510,cancelAmt:2380,returnAmt:1000,net:39130,cost:46,margin:0.998824431382571},
+{date:'03/06',orders:89,items:115,gross:106485,discount:22227,orderAmt:84258,cancelAmt:4206,returnAmt:0,net:80052,cost:111,margin:0.998613401289162},
+{date:'03/07',orders:57,items:60,gross:66116,discount:9621,orderAmt:56495,cancelAmt:6810,returnAmt:0,net:49685,cost:60,margin:0.998792392070041},
+{date:'03/08',orders:57,items:62,gross:67396,discount:8569,orderAmt:58827,cancelAmt:7869,returnAmt:0,net:50958,cost:60,margin:0.998822559755092},
+{date:'03/09',orders:65,items:70,gross:72609,discount:9671,orderAmt:62938,cancelAmt:5906,returnAmt:0,net:57032,cost:66,margin:0.998842754944593},
+{date:'03/10',orders:23,items:24,gross:27518,discount:3479,orderAmt:24039,cancelAmt:3452,returnAmt:0,net:20587,cost:24,margin:0.998834215767232},
+{date:'03/11',orders:70,items:71,gross:74652,discount:10476,orderAmt:64176,cancelAmt:5708,returnAmt:0,net:58468,cost:71,margin:0.998785660532257},
+{date:'03/12',orders:86,items:90,gross:88823,discount:14271,orderAmt:74552,cancelAmt:3470,returnAmt:0,net:71082,cost:87,margin:0.998776061450156},
+{date:'03/13',orders:219,items:233,gross:601902,discount:121083,orderAmt:480819,cancelAmt:29565,returnAmt:0,net:451254,cost:222,margin:0.999508037601883},
+{date:'03/14',orders:88,items:92,gross:178135,discount:34181,orderAmt:143954,cancelAmt:9779,returnAmt:0,net:134175,cost:91,margin:0.999321781255823},
+{date:'03/15',orders:80,items:87,gross:135605,discount:21256,orderAmt:114349,cancelAmt:11531,returnAmt:0,net:102818,cost:86,margin:0.999163570581027},
+{date:'03/16',orders:88,items:94,gross:134705,discount:22699,orderAmt:112006,cancelAmt:6025,returnAmt:0,net:105981,cost:93,margin:0.999122484218869},
+{date:'03/17',orders:71,items:72,gross:91552,discount:11206,orderAmt:80346,cancelAmt:9647,returnAmt:0,net:70699,cost:72,margin:0.998981598042405},
+{date:'03/18',orders:52,items:53,gross:76146,discount:8890,orderAmt:67256,cancelAmt:7582,returnAmt:0,net:59674,cost:53,margin:0.999111841002782},
+{date:'03/19',orders:40,items:43,gross:61968,discount:6575,orderAmt:55393,cancelAmt:1935,returnAmt:0,net:53458,cost:43,margin:0.999195630214374},
+{date:'03/20',orders:83,items:89,gross:110106,discount:8974,orderAmt:101132,cancelAmt:4768,returnAmt:0,net:96364,cost:86,margin:0.999107550537545},
+{date:'03/21',orders:71,items:74,gross:112616,discount:10231,orderAmt:102385,cancelAmt:7408,returnAmt:0,net:94977,cost:73,margin:0.999231392863535},
+{date:'03/22',orders:44,items:45,gross:60929,discount:7369,orderAmt:53560,cancelAmt:2381,returnAmt:0,net:51179,cost:45,margin:0.999120733113191},
+{date:'03/23',orders:51,items:54,gross:80208,discount:9475,orderAmt:70733,cancelAmt:4920,returnAmt:0,net:65813,cost:53,margin:0.999194687979579}
+];
+
+const totalNet=dailyData.reduce((s,d)=>s+d.net,0);
+const totalOrders=dailyData.reduce((s,d)=>s+d.orders,0);
+const totalDiscount=dailyData.reduce((s,d)=>s+d.discount,0);
+const totalGross=dailyData.reduce((s,d)=>s+d.gross,0);
+const totalCancelAmt=dailyData.reduce((s,d)=>s+d.cancelAmt,0);
+const totalCancelOrders=108;
+const cancelRate=(totalCancelOrders/totalOrders*100).toFixed(1);
+const aov=Math.round(totalNet/(totalOrders-totalCancelOrders));
+const avgMargin=(dailyData.reduce((s,d)=>s+d.margin*d.net,0)/totalNet*100).toFixed(2);
+
+const channelData=[
+{name:'Android App',carts:227,orders:333,amt:479349,cancel:36,cancelAmt:52847,returnAmt:0,net:426502},
+{name:'iOS App',carts:463,orders:749,amt:980826,cancel:39,cancelAmt:51294,returnAmt:1000,net:928532},
+{name:'官網(Mobile)',carts:272,orders:364,amt:437372,cancel:30,cancelAmt:34211,returnAmt:0,net:403161},
+{name:'官網(PC)',carts:18,orders:25,amt:33487,cancel:3,cancelAmt:4631,returnAmt:0,net:28856}
+];
+
+const shipData=[
+{name:'宅配',carts:152,orders:250,items:276,amt:395893},
+{name:'7-11取貨付款',carts:281,orders:395,items:417,amt:488839},
+{name:'全家取貨付款',carts:374,orders:557,items:599,amt:648000},
+{name:'萊爾富取貨付款',carts:32,orders:47,items:50,amt:58320},
+{name:'7-11取貨',carts:37,orders:58,items:60,amt:97816},
+{name:'全家取貨',carts:66,orders:112,items:120,amt:155224},
+{name:'萊爾富取貨',carts:3,orders:5,items:5,amt:8118},
+{name:'貨到付款',carts:32,orders:42,items:43,amt:66785},
+{name:'國家/地區配送',carts:3,orders:5,items:9,amt:12039}
+];
+
+const cancelData=[
+{reason:'不想等太久',count:13,amt:8651},
+{reason:'其他',count:37,amt:60543},
+{reason:'消費者未取貨',count:31,amt:32362},
+{reason:'消費者逾期未付款',count:23,amt:35099},
+{reason:'衝動購買',count:4,amt:6328}
+];
+
+const productData=[
+{name:'開環型紅麴納豆膠囊 x6 (360日份)',qty:231,orders:221,amt:727891},
+{name:'晶燦白皙氣墊粉餅自然色 x2',qty:157,orders:139,amt:139113},
+{name:'3D極緻亮白隔離防曬霜 x3',qty:130,orders:126,amt:154255},
+{name:'3D全能亮白菁萃30ml x3',qty:120,orders:111,amt:177380},
+{name:'氣墊粉餅(新朋友限定)',qty:97,orders:97,amt:42892},
+{name:'3D胺基酸潔顏乳 x3',qty:95,orders:85,amt:112484},
+{name:'胺基酸潔顏乳(新朋友限定)',qty:61,orders:61,amt:25895},
+{name:'氣墊粉餅+防曬霜組合',qty:54,orders:52,amt:46713},
+{name:'復活草保濕晶露 x2',qty:52,orders:50,amt:58017},
+{name:'極緻亮白隔離防曬霜(新朋友限定)',qty:47,orders:47,amt:21185},
+{name:'極光美白乳霜 x2',qty:41,orders:39,amt:61913},
+{name:'超淨化毛孔洗面乳 x3',qty:40,orders:33,amt:37667},
+{name:'亮白保濕化妝水(加價購)',qty:40,orders:39,amt:22894},
+{name:'亮白保濕化妝水(新朋友限定)',qty:37,orders:37,amt:19593},
+{name:'防曬霜(加價購)',qty:32,orders:30,amt:14809},
+{name:'紅麴納豆膠囊 60日份',qty:32,orders:29,amt:35002},
+{name:'極光美白乳霜(會員日限定)',qty:29,orders:16,amt:20650},
+{name:'潔顏乳+化妝水組合',qty:25,orders:25,amt:24616},
+{name:'復活草保濕晶露(新朋友限定)',qty:25,orders:25,amt:14383},
+{name:'私密草本潔淨露(加價購)',qty:23,orders:20,amt:10782},
+{name:'植物纖維洗臉巾(加價購)',qty:21,orders:20,amt:4988},
+{name:'B3淨膚調理精華(加價購)',qty:19,orders:17,amt:7148},
+{name:'H7抗老緊緻精華(會員日限定)',qty:19,orders:13,amt:13006},
+{name:'B3淨膚調理精華 x2(新朋友限定)',qty:18,orders:18,amt:12220},
+{name:'亮白保濕化妝水 x2',qty:17,orders:15,amt:18213},
+{name:'私密草本潔淨露(新朋友限定)',qty:15,orders:15,amt:6388},
+{name:'紅麴納豆膠囊 x3 (180日份)',qty:11,orders:11,amt:29330},
+{name:'B3淨膚調理精華 x3',qty:11,orders:10,amt:12293},
+{name:'3D全能亮白菁萃(成分升級版)',qty:10,orders:8,amt:8594},
+{name:'高效保濕卸妝水(加價購)',qty:9,orders:9,amt:3121}
+];
+
+const fbData=[
+{name:'新的品牌認知廣告_01',status:'not_delivering',spend:58,impressions:4275,reach:3724,purchases:1,roas:60.34,cpm:13.57},
+{name:'新的品牌認知廣告_02',status:'not_delivering',spend:68,impressions:6063,reach:5566,purchases:0,roas:0,cpm:11.22},
+{name:'新的品牌認知廣告_03',status:'not_delivering',spend:5384,impressions:448366,reach:245403,purchases:2,roas:1.43,cpm:12.01},
+{name:'毛孔洗面乳組合a',status:'active',spend:3894,impressions:26794,reach:19838,purchases:19,roas:5.04,cpm:145.33},
+{name:'毛孔洗面乳組合b',status:'inactive',spend:0,impressions:0,reach:0,purchases:0,roas:0,cpm:0},
+{name:'毛孔洗面乳組合c',status:'active',spend:3281,impressions:18079,reach:8483,purchases:9,roas:3.21,cpm:181.48},
+{name:'毛孔洗面乳組合d',status:'active',spend:80,impressions:643,reach:480,purchases:2,roas:25,cpm:124.42},
+{name:'紅麴宣傳專案_01',status:'not_delivering',spend:4323,impressions:331504,reach:202362,purchases:8,roas:4.17,cpm:13.04},
+{name:'紅麴宣傳專案_02',status:'not_delivering',spend:744,impressions:47090,reach:34618,purchases:0,roas:0,cpm:15.80},
+{name:'紅麴宣傳專案_03',status:'not_delivering',spend:4,impressions:746,reach:740,purchases:0,roas:0,cpm:5.36},
+{name:'紅麴宣傳專案_04',status:'not_delivering',spend:0,impressions:495,reach:478,purchases:0,roas:0,cpm:0},
+{name:'女神節活動',status:'inactive',spend:3288,impressions:12006,reach:5027,purchases:11,roas:9.29,cpm:273.86},
+{name:'女神節活動a',status:'inactive',spend:5318,impressions:21374,reach:9123,purchases:10,roas:4.33,cpm:248.81}
+];
+
+const totalFbSpend=fbData.reduce((s,d)=>s+d.spend,0);
+
+// NAPL data (Feb 2026)
+const naplMembers={Active:1340,Potential:1827,New:1495,Lost:4695};
+const totalMembers=1340+1827+1495+4695;
+
+// ===== RENDER KPIs =====
+const fmt=n=>n.toLocaleString('zh-TW');
+document.getElementById('k-net-sales').textContent='$'+fmt(totalNet);
+document.getElementById('k-orders').textContent=fmt(totalOrders);
+document.getElementById('k-aov').textContent='$'+fmt(aov);
+document.getElementById('k-cancel-rate').textContent=cancelRate+'%';
+document.getElementById('k-discount').textContent='$'+fmt(totalDiscount);
+document.getElementById('k-margin').textContent=avgMargin+'%';
+document.getElementById('k-members').textContent=fmt(totalMembers);
+document.getElementById('k-fb-spend').textContent='$'+fmt(totalFbSpend);
 
 // ===== CHART DEFAULTS =====
-Chart.defaults.font.family = "'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif";
-Chart.defaults.font.size = 11;
-Chart.defaults.plugins.legend.labels.boxWidth = 12;
+Chart.defaults.font.family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif";
+Chart.defaults.font.size=11;
+Chart.defaults.color='#666';
+const red='#C0392B',red2='#E74C3C',red3='#F1948A',gold='#F39C12',blue='#2980B9',green='#27AE60',purple='#8E44AD',teal='#1ABC9C';
+const palette=[red,blue,gold,green,purple,teal,red2,'#D35400','#2C3E50',red3];
 
-// ===== TAB 0: Overview =====
+// ===== TAB 0: OVERVIEW =====
 new Chart(document.getElementById('overviewChart'),{
-type:'bar',
-data:{
-labels:dailyData.map(d=>d.date),
-datasets:[{
-label:'淨銷售額',
-data:dailyData.map(d=>d.net),
-backgroundColor:'#C0392B',
-borderRadius:4
-}]
-},
-options:{
-responsive:true,
-plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtMoney(c.raw)}}},
-scales:{y:{ticks:{callback:v=>v>=1000?(v/1000)+'K':''+v}}}
-}
-});
-
-new Chart(document.getElementById('overviewOrderChart'),{
 type:'line',
-data:{
-labels:dailyData.map(d=>d.date),
-datasets:[{label:'訂單數',data:dailyData.map(d=>d.orders),borderColor:'#C0392B',backgroundColor:'#C0392B22',fill:true,tension:.3,pointRadius:3}]
-},
-options:{responsive:true,plugins:{legend:{display:false}}}
+data:{labels:dailyData.map(d=>d.date),datasets:[{label:'淨銷售額',data:dailyData.map(d=>d.net),borderColor:red,backgroundColor:'rgba(192,57,43,0.1)',fill:true,tension:.3,pointRadius:3}]},
+options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+fmt(v)}}}}
+});
+new Chart(document.getElementById('overviewOrderChart'),{
+type:'bar',
+data:{labels:dailyData.map(d=>d.date),datasets:[{label:'訂單數',data:dailyData.map(d=>d.orders),backgroundColor:'rgba(192,57,43,0.7)',borderRadius:4}]},
+options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
 });
 
-new Chart(document.getElementById('naplChart'),{
-type:'doughnut',
-data:{
-labels:['Active ('+naplFeb.Active+')','Potential ('+naplFeb.Potential+')','New ('+naplFeb.New+')','Lost ('+naplFeb.Lost+')'],
-datasets:[{data:[naplFeb.Active,naplFeb.Potential,naplFeb.New,naplFeb.Lost],backgroundColor:['#27AE60','#F39C12','#2980B9','#95A5A6']}]
-},
-options:{responsive:true,plugins:{legend:{position:'bottom'}}}
-});
-
-// ===== TAB 1: Sales Analysis =====
+// ===== TAB 1: SALES ANALYSIS =====
 new Chart(document.getElementById('salesLineChart'),{
 type:'line',
-data:{
-labels:dailyData.map(d=>d.date),
-datasets:[
-{label:'淨銷售額',data:dailyData.map(d=>d.net),borderColor:'#C0392B',backgroundColor:'#C0392B22',fill:true,tension:.3},
-{label:'訂單金額(折扣後)',data:dailyData.map(d=>d.orderAmt),borderColor:'#2980B9',backgroundColor:'#2980B922',fill:true,tension:.3}
-]
-},
-options:{responsive:true,scales:{y:{ticks:{callback:v=>v>=1000?(v/1000)+'K':''+v}}}}
+data:{labels:dailyData.map(d=>d.date),datasets:[
+{label:'淨銷售額',data:dailyData.map(d=>d.net),borderColor:red,backgroundColor:'rgba(192,57,43,0.08)',fill:true,tension:.3},
+{label:'訂單金額(折扣後)',data:dailyData.map(d=>d.orderAmt),borderColor:blue,borderDash:[5,3],tension:.3}
+]},
+options:{responsive:true,scales:{y:{ticks:{callback:v=>'$'+fmt(v)}}}}
 });
-
 new Chart(document.getElementById('discountChart'),{
-type:'line',
-data:{
-labels:dailyData.map(d=>d.date),
-datasets:[{label:'折扣率 %',data:dailyData.map(d=>+(d.discount/d.gross*100).toFixed(1)),borderColor:'#E74C3C',backgroundColor:'#E74C3C22',fill:true,tension:.3,pointRadius:3}]
-},
-options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'%'},min:0}}}
-});
-
-new Chart(document.getElementById('orderVsCartChart'),{
 type:'bar',
-data:{
-labels:dailyData.map(d=>d.date),
-datasets:[
-{label:'購物車',data:dailyData.map(d=>d.cart),backgroundColor:'#2980B9',borderRadius:3},
-{label:'訂單數',data:dailyData.map(d=>d.orders),backgroundColor:'#C0392B',borderRadius:3}
-]
-},
-options:{responsive:true}
+data:{labels:dailyData.map(d=>d.date),datasets:[{label:'折扣率%',data:dailyData.map(d=>+(d.discount/d.gross*100).toFixed(1)),backgroundColor:'rgba(243,156,18,0.7)',borderRadius:3}]},
+options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'%'}}}}
 });
-
-// Daily sales table
-(function(){
-const t=document.getElementById('dailySalesTable');
-let h='<thead><tr><th>日期</th><th>購物車</th><th>訂單數</th><th>商品數</th><th>商品金額</th><th>折扣</th><th>折扣率</th><th>訂單金額</th><th>取消</th><th>淨銷售額</th></tr></thead><tbody>';
+new Chart(document.getElementById('orderBarChart'),{
+type:'bar',
+data:{labels:dailyData.map(d=>d.date),datasets:[{label:'訂單數',data:dailyData.map(d=>d.orders),backgroundColor:'rgba(41,128,185,0.7)',borderRadius:3}]},
+options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+});
+// Daily table
+const dtb=document.querySelector('#dailyTable tbody');
 dailyData.forEach(d=>{
-const dr=(d.discount/d.gross*100).toFixed(1);
-h+=`<tr><td>${d.date}</td><td>${d.cart}</td><td>${d.orders}</td><td>${d.items}</td><td>${fmtMoney(d.gross)}</td><td>${fmtMoney(d.discount)}</td><td>${dr}%</td><td>${fmtMoney(d.orderAmt)}</td><td>${d.cancel}</td><td><strong>${fmtMoney(d.net)}</strong></td></tr>`;
+dtb.innerHTML+=`<tr><td>${d.date}</td><td>${d.orders}</td><td>$${fmt(d.gross)}</td><td>$${fmt(d.discount)}</td><td>$${fmt(d.orderAmt)}</td><td>$${fmt(d.cancelAmt)}</td><td>$${fmt(d.net)}</td></tr>`;
 });
-const totals=dailyData.reduce((a,d)=>({cart:a.cart+d.cart,orders:a.orders+d.orders,items:a.items+d.items,gross:a.gross+d.gross,discount:a.discount+d.discount,orderAmt:a.orderAmt+d.orderAmt,cancel:a.cancel+d.cancel,net:a.net+d.net}),{cart:0,orders:0,items:0,gross:0,discount:0,orderAmt:0,cancel:0,net:0});
-h+=`<tr style="font-weight:700;background:#fdf2f0"><td>合計</td><td>${totals.cart}</td><td>${totals.orders}</td><td>${totals.items}</td><td>${fmtMoney(totals.gross)}</td><td>${fmtMoney(totals.discount)}</td><td>${(totals.discount/totals.gross*100).toFixed(1)}%</td><td>${fmtMoney(totals.orderAmt)}</td><td>${totals.cancel}</td><td><strong>${fmtMoney(totals.net)}</strong></td></tr>`;
-h+='</tbody>';
-t.innerHTML=h;
-})();
 
-// ===== TAB 2: Order Source =====
-new Chart(document.getElementById('sourceOrderPie'),{
+// ===== TAB 2: CHANNEL =====
+new Chart(document.getElementById('channelPieChart'),{
 type:'doughnut',
-data:{
-labels:sourceData.map(s=>s.name),
-datasets:[{data:sourceData.map(s=>s.orders),backgroundColor:['#C0392B','#E74C3C','#F39C12','#2980B9']}]
-},
+data:{labels:channelData.map(d=>d.name),datasets:[{data:channelData.map(d=>d.orders),backgroundColor:[red,blue,gold,green]}]},
 options:{responsive:true,plugins:{legend:{position:'bottom'}}}
 });
-
-new Chart(document.getElementById('sourceRevPie'),{
-type:'doughnut',
-data:{
-labels:sourceData.map(s=>s.name),
-datasets:[{data:sourceData.map(s=>s.net),backgroundColor:['#C0392B','#E74C3C','#F39C12','#2980B9']}]
-},
-options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.label+': '+fmtMoney(c.raw)}}}}
-});
-
-new Chart(document.getElementById('sourceCancelBar'),{
+new Chart(document.getElementById('channelBarChart'),{
 type:'bar',
-data:{
-labels:sourceData.map(s=>s.name),
-datasets:[
-{label:'訂單數',data:sourceData.map(s=>s.orders),backgroundColor:'#2980B9',borderRadius:4},
-{label:'取消數',data:sourceData.map(s=>s.cancel),backgroundColor:'#E74C3C',borderRadius:4}
-]
-},
-options:{responsive:true}
+data:{labels:channelData.map(d=>d.name),datasets:[{label:'淨銷售額',data:channelData.map(d=>d.net),backgroundColor:[red,blue,gold,green],borderRadius:4}]},
+options:{responsive:true,indexAxis:'horizontal',plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+fmt(v)}}}}
+});
+const ctb=document.querySelector('#channelTable tbody');
+channelData.forEach(d=>{
+ctb.innerHTML+=`<tr><td>${d.name}</td><td>${d.carts}</td><td>${d.orders}</td><td>$${fmt(d.amt)}</td><td>${d.cancel}</td><td>$${fmt(d.net)}</td></tr>`;
 });
 
-// ===== TAB 3: Shipping =====
-new Chart(document.getElementById('shipBar'),{
+// ===== TAB 3: SHIPPING =====
+new Chart(document.getElementById('shipBarChart'),{
 type:'bar',
-data:{
-labels:shipData.map(s=>s.name),
-datasets:[{label:'訂單金額',data:shipData.map(s=>s.amt),backgroundColor:colors.slice(0,9),borderRadius:4}]
-},
-options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtMoney(c.raw)}}}}
+data:{labels:shipData.map(d=>d.name),datasets:[{label:'訂單金額',data:shipData.map(d=>d.amt),backgroundColor:palette,borderRadius:4}]},
+options:{responsive:true,indexAxis:'horizontal',plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+fmt(v)}}}}
 });
-
-new Chart(document.getElementById('shipPie'),{
+new Chart(document.getElementById('shipPieChart'),{
 type:'doughnut',
-data:{
-labels:shipData.map(s=>s.name),
-datasets:[{data:shipData.map(s=>s.orders),backgroundColor:colors.slice(0,9)}]
-},
+data:{labels:shipData.map(d=>d.name),datasets:[{data:shipData.map(d=>d.orders),backgroundColor:palette}]},
 options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}}}
 });
+const stb=document.querySelector('#shipTable tbody');
+shipData.forEach(d=>{
+stb.innerHTML+=`<tr><td>${d.name}</td><td>${d.carts}</td><td>${d.orders}</td><td>${d.items}</td><td>$${fmt(d.amt)}</td></tr>`;
+});
 
-// ===== TAB 4: Cancellation =====
-new Chart(document.getElementById('cancelPie'),{
+// ===== TAB 4: CANCEL =====
+new Chart(document.getElementById('cancelPieChart'),{
 type:'doughnut',
-data:{
-labels:cancelData.map(c=>c.reason),
-datasets:[{data:cancelData.map(c=>c.count),backgroundColor:['#C0392B','#E74C3C','#F39C12','#2980B9','#8E44AD']}]
-},
+data:{labels:cancelData.map(d=>d.reason),datasets:[{data:cancelData.map(d=>d.count),backgroundColor:[red,blue,gold,green,purple]}]},
 options:{responsive:true,plugins:{legend:{position:'bottom'}}}
 });
-
-new Chart(document.getElementById('cancelBar'),{
+new Chart(document.getElementById('cancelBarChart'),{
 type:'bar',
-data:{
-labels:cancelData.map(c=>c.reason),
-datasets:[{label:'取消金額',data:cancelData.map(c=>c.amount),backgroundColor:['#C0392B','#E74C3C','#F39C12','#2980B9','#8E44AD'],borderRadius:4}]
-},
-options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtMoney(c.raw)}}}}
+data:{labels:cancelData.map(d=>d.reason),datasets:[{label:'取消金額',data:cancelData.map(d=>d.amt),backgroundColor:[red,blue,gold,green,purple],borderRadius:4}]},
+options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'$'+fmt(v)}}}}
+});
+const cctb=document.querySelector('#cancelTable tbody');
+const totalCancelCount=cancelData.reduce((s,d)=>s+d.count,0);
+cancelData.forEach(d=>{
+cctb.innerHTML+=`<tr><td>${d.reason}</td><td>${d.count}</td><td>$${fmt(d.amt)}</td><td>${(d.count/totalCancelCount*100).toFixed(1)}%</td></tr>`;
 });
 
-// ===== TAB 5: FB Ads =====
-// Filter out brand awareness for conversion charts
-const fbConv = fbData.filter(f=>f.results<10000);
-
+// ===== TAB 5: FB ADS =====
+const fbWithRoas=fbData.filter(d=>d.roas>0);
+new Chart(document.getElementById('roasChart'),{
+type:'bar',
+data:{labels:fbWithRoas.map(d=>d.name),datasets:[{label:'ROAS',data:fbWithRoas.map(d=>d.roas),backgroundColor:fbWithRoas.map(d=>d.roas>=5?green:d.roas>=3?gold:red),borderRadius:4}]},
+options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}
+});
+const fbWithSpend=fbData.filter(d=>d.spend>0);
 new Chart(document.getElementById('fbSpendChart'),{
 type:'bar',
-data:{
-labels:fbConv.map(f=>f.name),
-datasets:[
-{label:'花費',data:fbConv.map(f=>f.spend),backgroundColor:'#C0392B',borderRadius:3},
-{label:'轉換數 x100',data:fbConv.map(f=>f.results*100),backgroundColor:'#2980B9',borderRadius:3}
-]
-},
-options:{responsive:true,indexAxis:'y',plugins:{tooltip:{callbacks:{label:c=>{
-if(c.datasetIndex===1)return '轉換: '+Math.round(c.raw/100);
-return '花費: '+fmtMoney(c.raw);
-}}}}}
+data:{labels:fbWithSpend.map(d=>d.name),datasets:[
+{label:'花費(TWD)',data:fbWithSpend.map(d=>d.spend),backgroundColor:'rgba(192,57,43,0.7)',borderRadius:3},
+{label:'曝光次數(÷100)',data:fbWithSpend.map(d=>Math.round(d.impressions/100)),backgroundColor:'rgba(41,128,185,0.5)',borderRadius:3}
+]},
+options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true}}}
+});
+const ftb=document.querySelector('#fbTable tbody');
+fbData.forEach(d=>{
+const st=d.status==='active'?'🟢 投放中':d.status==='inactive'?'🔴 停用':'⚪ 已結束';
+ftb.innerHTML+=`<tr><td>${d.name}</td><td>${st}</td><td>$${fmt(d.spend)}</td><td>${fmt(d.impressions)}</td><td>${fmt(d.reach)}</td><td>${d.purchases}</td><td>${d.roas||'-'}</td><td>${d.cpm?d.cpm.toFixed(1):'-'}</td></tr>`;
 });
 
-new Chart(document.getElementById('fbCpaChart'),{
-type:'bar',
-data:{
-labels:fbConv.map(f=>f.name),
-datasets:[{label:'CPA (每次成果成本)',data:fbConv.map(f=>f.cpa),backgroundColor:fbConv.map(f=>f.cpa<200?'#27AE60':f.cpa<400?'#F39C12':'#E74C3C'),borderRadius:4}]
-},
-options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtMoney(Math.round(c.raw))}}}}
-});
-
-new Chart(document.getElementById('fbCtrChart'),{
-type:'bar',
-data:{
-labels:fbData.map(f=>f.name),
-datasets:[
-{label:'點擊數',data:fbData.map(f=>f.clicks),backgroundColor:'#2980B9',borderRadius:3},
-{label:'CTR% x1000',data:fbData.map(f=>Math.round(f.ctr*1000)),backgroundColor:'#F39C12',borderRadius:3}
-]
-},
-options:{responsive:true,indexAxis:'y',plugins:{tooltip:{callbacks:{label:c=>{
-if(c.datasetIndex===1)return 'CTR: '+(c.raw/1000).toFixed(2)+'%';
-return '點擊: '+fmt(c.raw);
-}}}}}
-});
-
-// FB Table
-(function(){
-const tb=document.getElementById('fbTable').querySelector('tbody');
-let h='';
-fbData.forEach(f=>{
-const statusBadge=f.status==='active'?'<span class="badge badge-green">投放中</span>':f.status==='inactive'?'<span class="badge badge-red">已停止</span>':'<span class="badge badge-orange">未投放</span>';
-h+=`<tr><td>${f.name}</td><td>${statusBadge}</td><td>${fmt(f.reach)}</td><td>${fmt(f.imp)}</td><td>${fmtMoney(f.spend)}</td><td>${fmt(f.results)}</td><td>${fmtMoney(Math.round(f.cpa))}</td><td>${fmt(f.clicks)}</td><td>$${f.cpc.toFixed(1)}</td><td>${f.ctr.toFixed(2)}%</td><td>$${f.cpm.toFixed(1)}</td></tr>`;
-});
-const totalSpend=fbData.reduce((a,f)=>a+f.spend,0);
-const totalClicks=fbData.reduce((a,f)=>a+f.clicks,0);
-h+=`<tr style="font-weight:700;background:#fdf2f0"><td>合計</td><td>-</td><td>-</td><td>-</td><td>${fmtMoney(totalSpend)}</td><td>-</td><td>-</td><td>${fmt(totalClicks)}</td><td>-</td><td>-</td><td>-</td></tr>`;
-tb.innerHTML=h;
-})();
-
-// ===== TAB 6: Product Ranking =====
+// ===== TAB 6: PRODUCT RANKING =====
 const top10=productData.slice(0,10);
 new Chart(document.getElementById('topProductChart'),{
 type:'bar',
-data:{
-labels:top10.map(p=>p.name.length>14?p.name.slice(0,14)+'…':p.name),
-datasets:[{label:'訂單金額',data:top10.map(p=>p.amt),backgroundColor:colors.slice(0,10),borderRadius:4}]
-},
-options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtMoney(c.raw)}}},scales:{x:{ticks:{callback:v=>v>=1000?(v/1000)+'K':''+v}}}}
+data:{labels:top10.map(d=>d.name.length>15?d.name.slice(0,15)+'…':d.name),datasets:[{label:'訂單金額',data:top10.map(d=>d.amt),backgroundColor:palette,borderRadius:4}]},
+options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'$'+fmt(v)}}}}
+});
+const ptb=document.querySelector('#productTable tbody');
+productData.forEach((d,i)=>{
+ptb.innerHTML+=`<tr><td>${i+1}</td><td>${d.name}</td><td>${d.qty}</td><td>${d.orders}</td><td>$${fmt(d.amt)}</td></tr>`;
 });
 
-(function(){
-const tb=document.getElementById('productTable').querySelector('tbody');
-let h='';
-productData.forEach((p,i)=>{
-const discRate=((1-p.amt/p.retail)*100).toFixed(1);
-const cls=i<3?'highlight-row':'';
-h+=`<tr class="${cls}"><td>${i+1}</td><td>${p.name}</td><td>${p.qty}</td><td>${p.orders}</td><td>${fmtMoney(p.amt)}</td><td>${fmtMoney(p.retail)}</td><td>${discRate}%</td></tr>`;
+// ===== TAB 7: ADVICE =====
+const advices=[
+{title:'強化紅麴納豆膠囊的廣告投放與會員行銷',
+desc:'紅麴納豆膠囊 x6 以 $727,891 高居銷售額第一名（佔比近 38%），單品爆發力極強。目前紅麴宣傳專案 ROAS 達 4.17，但花費僅 $4,323，建議將預算提高 2-3 倍，搭配 Lookalike 受眾擴展，同時對已購買單盒用戶推播「升級 x3/x6 組合」的再行銷訊息，預估可提升該品項營收 30%+。',
+kpi:'📊 紅麴 x6 訂單金額 $727,891 | 紅麴廣告 ROAS 4.17 | 紅麴廣告花費僅 $4,323'},
+{title:'降低取消率，聚焦「其他」與「未取貨」兩大原因',
+desc:'本月取消 108 筆（取消率 7.3%），取消金額達 $142,983。其中「其他」佔 34.3%（37 筆/$60,543）、「消費者未取貨」佔 28.7%（31 筆/$32,362）。建議：(1) 於下單後 24hr 內發送取貨提醒推播，(2) 設置超商取貨 48hr 到期前第二次提醒，(3) 對「其他」原因訂單進行人工分類標記，找出可優化環節。目標將取消率降至 5% 以下。',
+kpi:'📊 取消率 7.3% | 「其他」37筆/$60,543 | 「未取貨」31筆/$32,362'},
+{title:'挽回 Lost 會員，啟動分層再行銷',
+desc:'NAPL 分析顯示 Lost 會員高達 4,695 人（佔 50.2%），其過往 12 個月訂單淨額 $7,269,985。相較之下 Active 僅 1,340 人卻貢獻 $13,309,895。建議針對 Lost 會員發送「回歸禮金 $200 + 免運券」限時 7 天優惠，並用 EDM + APP 推播雙管齊下。若能喚回 10% Lost 會員，預估可帶回約 $150,000 月營收。',
+kpi:'📊 Lost 會員 4,695 人(50.2%) | Lost 淨額 $7,269,985 | Active 人均貢獻 $9,933'},
+{title:'優化 iOS App 渠道轉換效率，拉高 Android 佔比',
+desc:'iOS App 以 749 筆訂單、$928,532 淨銷售額為最大渠道（佔 52.1%），但 Android App 僅 333 筆/$426,502。官網 Mobile 有 364 筆但客單偏低。建議：(1) 強化 Android 版 APP 的 ASO 與推播策略，(2) 官網 Mobile 用戶引導至 APP 下載頁，享 APP 專屬折扣碼，(3) 分析 iOS 高轉換素材，複製至 Android 渠道。',
+kpi:'📊 iOS 749 筆/$928,532 | Android 333 筆/$426,502 | 官網Mobile 364 筆/$403,161'},
+{title:'調整 FB 廣告預算配置，停止低效素材',
+desc:'毛孔洗面乳組合 a（ROAS 5.04）與女神節活動（ROAS 9.29）表現佳，而女神節活動 a（ROAS 4.33，花費 $5,318）與毛孔洗面乳組合 c（ROAS 3.21，花費 $3,281）成本偏高。品牌認知廣告_03 花費 $5,384 但 ROAS 僅 1.43。建議：(1) 將品牌認知_03 預算轉移至轉換型廣告，(2) 毛孔洗面乳組合 b 無曝光應關閉或更換素材，(3) 總花費 $26,442 中約 $6,000 可重新分配至高 ROAS 組合。',
+kpi:'📊 FB 總花費 $26,442 | 最高 ROAS: 毛孔d 25.0 / 女神節 9.29 | 最低 ROAS: 認知_03 僅 1.43'}
+];
+const ac=document.getElementById('adviceContainer');
+advices.forEach((a,i)=>{
+ac.innerHTML+=`<div class="advice-card"><span class="num">${i+1}</span><h4>${a.title}</h4><p>${a.desc}</p><div class="kpi-ref">${a.kpi}</div></div>`;
 });
-const totalAmt=productData.reduce((a,p)=>a+p.amt,0);
-const totalRetail=productData.reduce((a,p)=>a+p.retail,0);
-const totalQty=productData.reduce((a,p)=>a+p.qty,0);
-const totalOrd=productData.reduce((a,p)=>a+p.orders,0);
-h+=`<tr style="font-weight:700;background:#fdf2f0"><td>-</td><td>合計</td><td>${fmt(totalQty)}</td><td>${fmt(totalOrd)}</td><td>${fmtMoney(totalAmt)}</td><td>${fmtMoney(totalRetail)}</td><td>${((1-totalAmt/totalRetail)*100).toFixed(1)}%</td></tr>`;
-tb.innerHTML=h;
-})();
 </script>
 </body>
 </html>
