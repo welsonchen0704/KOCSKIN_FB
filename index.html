@@ -11,59 +11,60 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;background:#F0EDE8;color:#333;font-size:14px;line-height:1.6}
+body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;background:#F0EDE8;color:#2c2c2c;font-size:14px;line-height:1.6}
 .header{background:linear-gradient(135deg,#C0392B,#96281B);color:#fff;padding:20px 24px;text-align:center}
 .header h1{font-size:22px;font-weight:700;letter-spacing:2px}
 .header .subtitle{font-size:13px;opacity:.85;margin-top:4px}
-.tab-nav{background:#fff;border-bottom:2px solid #e0d6cc;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;white-space:nowrap}
+.tab-nav{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid #e0d6cc;padding:0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .tab-nav::-webkit-scrollbar{display:none}
-.tab-btn{padding:12px 18px;cursor:pointer;border:none;background:none;font-size:13px;font-weight:500;color:#666;border-bottom:3px solid transparent;transition:all .2s;flex-shrink:0;font-family:inherit}
-.tab-btn.active{color:#C0392B;border-bottom-color:#C0392B;font-weight:700}
-.tab-btn:hover{color:#C0392B;background:#faf5f0}
-.container{max-width:1200px;margin:0 auto;padding:16px}
-.tab-content{display:none}
+.tab-btn{flex-shrink:0;padding:12px 16px;font-size:13px;font-weight:600;color:#666;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:.2s;white-space:nowrap}
+.tab-btn.active{color:#C0392B;border-bottom-color:#C0392B}
+.tab-btn:hover{color:#C0392B}
+.tab-content{display:none;padding:16px;max-width:1200px;margin:0 auto}
 .tab-content.active{display:block}
 .kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
-.kpi-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:center;border-left:4px solid #C0392B}
-.kpi-card .label{font-size:11px;color:#888;margin-bottom:4px}
+.kpi-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:center;border-top:3px solid #C0392B}
+.kpi-card .label{font-size:12px;color:#888;margin-bottom:4px}
 .kpi-card .value{font-size:22px;font-weight:700;color:#C0392B}
 .kpi-card .sub{font-size:11px;color:#999;margin-top:2px}
 .chart-box{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
-.chart-box h3{font-size:14px;font-weight:700;color:#333;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #eee}
+.chart-box h3{font-size:15px;font-weight:700;color:#333;margin-bottom:12px;padding-left:8px;border-left:3px solid #C0392B}
 .chart-container{position:relative;width:100%;max-height:350px}
-.chart-container canvas{max-height:350px}
+.chart-container canvas{width:100%!important}
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th{background:#C0392B;color:#fff;padding:8px 10px;text-align:left;position:sticky;top:0;white-space:nowrap}
-td{padding:7px 10px;border-bottom:1px solid #eee;white-space:nowrap}
-tr:hover td{background:#faf5f0}
-.advice-grid{display:grid;gap:16px}
-.advice-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:5px solid #C0392B}
-.advice-card .num{display:inline-block;background:#C0392B;color:#fff;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-weight:700;font-size:13px;margin-bottom:8px}
-.advice-card h4{font-size:15px;font-weight:700;color:#C0392B;margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:600px}
+th{background:#C0392B;color:#fff;padding:8px 6px;text-align:left;font-weight:600;white-space:nowrap}
+td{padding:7px 6px;border-bottom:1px solid #eee;white-space:nowrap}
+tr:nth-child(even){background:#faf8f5}
+tr:hover{background:#fdf0ee}
+.advice-card{background:#fff;border-radius:12px;padding:20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #C0392B}
+.advice-card h4{font-size:16px;color:#C0392B;margin-bottom:8px}
 .advice-card p{font-size:13px;color:#555;line-height:1.7}
-.advice-card .kpi-ref{margin-top:10px;padding:8px 12px;background:#faf5f0;border-radius:8px;font-size:12px;color:#888}
+.advice-card .kpi-ref{font-size:12px;color:#888;margin-top:8px;padding-top:8px;border-top:1px dashed #ddd}
 .footer{text-align:center;padding:20px;font-size:11px;color:#999;border-top:1px solid #ddd;margin-top:20px;background:#fff}
-.two-col{display:grid;grid-template-columns:1fr;gap:16px}
+.section-title{font-size:17px;font-weight:700;margin-bottom:16px;color:#333}
+.dual-grid{display:grid;grid-template-columns:1fr;gap:16px}
 @media(min-width:768px){
 .kpi-grid{grid-template-columns:repeat(4,1fr)}
-.two-col{grid-template-columns:1fr 1fr}
-.advice-grid{grid-template-columns:1fr}
+.dual-grid{grid-template-columns:1fr 1fr}
+.kpi-card .value{font-size:26px}
+.header h1{font-size:28px}
+.tab-btn{padding:14px 20px;font-size:14px}
+}
+@media(min-width:1024px){
+.kpi-grid{grid-template-columns:repeat(4,1fr)}
 }
 .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
 .badge-green{background:#e8f5e9;color:#2e7d32}
-.badge-red{background:#ffebee;color:#c62828}
+.badge-red{background:#fdecea;color:#c62828}
 .badge-orange{background:#fff3e0;color:#e65100}
-.section-title{font-size:16px;font-weight:700;color:#333;margin-bottom:16px;padding-left:12px;border-left:4px solid #C0392B}
 </style>
 </head>
 <body>
-
 <div class="header">
 <h1>KOCSKIN 克麗詩黛</h1>
-<div class="subtitle">行銷成效儀表板　｜　2026/03/01 — 2026/03/23</div>
+<div class="subtitle">行銷成效儀表板　｜　數據期間：2026/03/01 — 2026/03/28</div>
 </div>
-
 <nav class="tab-nav">
 <button class="tab-btn active" onclick="switchTab(0)">整體概覽</button>
 <button class="tab-btn" onclick="switchTab(1)">銷售分析</button>
@@ -75,430 +76,447 @@ tr:hover td{background:#faf5f0}
 <button class="tab-btn" onclick="switchTab(7)">五大建議</button>
 </nav>
 
-<div class="container">
+<div class="tab-content active" id="tab0"></div>
+<div class="tab-content" id="tab1"></div>
+<div class="tab-content" id="tab2"></div>
+<div class="tab-content" id="tab3"></div>
+<div class="tab-content" id="tab4"></div>
+<div class="tab-content" id="tab5"></div>
+<div class="tab-content" id="tab6"></div>
+<div class="tab-content" id="tab7"></div>
 
-<!-- Tab 0: 整體概覽 -->
-<div class="tab-content active" id="tab0">
-<h2 class="section-title">整體概覽</h2>
-<div class="kpi-grid" id="overviewKPI"></div>
-<div class="chart-box">
-<h3>每日淨銷售額趨勢</h3>
-<div class="chart-container"><canvas id="dailySalesChart"></canvas></div>
-</div>
-<div class="two-col">
-<div class="chart-box">
-<h3>每日訂單數趨勢</h3>
-<div class="chart-container"><canvas id="dailyOrdersChart"></canvas></div>
-</div>
-<div class="chart-box">
-<h3>會員 NAPL 分層（2026/02）</h3>
-<div class="chart-container"><canvas id="naplChart"></canvas></div>
-</div>
-</div>
-</div>
-
-<!-- Tab 1: 銷售分析 -->
-<div class="tab-content" id="tab1">
-<h2 class="section-title">銷售分析</h2>
-<div class="chart-box">
-<h3>每日淨銷售額</h3>
-<div class="chart-container"><canvas id="salesLineChart"></canvas></div>
-</div>
-<div class="two-col">
-<div class="chart-box">
-<h3>每日折扣率（折扣金額 / 商品金額）</h3>
-<div class="chart-container"><canvas id="discountRateChart"></canvas></div>
-</div>
-<div class="chart-box">
-<h3>每日訂單數（TS）</h3>
-<div class="chart-container"><canvas id="orderCountChart"></canvas></div>
-</div>
-</div>
-</div>
-
-<!-- Tab 2: 訂單來源 -->
-<div class="tab-content" id="tab2">
-<h2 class="section-title">訂單來源分析</h2>
-<div class="two-col">
-<div class="chart-box">
-<h3>各渠道訂單數（TS）</h3>
-<div class="chart-container"><canvas id="channelPieChart"></canvas></div>
-</div>
-<div class="chart-box">
-<h3>各渠道取消率比較</h3>
-<div class="chart-container"><canvas id="channelCancelChart"></canvas></div>
-</div>
-</div>
-</div>
-
-<!-- Tab 3: 配送分析 -->
-<div class="tab-content" id="tab3">
-<h2 class="section-title">配送方式分析</h2>
-<div class="two-col">
-<div class="chart-box">
-<h3>各配送方式訂單數</h3>
-<div class="chart-container"><canvas id="deliveryBarChart"></canvas></div>
-</div>
-<div class="chart-box">
-<h3>配送方式佔比</h3>
-<div class="chart-container"><canvas id="deliveryPieChart"></canvas></div>
-</div>
-</div>
-</div>
-
-<!-- Tab 4: 取消分析 -->
-<div class="tab-content" id="tab4">
-<h2 class="section-title">取消訂單分析</h2>
-<div class="two-col">
-<div class="chart-box">
-<h3>取消原因分布</h3>
-<div class="chart-container"><canvas id="cancelPieChart"></canvas></div>
-</div>
-<div class="chart-box">
-<h3>取消金額（按原因）</h3>
-<div class="chart-container"><canvas id="cancelBarChart"></canvas></div>
-</div>
-</div>
-</div>
-
-<!-- Tab 5: FB廣告 -->
-<div class="tab-content" id="tab5">
-<h2 class="section-title">FB 廣告成效</h2>
-<div class="kpi-grid" id="fbKPI"></div>
-<div class="two-col">
-<div class="chart-box">
-<h3>各廣告組合 ROAS（Top 15）</h3>
-<div class="chart-container"><canvas id="roasChart"></canvas></div>
-</div>
-<div class="chart-box">
-<h3>花費 vs 購買次數</h3>
-<div class="chart-container"><canvas id="spendVsPurchaseChart"></canvas></div>
-</div>
-</div>
-<div class="chart-box">
-<h3>完整廣告成效表格</h3>
-<div class="table-wrap"><table id="fbTable"></table></div>
-</div>
-</div>
-
-<!-- Tab 6: 銷售排行榜 -->
-<div class="tab-content" id="tab6">
-<h2 class="section-title">商品銷售排行榜</h2>
-<div class="chart-box">
-<h3>Top 10 商品訂單金額</h3>
-<div class="chart-container"><canvas id="topProductsChart"></canvas></div>
-</div>
-<div class="chart-box">
-<h3>完整商品排行表格</h3>
-<div class="table-wrap"><table id="productTable"></table></div>
-</div>
-</div>
-
-<!-- Tab 7: 五大建議 -->
-<div class="tab-content" id="tab7">
-<h2 class="section-title">五大行銷建議</h2>
-<div class="advice-grid" id="adviceGrid"></div>
-</div>
-
-</div>
-
-<div class="footer">KOCSKIN 克麗詩黛　行銷成效報告　2026/03/01 — 2026/03/23　行銷團隊內部參考</div>
+<div class="footer">KOCSKIN 克麗詩黛　行銷成效報告　2026/03/01 — 2026/03/28　行銷團隊內部參考</div>
 
 <script>
-// === DATA ===
+// ===== DATA =====
 const dailyData = [
-{date:'03/02',orders:41,netSales:31952,productAmt:45368,discount:9315,cancelAmt:4101,cancelOrders:5},
-{date:'03/03',orders:25,netSales:21976,productAmt:23757,discount:1781,cancelAmt:0,cancelOrders:0},
-{date:'03/04',orders:28,netSales:19737,productAmt:28000,discount:4723,cancelAmt:3540,cancelOrders:2},
-{date:'03/05',orders:43,netSales:39130,productAmt:49826,discount:7316,cancelAmt:2380,cancelOrders:2},
-{date:'03/06',orders:89,netSales:80052,productAmt:106485,discount:22227,cancelAmt:4206,cancelOrders:4},
-{date:'03/07',orders:57,netSales:49685,productAmt:66116,discount:9621,cancelAmt:6810,cancelOrders:10},
-{date:'03/08',orders:57,netSales:50958,productAmt:67396,discount:8569,cancelAmt:7869,cancelOrders:6},
-{date:'03/09',orders:65,netSales:57032,productAmt:72609,discount:9671,cancelAmt:5906,cancelOrders:6},
-{date:'03/10',orders:23,netSales:20587,productAmt:27518,discount:3479,cancelAmt:3452,cancelOrders:3},
-{date:'03/11',orders:70,netSales:58468,productAmt:74652,discount:10476,cancelAmt:5708,cancelOrders:6},
-{date:'03/12',orders:86,netSales:71082,productAmt:88823,discount:14271,cancelAmt:3470,cancelOrders:3},
-{date:'03/13',orders:219,netSales:451254,productAmt:601902,discount:121083,cancelAmt:29565,cancelOrders:15},
-{date:'03/14',orders:88,netSales:134175,productAmt:178135,discount:34181,cancelAmt:9779,cancelOrders:6},
-{date:'03/15',orders:80,netSales:102818,productAmt:135605,discount:21256,cancelAmt:11531,cancelOrders:5},
-{date:'03/16',orders:88,netSales:105981,productAmt:134705,discount:22699,cancelAmt:6025,cancelOrders:5},
-{date:'03/17',orders:71,netSales:70699,productAmt:91552,discount:11206,cancelAmt:9647,cancelOrders:10},
-{date:'03/18',orders:52,netSales:59674,productAmt:76146,discount:8890,cancelAmt:7582,cancelOrders:5},
-{date:'03/19',orders:40,netSales:53458,productAmt:61968,discount:6575,cancelAmt:1935,cancelOrders:1},
-{date:'03/20',orders:83,netSales:96364,productAmt:110106,discount:8974,cancelAmt:4768,cancelOrders:5},
-{date:'03/21',orders:71,netSales:94977,productAmt:112616,discount:10231,cancelAmt:7408,cancelOrders:3},
-{date:'03/22',orders:44,netSales:51179,productAmt:60929,discount:7369,cancelAmt:2381,cancelOrders:3},
-{date:'03/23',orders:51,netSales:65813,productAmt:80208,discount:9475,cancelAmt:4920,cancelOrders:3}
+{date:'03/01',orders:41,products:45,grossAmt:45368,discount:9315,netAmt:36053,cancelOrders:5,cancelAmt:4101,returnAmt:0,netSales:31952,cost:44},
+{date:'03/02',orders:25,products:28,grossAmt:23757,discount:1781,netAmt:21976,cancelOrders:0,cancelAmt:0,returnAmt:0,netSales:21976,cost:26},
+{date:'03/03',orders:28,products:29,grossAmt:28000,discount:4723,netAmt:23277,cancelOrders:2,cancelAmt:3540,returnAmt:0,netSales:19737,cost:29},
+{date:'03/04',orders:43,products:49,grossAmt:49826,discount:7316,netAmt:42510,cancelOrders:2,cancelAmt:2380,returnAmt:1000,netSales:39130,cost:46},
+{date:'03/05',orders:89,products:115,grossAmt:106485,discount:22227,netAmt:84258,cancelOrders:4,cancelAmt:4206,returnAmt:0,netSales:80052,cost:111},
+{date:'03/06',orders:57,products:60,grossAmt:66116,discount:9621,netAmt:56495,cancelOrders:10,cancelAmt:6810,returnAmt:0,netSales:49685,cost:60},
+{date:'03/07',orders:57,products:62,grossAmt:67396,discount:8569,netAmt:58827,cancelOrders:6,cancelAmt:7869,returnAmt:0,netSales:50958,cost:60},
+{date:'03/08',orders:65,products:70,grossAmt:72609,discount:9671,netAmt:62938,cancelOrders:6,cancelAmt:5906,returnAmt:0,netSales:57032,cost:66},
+{date:'03/09',orders:23,products:24,grossAmt:27518,discount:3479,netAmt:24039,cancelOrders:3,cancelAmt:3452,returnAmt:0,netSales:20587,cost:24},
+{date:'03/10',orders:70,products:71,grossAmt:74652,discount:10476,netAmt:64176,cancelOrders:6,cancelAmt:5708,returnAmt:0,netSales:58468,cost:71},
+{date:'03/11',orders:86,products:90,grossAmt:88823,discount:14271,netAmt:74552,cancelOrders:3,cancelAmt:3470,returnAmt:0,netSales:71082,cost:87},
+{date:'03/12',orders:219,products:233,grossAmt:601902,discount:121083,netAmt:480819,cancelOrders:15,cancelAmt:29565,returnAmt:0,netSales:451254,cost:222},
+{date:'03/13',orders:88,products:92,grossAmt:178135,discount:34181,netAmt:143954,cancelOrders:6,cancelAmt:9779,returnAmt:0,netSales:134175,cost:91},
+{date:'03/14',orders:80,products:87,grossAmt:135605,discount:21256,netAmt:114349,cancelOrders:5,cancelAmt:11531,returnAmt:0,netSales:102818,cost:86},
+{date:'03/15',orders:88,products:94,grossAmt:134705,discount:22699,netAmt:112006,cancelOrders:5,cancelAmt:6025,returnAmt:0,netSales:105981,cost:93},
+{date:'03/16',orders:71,products:72,grossAmt:91552,discount:11206,netAmt:80346,cancelOrders:10,cancelAmt:9647,returnAmt:0,netSales:70699,cost:72},
+{date:'03/17',orders:52,products:53,grossAmt:76146,discount:8890,netAmt:67256,cancelOrders:5,cancelAmt:7582,returnAmt:0,netSales:59674,cost:53},
+{date:'03/18',orders:40,products:43,grossAmt:61968,discount:6575,netAmt:55393,cancelOrders:1,cancelAmt:1935,returnAmt:0,netSales:53458,cost:43},
+{date:'03/19',orders:83,products:89,grossAmt:110106,discount:8974,netAmt:101132,cancelOrders:5,cancelAmt:4768,returnAmt:0,netSales:96364,cost:86},
+{date:'03/20',orders:71,products:74,grossAmt:112616,discount:10231,netAmt:102385,cancelOrders:3,cancelAmt:7408,returnAmt:0,netSales:94977,cost:73},
+{date:'03/21',orders:44,products:45,grossAmt:60929,discount:7369,netAmt:53560,cancelOrders:3,cancelAmt:2381,returnAmt:0,netSales:51179,cost:45},
+{date:'03/22',orders:51,products:54,grossAmt:80208,discount:9475,netAmt:70733,cancelOrders:3,cancelAmt:4920,returnAmt:0,netSales:65813,cost:53},
+{date:'03/23',orders:67,products:70,grossAmt:83181,discount:7574,netAmt:75607,cancelOrders:8,cancelAmt:11967,returnAmt:0,netSales:63640,cost:70},
+{date:'03/24',orders:63,products:68,grossAmt:87258,discount:7387,netAmt:79871,cancelOrders:3,cancelAmt:4673,returnAmt:2727,netSales:72471,cost:67},
+{date:'03/25',orders:76,products:81,grossAmt:119098,discount:10644,netAmt:108454,cancelOrders:2,cancelAmt:1870,returnAmt:0,netSales:106584,cost:80},
+{date:'03/26',orders:52,products:54,grossAmt:81209,discount:9259,netAmt:71950,cancelOrders:5,cancelAmt:11441,returnAmt:0,netSales:60509,cost:54},
+{date:'03/27',orders:63,products:72,grossAmt:90933,discount:7682,netAmt:83251,cancelOrders:1,cancelAmt:3412,returnAmt:0,netSales:79839,cost:72}
 ];
 
-const totalNetSales = dailyData.reduce((s,d)=>s+d.netSales,0);
 const totalOrders = dailyData.reduce((s,d)=>s+d.orders,0);
-const totalProductAmt = dailyData.reduce((s,d)=>s+d.productAmt,0);
+const totalProducts = dailyData.reduce((s,d)=>s+d.products,0);
+const totalGrossAmt = dailyData.reduce((s,d)=>s+d.grossAmt,0);
 const totalDiscount = dailyData.reduce((s,d)=>s+d.discount,0);
-const totalCancelAmt = dailyData.reduce((s,d)=>s+d.cancelAmt,0);
+const totalNetAmt = dailyData.reduce((s,d)=>s+d.netAmt,0);
 const totalCancelOrders = dailyData.reduce((s,d)=>s+d.cancelOrders,0);
-const totalReturnAmt = 1000;
+const totalCancelAmt = dailyData.reduce((s,d)=>s+d.cancelAmt,0);
+const totalReturnAmt = dailyData.reduce((s,d)=>s+d.returnAmt,0);
+const totalNetSales = dailyData.reduce((s,d)=>s+d.netSales,0);
+const totalCost = dailyData.reduce((s,d)=>s+d.cost,0);
 const avgOrderValue = Math.round(totalNetSales / totalOrders);
-const overallDiscountRate = (totalDiscount / totalProductAmt * 100).toFixed(1);
+const discountRate = (totalDiscount/totalGrossAmt*100).toFixed(1);
+const cancelRate = (totalCancelOrders/totalOrders*100).toFixed(1);
 
-// Channel data
-const channels = [
-{name:'Android App',orders:333,netSales:426502,cancel:36},
-{name:'iOS App',orders:749,netSales:928532,cancel:39},
-{name:'官網(Mobile)',orders:364,netSales:403161,cancel:30},
-{name:'官網(PC)',orders:25,netSales:28856,cancel:3}
+// Source data
+const sourceData = [
+{name:'Android App',orders:411,net:519723,carts:275,cancel:40,cancelAmt:61609},
+{name:'iOS App',orders:888,net:1082547,carts:549,cancel:49,cancelAmt:67355},
+{name:'官網(Mobile)',orders:465,net:533025,carts:358,cancel:35,cancelAmt:42751},
+{name:'官網(PC)',orders:28,net:34799,carts:21,cancel:3,cancelAmt:4631}
 ];
 
 // Delivery data
-const delivery = [
-{name:'宅配',orders:250,amount:395893},
-{name:'7-11取貨付款',orders:395,amount:488839},
-{name:'全家取貨付款',orders:557,amount:648000},
-{name:'萊爾富取貨付款',orders:47,amount:58320},
-{name:'7-11取貨',orders:58,amount:97816},
-{name:'全家取貨',orders:112,amount:155224},
-{name:'萊爾富取貨',orders:5,amount:8118},
-{name:'貨到付款',orders:42,amount:66785},
-{name:'國家/地區配送',orders:5,amount:12039}
+const deliveryData = [
+{name:'宅配',orders:286,amt:445230},
+{name:'7-11取貨付款',orders:509,amt:648351},
+{name:'全家取貨付款',orders:659,amt:771019},
+{name:'萊爾富取貨付款',orders:59,amt:73763},
+{name:'7-11取貨',orders:73,amt:120499},
+{name:'全家取貨',orders:131,amt:175378},
+{name:'萊爾富取貨',orders:8,amt:10863},
+{name:'貨到付款',orders:62,amt:93025},
+{name:'國家/地區配送',orders:5,amt:12039}
 ];
 
 // Cancel data
-const cancelReasons = [
-{reason:'不想等太久',count:13,amount:8651},
-{reason:'其他',count:37,amount:60543},
-{reason:'消費者未取貨',count:31,amount:32362},
-{reason:'消費者逾期未付款',count:23,amount:35099},
-{reason:'衝動購買',count:4,amount:6328}
+const cancelData = [
+{reason:'不想等太久',count:13,amt:8651},
+{reason:'其他',count:39,amt:64945},
+{reason:'消費者未取貨',count:42,amt:51368},
+{reason:'消費者逾期未付款',count:25,amt:39594},
+{reason:'衝動購買',count:8,amt:11788}
+];
+const totalCancelCount = cancelData.reduce((s,d)=>s+d.count,0);
+const totalCancelAmount = cancelData.reduce((s,d)=>s+d.amt,0);
+
+// FB Ads data
+const fbAds = [
+{name:'毛孔洗面乳組合a',spend:10965,roas:4.954036,purchases:49,cpa:223.78},
+{name:'毛孔洗面乳組合c',spend:3814,roas:3.906135,purchases:12,cpa:317.83},
+{name:'毛孔洗面乳組合d',spend:1027,roas:14.417722,purchases:9,cpa:114.11},
+{name:'氨基酸潔顏乳活動f',spend:505,roas:7.841584,purchases:3,cpa:168.33},
+{name:'氨基酸潔顏乳活動g',spend:817,roas:5.102815,purchases:3,cpa:272.33},
+{name:'紅麴宣傳專案_01',spend:4323,roas:4.170715,purchases:8,cpa:540.38},
+{name:'紅麴宣傳專案_02',spend:744,roas:0,purchases:0,cpa:0},
+{name:'紅麴宣傳專案_03',spend:4,roas:0,purchases:0,cpa:0},
+{name:'紅麴宣傳專案_04',spend:0,roas:0,purchases:0,cpa:0},
+{name:'女神節活動',spend:3288,roas:9.287409,purchases:11,cpa:298.91},
+{name:'女神節活動a',spend:5318,roas:4.328695,purchases:10,cpa:531.80},
+{name:'女神節活動b',spend:5681,roas:5.45837,purchases:15,cpa:378.73},
+{name:'女神節活動c',spend:3656,roas:7.834792,purchases:12,cpa:304.67},
+{name:'女神節活動d',spend:958,roas:16.075157,purchases:6,cpa:159.67},
+{name:'女神節活動e',spend:4392,roas:5.681239,purchases:12,cpa:366.00},
+{name:'菁萃a',spend:4749,roas:7.425353,purchases:14,cpa:339.21},
+{name:'菁萃b',spend:12426,roas:5.342427,purchases:27,cpa:460.22},
+{name:'紅麴_直播_0312',spend:1991,roas:1.488197,purchases:1,cpa:1991.00},
+{name:'春日水感祭組合',spend:665,roas:3.96391,purchases:1,cpa:665.00},
+{name:'春日水感祭b',spend:279,roas:0,purchases:0,cpa:0},
+{name:'亮白保濕化妝水a',spend:2161,roas:2.639519,purchases:3,cpa:720.33},
+{name:'極光美白乳霜買1送1(a)',spend:9816,roas:5.216789,purchases:28,cpa:350.57},
+{name:'極光美白乳霜買1送1(b)',spend:8447,roas:4.673375,purchases:23,cpa:367.26},
+{name:'亮白保濕化妝水b',spend:1072,roas:12.873134,purchases:7,cpa:153.14},
+{name:'氨基酸潔顏乳活動',spend:6831,roas:11.752013,purchases:40,cpa:170.78},
+{name:'氨基酸潔顏乳活動a',spend:17414,roas:8.323303,purchases:83,cpa:212.37},
+{name:'氨基酸潔顏乳活動b',spend:512,roas:3.455078,purchases:2,cpa:256.00},
+{name:'氨基酸潔顏乳活動c',spend:1282,roas:11.424337,purchases:9,cpa:142.44},
+{name:'氨基酸潔顏乳活動d',spend:108,roas:0,purchases:0,cpa:0},
+{name:'APP防曬a',spend:3172,roas:2.518285,purchases:7,cpa:453.14},
+{name:'APP防曬b',spend:20337,roas:4.202832,purchases:60,cpa:338.95},
+{name:'APP防曬c',spend:341,roas:3.313783,purchases:1,cpa:341.00},
+{name:'APP防曬d',spend:1886,roas:1.898197,purchases:2,cpa:943.00},
+{name:'APP防曬e',spend:3781,roas:5.451468,purchases:15,cpa:252.07},
+{name:'會員日_260305',spend:226,roas:23.544248,purchases:3,cpa:75.33},
+{name:'會員日_260305a',spend:754,roas:9.647215,purchases:4,cpa:188.50},
+{name:'會員日_260305b',spend:3504,roas:4.954909,purchases:9,cpa:389.33},
+{name:'紅麴_260312_轉換',spend:6065,roas:2.64897,purchases:6,cpa:1010.83},
+{name:'紅麴_260312_轉換a',spend:1716,roas:13.61014,purchases:9,cpa:190.67},
+{name:'紅麴_260312_轉換b',spend:7491,roas:12.756107,purchases:36,cpa:208.08},
+{name:'紅麴_260312_轉換c',spend:1342,roas:7.798808,purchases:5,cpa:268.40},
+{name:'紅麴_260312_轉換d',spend:704,roas:5.707386,purchases:2,cpa:352.00},
+{name:'紅麴_260312_轉換e',spend:912,roas:8.033991,purchases:3,cpa:304.00},
+{name:'紅麴_260312_轉換f',spend:14957,roas:5.485592,purchases:33,cpa:453.24},
+{name:'紅麴_260312_轉換g',spend:22032,roas:8.677605,purchases:83,cpa:268.68},
+{name:'紅麴_260312_h',spend:2673,roas:18.689862,purchases:16,cpa:167.06}
+];
+
+const totalFbSpend = fbAds.reduce((s,d)=>s+d.spend,0);
+const totalFbPurchases = fbAds.reduce((s,d)=>s+d.purchases,0);
+const totalFbRevenue = fbAds.reduce((s,d)=>s+(d.spend*d.roas),0);
+const overallROAS = totalFbRevenue/totalFbSpend;
+const avgCPA = totalFbSpend/totalFbPurchases;
+
+// Product ranking
+const productRank = [
+{name:'開環型紅麴納豆膠囊 x6 (360日份)',qty:259,orders:248,amt:821387},
+{name:'3D全能亮白菁萃30ml x3',qty:132,orders:122,amt:196445},
+{name:'3D極緻亮白隔離防曬霜 x3',qty:141,orders:136,amt:167871},
+{name:'晶燦白皙氣墊粉餅自然色 x2',qty:173,orders:152,amt:154441},
+{name:'3D高濃度胺基酸潔顏乳 x3',qty:112,orders:102,amt:133278},
+{name:'超淨化毛孔洗面乳150ml x3',qty:114,orders:102,amt:106422},
+{name:'極光美白乳霜30ml x2',qty:59,orders:57,amt:90599},
+{name:'復活草保濕晶露100ml x2',qty:60,orders:57,amt:67724},
+{name:'氣墊粉餅+防曬霜組合',qty:61,orders:59,amt:53452},
+{name:'晶燦白皙氣墊粉餅(新朋友)',qty:102,orders:102,amt:45262}
 ];
 
 // NAPL data (202602)
-const napl = {Active:1340, Potential:1827, New:1495, Lost:4695};
-const naplRevenue = {Active:13309895, Potential:14016563, New:2012445, Lost:7269985};
-
-// FB Ads data - ALL rows
-const fbAds = [
-{name:'新的品牌認知廣告_01',spend:58,roas:60.34,purchases:1,impressions:4275,reach:3724,status:'not_delivering'},
-{name:'新的品牌認知廣告_02',spend:68,roas:0,purchases:0,impressions:6063,reach:5566,status:'not_delivering'},
-{name:'新的品牌認知廣告_03',spend:5384,roas:1.43,purchases:2,impressions:448366,reach:245403,status:'not_delivering'},
-{name:'毛孔洗面乳組合a',spend:3894,roas:5.04,purchases:19,impressions:26794,reach:19838,status:'active'},
-{name:'毛孔洗面乳組合b',spend:0,roas:0,purchases:0,impressions:0,reach:0,status:'inactive'},
-{name:'毛孔洗面乳組合c',spend:3281,roas:3.21,purchases:9,impressions:18079,reach:8483,status:'active'},
-{name:'毛孔洗面乳組合d',spend:80,roas:25.00,purchases:2,impressions:643,reach:480,status:'active'},
-{name:'紅麴宣傳專案_01',spend:4323,roas:4.17,purchases:8,impressions:331504,reach:202362,status:'not_delivering'},
-{name:'紅麴宣傳專案_02',spend:744,roas:0,purchases:0,impressions:47090,reach:34618,status:'not_delivering'},
-{name:'紅麴宣傳專案_03',spend:4,roas:0,purchases:0,impressions:746,reach:740,status:'not_delivering'},
-{name:'紅麴宣傳專案_04',spend:0,roas:0,purchases:0,impressions:495,reach:478,status:'not_delivering'},
-{name:'女神節活動',spend:3288,roas:9.29,purchases:11,impressions:12006,reach:5027,status:'inactive'},
-{name:'女神節活動a',spend:5318,roas:4.33,purchases:10,impressions:21374,reach:9123,status:'inactive'},
-{name:'女神節活動b',spend:5681,roas:5.46,purchases:15,impressions:25091,reach:6161,status:'inactive'},
-{name:'女神節活動c',spend:3656,roas:7.02,purchases:11,impressions:17314,reach:3365,status:'inactive'},
-{name:'女神節活動d',spend:958,roas:10.94,purchases:5,impressions:3523,reach:1262,status:'inactive'},
-{name:'女神節活動e',spend:4392,roas:5.68,purchases:12,impressions:21576,reach:5816,status:'inactive'},
-{name:'菁萃a',spend:4749,roas:7.21,purchases:13,impressions:17639,reach:6545,status:'inactive'},
-{name:'菁萃b',spend:12426,roas:5.34,purchases:27,impressions:55925,reach:23140,status:'inactive'},
-{name:'春日水感祭組合',spend:665,roas:3.96,purchases:1,impressions:4634,reach:1977,status:'inactive'},
-{name:'春日水感祭b',spend:279,roas:0,purchases:0,impressions:1888,reach:896,status:'inactive'},
-{name:'亮白保濕化妝水a',spend:1744,roas:1.66,purchases:2,impressions:8237,reach:5163,status:'active'},
-{name:'極光美白乳霜買1送1',spend:6225,roas:5.16,purchases:18,impressions:33381,reach:16616,status:'active'},
-{name:'極光美白乳霜買1送1(b)',spend:5425,roas:3.55,purchases:12,impressions:32817,reach:13726,status:'active'},
-{name:'亮白保濕化妝水b',spend:787,roas:7.99,purchases:2,impressions:3568,reach:1518,status:'active'},
-{name:'氨基酸潔顏乳活動',spend:4801,roas:13.58,purchases:31,impressions:26654,reach:10959,status:'active'},
-{name:'氨基酸潔顏乳活動a',spend:15467,roas:8.79,purchases:75,impressions:91541,reach:44942,status:'active'},
-{name:'氨基酸潔顏乳活動b',spend:512,roas:3.46,purchases:2,impressions:4179,reach:1462,status:'inactive'},
-{name:'氨基酸潔顏乳活動c',spend:871,roas:15.58,purchases:8,impressions:4164,reach:1784,status:'active'},
-{name:'氨基酸潔顏乳活動d',spend:108,roas:0,purchases:0,impressions:743,reach:446,status:'inactive'},
-{name:'氨基酸潔顏乳活動f',spend:505,roas:7.84,purchases:3,impressions:3741,reach:1505,status:'inactive'},
-{name:'氨基酸潔顏乳活動g',spend:817,roas:5.10,purchases:3,impressions:4740,reach:3570,status:'inactive'},
-{name:'APP防曬a',spend:3172,roas:2.52,purchases:7,impressions:13808,reach:8976,status:'inactive'},
-{name:'APP防曬b',spend:20337,roas:4.20,purchases:60,impressions:113767,reach:44183,status:'not_delivering'},
-{name:'APP防曬c',spend:341,roas:3.31,purchases:1,impressions:1153,reach:588,status:'inactive'},
-{name:'APP防曬d',spend:1886,roas:1.90,purchases:2,impressions:9569,reach:5581,status:'inactive'},
-{name:'APP防曬e',spend:3781,roas:5.45,purchases:15,impressions:22199,reach:4261,status:'not_delivering'},
-{name:'會員日_260305',spend:226,roas:23.54,purchases:3,impressions:865,reach:395,status:'not_delivering'},
-{name:'會員日_260305a',spend:754,roas:9.65,purchases:4,impressions:3435,reach:1402,status:'not_delivering'},
-{name:'會員日_260305b',spend:3504,roas:4.95,purchases:9,impressions:14445,reach:7417,status:'not_delivering'},
-{name:'紅麴_260312_轉換',spend:6065,roas:2.65,purchases:6,impressions:28829,reach:20646,status:'inactive'},
-{name:'紅麴_260312_轉換a',spend:1264,roas:15.72,purchases:8,impressions:5780,reach:3435,status:'active'},
-{name:'紅麴_260312_轉換b',spend:6120,roas:12.82,purchases:30,impressions:37332,reach:18555,status:'active'},
-{name:'紅麴_260312_轉換c',spend:1342,roas:7.80,purchases:5,impressions:7217,reach:4100,status:'inactive'},
-{name:'紅麴_260312_轉換d',spend:704,roas:5.71,purchases:2,impressions:4267,reach:2385,status:'inactive'},
-{name:'紅麴_260312_轉換e',spend:624,roas:9.07,purchases:2,impressions:4113,reach:2408,status:'active'},
-{name:'紅麴_260312_轉換f',spend:7974,roas:5.49,purchases:16,impressions:36603,reach:19155,status:'active'},
-{name:'紅麴_直播_0312',spend:1991,roas:0,purchases:0,impressions:40963,reach:38515,status:'not_delivering'}
-];
-
-const totalFBSpend = fbAds.reduce((s,a)=>s+a.spend,0);
-const totalFBPurchases = fbAds.reduce((s,a)=>s+a.purchases,0);
-const totalFBImpressions = fbAds.reduce((s,a)=>s+a.impressions,0);
-const totalFBReach = fbAds.reduce((s,a)=>s+a.reach,0);
-const overallROAS = totalFBSpend > 0 ? (totalNetSales / totalFBSpend).toFixed(2) : 0;
-const avgCPA = totalFBPurchases > 0 ? Math.round(totalFBSpend / totalFBPurchases) : 0;
-
-// Products data
-const products = [
-{name:'開環型紅麴納豆膠囊 x6 (360日份)',qty:231,orders:221,orderAmt:727891,saleAmt:919380},
-{name:'晶燦白皙氣墊粉餅自然色 x2',qty:157,orders:139,orderAmt:139113,saleAmt:157000},
-{name:'3D極緻亮白隔離防曬霜 x3',qty:130,orders:126,orderAmt:154255,saleAmt:179400},
-{name:'3D全能亮白菁萃30ml x3',qty:120,orders:111,orderAmt:177380,saleAmt:201600},
-{name:'晶燦白皙氣墊粉餅(新朋友限定)',qty:97,orders:97,orderAmt:42892,saleAmt:47530},
-{name:'3D高濃度胺基酸潔顏乳 x3',qty:95,orders:85,orderAmt:112484,saleAmt:131100},
-{name:'3D高濃度胺基酸潔顏乳(新朋友限定)',qty:61,orders:61,orderAmt:25895,saleAmt:29890},
-{name:'氣墊粉餅+防曬霜組合',qty:54,orders:52,orderAmt:46713,saleAmt:54000},
-{name:'復活草保濕晶露 x2',qty:52,orders:50,orderAmt:58017,saleAmt:66560},
-{name:'3D極緻亮白隔離防曬霜(新朋友限定)',qty:47,orders:47,orderAmt:21185,saleAmt:23030},
-{name:'極光美白乳霜30ml x2',qty:41,orders:39,orderAmt:61913,saleAmt:68880},
-{name:'超淨化毛孔洗面乳 x3',qty:40,orders:33,orderAmt:37667,saleAmt:40000},
-{name:'亮白保濕化妝水(加價購)',qty:40,orders:39,orderAmt:22894,saleAmt:23960},
-{name:'亮白保濕化妝水(新朋友限定)',qty:37,orders:37,orderAmt:19593,saleAmt:22940},
-{name:'3D極緻亮白隔離防曬霜(加價購)',qty:32,orders:30,orderAmt:14809,saleAmt:15680},
-{name:'開環型紅麴納豆膠囊 (60日份)',qty:32,orders:29,orderAmt:35002,saleAmt:38400},
-{name:'極光美白乳霜(會員日限定)',qty:29,orders:16,orderAmt:20650,saleAmt:25520},
-{name:'潔凈+補水一次搞定組',qty:25,orders:25,orderAmt:24616,saleAmt:29500},
-{name:'復活草保濕晶露(新朋友限定)',qty:25,orders:25,orderAmt:14383,saleAmt:17000},
-{name:'私密草本潔淨露(加價購)',qty:23,orders:20,orderAmt:10782,saleAmt:11270}
-];
-
-// === COLORS ===
-const C = {
-primary:'#C0392B',primaryLight:'rgba(192,57,43,0.15)',
-blue:'#2980B9',blueLight:'rgba(41,128,185,0.15)',
-green:'#27AE60',greenLight:'rgba(39,174,96,0.15)',
-orange:'#F39C12',orangeLight:'rgba(243,156,18,0.15)',
-purple:'#8E44AD',purpleLight:'rgba(142,68,173,0.15)',
-teal:'#1ABC9C',
-palette:['#C0392B','#2980B9','#27AE60','#F39C12','#8E44AD','#1ABC9C','#E74C3C','#3498DB','#2ECC71','#E67E22']
+const naplData = {
+Active:{members:1340,revenue:13309895},
+Potential:{members:1827,revenue:14016563},
+New:{members:1495,revenue:2012445},
+Lost:{members:4695,revenue:7269985}
 };
+const totalMembers = naplData.Active.members+naplData.Potential.members+naplData.New.members+naplData.Lost.members;
 
+// ===== FUNCTIONS =====
 function fmt(n){return n.toLocaleString('zh-TW')}
-function switchTab(idx){
-document.querySelectorAll('.tab-content').forEach((t,i)=>{t.classList.toggle('active',i===idx)});
-document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',i===idx)});
+function switchTab(i){
+document.querySelectorAll('.tab-btn').forEach((b,idx)=>{b.classList.toggle('active',idx===i)});
+document.querySelectorAll('.tab-content').forEach((c,idx)=>{c.classList.toggle('active',idx===i)});
 }
 
-// === TAB 0: 整體概覽 ===
+const brandRed='#C0392B';
+const brandRedLight='rgba(192,57,43,0.15)';
+const colors=['#C0392B','#E74C3C','#F39C12','#27AE60','#2980B9','#8E44AD','#1ABC9C','#D35400','#34495E','#16A085'];
+
+// ===== TAB 0: Overview =====
 (function(){
-const kpis=[
-{label:'淨銷售額',value:'$'+fmt(totalNetSales),sub:'22 天累計'},
-{label:'訂單數（TS）',value:fmt(totalOrders),sub:'折扣後有效訂單'},
-{label:'客單價（淨銷額/訂單數）',value:'$'+fmt(avgOrderValue),sub:'平均每筆訂單'},
-{label:'總折扣金額',value:'$'+fmt(totalDiscount),sub:'折扣率 '+overallDiscountRate+'%'},
-{label:'取消訂單數',value:fmt(totalCancelOrders),sub:'取消金額 $'+fmt(totalCancelAmt)},
-{label:'退貨金額',value:'$'+fmt(totalReturnAmt),sub:'1 筆退貨'},
-{label:'會員總數（2月底）',value:fmt(napl.Active+napl.Potential+napl.New+napl.Lost),sub:'NAPL 四類加總'},
-{label:'活躍+潛力會員',value:fmt(napl.Active+napl.Potential),sub:'Active+Potential'}
+const el=document.getElementById('tab0');
+el.innerHTML=`
+<div class="section-title">📊 整體概覽</div>
+<div class="kpi-grid">
+<div class="kpi-card"><div class="label">淨銷售額</div><div class="value">$${fmt(totalNetSales)}</div><div class="sub">28 天累計</div></div>
+<div class="kpi-card"><div class="label">總訂單數</div><div class="value">${fmt(totalOrders)}</div><div class="sub">平均 ${Math.round(totalOrders/28)} 筆/日</div></div>
+<div class="kpi-card"><div class="label">平均客單價</div><div class="value">$${fmt(avgOrderValue)}</div><div class="sub">淨銷售額÷訂單數</div></div>
+<div class="kpi-card"><div class="label">總折扣金額</div><div class="value">$${fmt(totalDiscount)}</div><div class="sub">折扣率 ${discountRate}%</div></div>
+<div class="kpi-card"><div class="label">取消訂單數</div><div class="value">${fmt(totalCancelCount)}</div><div class="sub">取消率 ${cancelRate}%</div></div>
+<div class="kpi-card"><div class="label">取消金額</div><div class="value">$${fmt(totalCancelAmount)}</div><div class="sub">佔訂單金額 ${(totalCancelAmount/totalNetAmt*100).toFixed(1)}%</div></div>
+<div class="kpi-card"><div class="label">FB廣告總花費</div><div class="value">$${fmt(totalFbSpend)}</div><div class="sub">平均 ROAS ${overallROAS.toFixed(2)}</div></div>
+<div class="kpi-card"><div class="label">會員總數</div><div class="value">${fmt(totalMembers)}</div><div class="sub">Active ${fmt(naplData.Active.members)} 人</div></div>
+</div>
+<div class="chart-box">
+<h3>每日淨銷售額趨勢</h3>
+<div class="chart-container"><canvas id="overviewChart"></canvas></div>
+</div>
+<div class="chart-box">
+<h3>每日訂單數趨勢</h3>
+<div class="chart-container"><canvas id="overviewOrderChart"></canvas></div>
+</div>
+`;
+new Chart(document.getElementById('overviewChart'),{type:'line',data:{labels:dailyData.map(d=>d.date),datasets:[{label:'淨銷售額',data:dailyData.map(d=>d.netSales),borderColor:brandRed,backgroundColor:brandRedLight,fill:true,tension:.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+fmt(v)}}}}});
+new Chart(document.getElementById('overviewOrderChart'),{type:'bar',data:{labels:dailyData.map(d=>d.date),datasets:[{label:'訂單數',data:dailyData.map(d=>d.orders),backgroundColor:brandRed,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+})();
+
+// ===== TAB 1: Sales Analysis =====
+(function(){
+const el=document.getElementById('tab1');
+el.innerHTML=`
+<div class="section-title">📈 銷售分析</div>
+<div class="kpi-grid">
+<div class="kpi-card"><div class="label">商品總金額</div><div class="value">$${fmt(totalGrossAmt)}</div></div>
+<div class="kpi-card"><div class="label">折扣後訂單金額</div><div class="value">$${fmt(totalNetAmt)}</div></div>
+<div class="kpi-card"><div class="label">退貨金額</div><div class="value">$${fmt(totalReturnAmt)}</div></div>
+<div class="kpi-card"><div class="label">淨銷售額</div><div class="value">$${fmt(totalNetSales)}</div></div>
+</div>
+<div class="chart-box">
+<h3>每日銷售額（商品金額 vs 淨銷售額）</h3>
+<div class="chart-container"><canvas id="salesDualChart"></canvas></div>
+</div>
+<div class="dual-grid">
+<div class="chart-box">
+<h3>每日折扣率</h3>
+<div class="chart-container"><canvas id="discountChart"></canvas></div>
+</div>
+<div class="chart-box">
+<h3>每日訂單數 vs 取消數</h3>
+<div class="chart-container"><canvas id="orderCancelChart"></canvas></div>
+</div>
+</div>
+`;
+new Chart(document.getElementById('salesDualChart'),{type:'line',data:{labels:dailyData.map(d=>d.date),datasets:[{label:'商品金額',data:dailyData.map(d=>d.grossAmt),borderColor:'#E74C3C',backgroundColor:'rgba(231,76,60,0.1)',fill:false,tension:.3},{label:'淨銷售額',data:dailyData.map(d=>d.netSales),borderColor:'#27AE60',backgroundColor:'rgba(39,174,96,0.1)',fill:true,tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{y:{ticks:{callback:v=>'$'+fmt(v)}}}}});
+new Chart(document.getElementById('discountChart'),{type:'bar',data:{labels:dailyData.map(d=>d.date),datasets:[{label:'折扣率%',data:dailyData.map(d=>(d.discount/d.grossAmt*100).toFixed(1)),backgroundColor:'#F39C12',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'%'}}}}});
+new Chart(document.getElementById('orderCancelChart'),{type:'bar',data:{labels:dailyData.map(d=>d.date),datasets:[{label:'訂單數',data:dailyData.map(d=>d.orders),backgroundColor:'#2980B9',borderRadius:3},{label:'取消數',data:dailyData.map(d=>d.cancelOrders),backgroundColor:'#E74C3C',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true}}}});
+})();
+
+// ===== TAB 2: Order Source =====
+(function(){
+const el=document.getElementById('tab2');
+const totalSourceOrders = sourceData.reduce((s,d)=>s+d.orders,0);
+el.innerHTML=`
+<div class="section-title">📱 訂單來源分析</div>
+<div class="kpi-grid">
+${sourceData.map(d=>`<div class="kpi-card"><div class="label">${d.name}</div><div class="value">${fmt(d.orders)}</div><div class="sub">佔比 ${(d.orders/totalSourceOrders*100).toFixed(1)}%</div></div>`).join('')}
+</div>
+<div class="dual-grid">
+<div class="chart-box">
+<h3>各渠道訂單數佔比</h3>
+<div class="chart-container"><canvas id="sourcePieChart"></canvas></div>
+</div>
+<div class="chart-box">
+<h3>各渠道取消率比較</h3>
+<div class="chart-container"><canvas id="sourceCancelChart"></canvas></div>
+</div>
+</div>
+<div class="chart-box">
+<h3>各渠道詳細數據</h3>
+<div class="table-wrap"><table>
+<tr><th>渠道</th><th>購物車</th><th>訂單數</th><th>淨銷售額</th><th>取消單</th><th>取消率</th></tr>
+${sourceData.map(d=>`<tr><td>${d.name}</td><td>${fmt(d.carts)}</td><td>${fmt(d.orders)}</td><td>$${fmt(d.net)}</td><td>${d.cancel}</td><td>${(d.cancel/d.orders*100).toFixed(1)}%</td></tr>`).join('')}
+</table></div>
+</div>
+`;
+new Chart(document.getElementById('sourcePieChart'),{type:'doughnut',data:{labels:sourceData.map(d=>d.name),datasets:[{data:sourceData.map(d=>d.orders),backgroundColor:colors.slice(0,4)}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}});
+new Chart(document.getElementById('sourceCancelChart'),{type:'bar',data:{labels:sourceData.map(d=>d.name),datasets:[{label:'取消率%',data:sourceData.map(d=>(d.cancel/d.orders*100).toFixed(1)),backgroundColor:['#C0392B','#E74C3C','#F39C12','#27AE60'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>v+'%'}}}}});
+})();
+
+// ===== TAB 3: Delivery =====
+(function(){
+const el=document.getElementById('tab3');
+const totalDelOrders = deliveryData.reduce((s,d)=>s+d.orders,0);
+el.innerHTML=`
+<div class="section-title">🚚 配送方式分析</div>
+<div class="dual-grid">
+<div class="chart-box">
+<h3>各配送方式訂單數</h3>
+<div class="chart-container"><canvas id="delBarChart"></canvas></div>
+</div>
+<div class="chart-box">
+<h3>配送方式佔比</h3>
+<div class="chart-container"><canvas id="delPieChart"></canvas></div>
+</div>
+</div>
+<div class="chart-box">
+<h3>配送方式詳細數據</h3>
+<div class="table-wrap"><table>
+<tr><th>配送方式</th><th>訂單數</th><th>佔比</th><th>訂單金額</th></tr>
+${deliveryData.map(d=>`<tr><td>${d.name}</td><td>${fmt(d.orders)}</td><td>${(d.orders/totalDelOrders*100).toFixed(1)}%</td><td>$${fmt(d.amt)}</td></tr>`).join('')}
+</table></div>
+</div>
+`;
+const sorted=[...deliveryData].sort((a,b)=>b.orders-a.orders);
+new Chart(document.getElementById('delBarChart'),{type:'bar',data:{labels:sorted.map(d=>d.name),datasets:[{label:'訂單數',data:sorted.map(d=>d.orders),backgroundColor:colors,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}}}});
+new Chart(document.getElementById('delPieChart'),{type:'doughnut',data:{labels:deliveryData.map(d=>d.name),datasets:[{data:deliveryData.map(d=>d.orders),backgroundColor:colors}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
+})();
+
+// ===== TAB 4: Cancellation =====
+(function(){
+const el=document.getElementById('tab4');
+el.innerHTML=`
+<div class="section-title">❌ 取消訂單分析</div>
+<div class="kpi-grid">
+<div class="kpi-card"><div class="label">取消訂單總數</div><div class="value">${fmt(totalCancelCount)}</div></div>
+<div class="kpi-card"><div class="label">取消總金額</div><div class="value">$${fmt(totalCancelAmount)}</div></div>
+<div class="kpi-card"><div class="label">平均每筆取消金額</div><div class="value">$${fmt(Math.round(totalCancelAmount/totalCancelCount))}</div></div>
+<div class="kpi-card"><div class="label">取消率</div><div class="value">${(totalCancelCount/totalOrders*100).toFixed(1)}%</div></div>
+</div>
+<div class="dual-grid">
+<div class="chart-box">
+<h3>取消原因佔比</h3>
+<div class="chart-container"><canvas id="cancelPieChart"></canvas></div>
+</div>
+<div class="chart-box">
+<h3>取消金額分佈</h3>
+<div class="chart-container"><canvas id="cancelBarChart"></canvas></div>
+</div>
+</div>
+<div class="chart-box">
+<h3>取消原因詳細</h3>
+<div class="table-wrap"><table>
+<tr><th>取消原因</th><th>筆數</th><th>佔比</th><th>金額</th><th>平均金額</th></tr>
+${cancelData.map(d=>`<tr><td>${d.reason}</td><td>${d.count}</td><td>${(d.count/totalCancelCount*100).toFixed(1)}%</td><td>$${fmt(d.amt)}</td><td>$${fmt(Math.round(d.amt/d.count))}</td></tr>`).join('')}
+</table></div>
+</div>
+`;
+new Chart(document.getElementById('cancelPieChart'),{type:'doughnut',data:{labels:cancelData.map(d=>d.reason),datasets:[{data:cancelData.map(d=>d.count),backgroundColor:colors}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}});
+const sortedCancel=[...cancelData].sort((a,b)=>b.amt-a.amt);
+new Chart(document.getElementById('cancelBarChart'),{type:'bar',data:{labels:sortedCancel.map(d=>d.reason),datasets:[{label:'取消金額',data:sortedCancel.map(d=>d.amt),backgroundColor:colors,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'$'+fmt(v)}}}}});
+})();
+
+// ===== TAB 5: FB Ads =====
+(function(){
+const el=document.getElementById('tab5');
+const activeAds=fbAds.filter(a=>a.spend>0&&a.roas>0).sort((a,b)=>b.roas-a.roas);
+const top15=activeAds.slice(0,15);
+el.innerHTML=`
+<div class="section-title">📣 FB 廣告成效分析</div>
+<div class="kpi-grid">
+<div class="kpi-card"><div class="label">廣告總花費</div><div class="value">$${fmt(totalFbSpend)}</div></div>
+<div class="kpi-card"><div class="label">廣告帶動購買數</div><div class="value">${fmt(totalFbPurchases)}</div></div>
+<div class="kpi-card"><div class="label">整體 ROAS</div><div class="value">${overallROAS.toFixed(2)}</div></div>
+<div class="kpi-card"><div class="label">平均 CPA</div><div class="value">$${Math.round(avgCPA)}</div></div>
+</div>
+<div class="chart-box">
+<h3>Top 15 ROAS 排行</h3>
+<div class="chart-container" style="max-height:450px"><canvas id="roasBarChart"></canvas></div>
+</div>
+<div class="chart-box">
+<h3>花費 vs 推估營收（Top 15 花費）</h3>
+<div class="chart-container" style="max-height:450px"><canvas id="spendRevenueChart"></canvas></div>
+</div>
+<div class="chart-box">
+<h3>完整廣告成效表格</h3>
+<div class="table-wrap"><table>
+<tr><th>#</th><th>廣告名稱</th><th>花費</th><th>購買數</th><th>CPA</th><th>ROAS</th><th>推估營收</th></tr>
+${fbAds.filter(a=>a.spend>0).sort((a,b)=>b.spend-a.spend).map((a,i)=>`<tr><td>${i+1}</td><td>${a.name}</td><td>$${fmt(a.spend)}</td><td>${a.purchases}</td><td>${a.purchases>0?'$'+Math.round(a.spend/a.purchases):'-'}</td><td>${a.roas>0?a.roas.toFixed(2):'-'}</td><td>${a.roas>0?'$'+fmt(Math.round(a.spend*a.roas)):'-'}</td></tr>`).join('')}
+<tr style="font-weight:700;background:#fdf0ee"><td></td><td>合計</td><td>$${fmt(totalFbSpend)}</td><td>${fmt(totalFbPurchases)}</td><td>$${Math.round(avgCPA)}</td><td>${overallROAS.toFixed(2)}</td><td>$${fmt(Math.round(totalFbRevenue))}</td></tr>
+</table></div>
+</div>
+`;
+new Chart(document.getElementById('roasBarChart'),{type:'bar',data:{labels:top15.map(d=>d.name),datasets:[{label:'ROAS',data:top15.map(d=>d.roas),backgroundColor:top15.map((_,i)=>colors[i%colors.length]),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}});
+const top15Spend=fbAds.filter(a=>a.spend>0).sort((a,b)=>b.spend-a.spend).slice(0,15);
+new Chart(document.getElementById('spendRevenueChart'),{type:'bar',data:{labels:top15Spend.map(d=>d.name),datasets:[{label:'花費',data:top15Spend.map(d=>d.spend),backgroundColor:'#E74C3C',borderRadius:3},{label:'推估營收',data:top15Spend.map(d=>Math.round(d.spend*d.roas)),backgroundColor:'#27AE60',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{position:'top'}},scales:{x:{ticks:{callback:v=>'$'+fmt(v)}}}}});
+})();
+
+// ===== TAB 6: Product Ranking =====
+(function(){
+const el=document.getElementById('tab6');
+const allProducts=[
+{name:'開環型紅麴納豆膠囊 x6 (360日份)',qty:259,orders:248,amt:821387,price:1030820},
+{name:'3D全能亮白菁萃30ml x3',qty:132,orders:122,amt:196445,price:221760},
+{name:'3D極緻亮白隔離防曬霜 x3',qty:141,orders:136,amt:167871,price:194580},
+{name:'晶燦白皙氣墊粉餅自然色 x2',qty:173,orders:152,amt:154441,price:173000},
+{name:'3D高濃度胺基酸潔顏乳 x3',qty:112,orders:102,amt:133278,price:154560},
+{name:'超淨化毛孔洗面乳150ml x3',qty:114,orders:102,amt:106422,price:114000},
+{name:'極光美白乳霜30ml x2',qty:59,orders:57,amt:90599,price:99120},
+{name:'復活草保濕晶露100ml x2',qty:60,orders:57,amt:67724,price:76800},
+{name:'氣墊粉餅+防曬霜組合',qty:61,orders:59,amt:53452,price:61000},
+{name:'晶燦白皙氣墊粉餅(新朋友)',qty:102,orders:102,amt:45262,price:49980},
+{name:'開環型紅麴納豆膠囊(60日份)',qty:38,orders:35,amt:41791,price:45600},
+{name:'亮白保濕化妝水(春日水感祭) x2',qty:34,orders:29,amt:36899,price:40120},
+{name:'開環型紅麴納豆膠囊 x3 (180日份)',qty:13,orders:13,amt:35090,price:38740},
+{name:'3D高濃度胺基酸潔顏乳(新朋友)',qty:71,orders:71,amt:30309,price:34790},
+{name:'亮白保濕化妝水(加價購)',qty:46,orders:45,amt:26199,price:27554},
+{name:'潔凈+補水一次搞定組',qty:25,orders:25,amt:24616,price:29500},
+{name:'3D極緻亮白隔離防曬霜(新朋友)',qty:51,orders:51,amt:23022,price:24990},
+{name:'亮白保濕化妝水(新朋友)',qty:42,orders:42,amt:22277,price:26040},
+{name:'極光美白乳霜30ml(會員日)',qty:29,orders:16,amt:20650,price:25520},
+{name:'3D極緻亮白隔離防曬霜(加價購)',qty:39,orders:37,amt:18205,price:19110}
 ];
-const g=document.getElementById('overviewKPI');
-kpis.forEach(k=>{g.innerHTML+=`<div class="kpi-card"><div class="label">${k.label}</div><div class="value">${k.value}</div><div class="sub">${k.sub}</div></div>`;});
-
-new Chart(document.getElementById('dailySalesChart'),{type:'line',data:{labels:dailyData.map(d=>d.date),datasets:[{label:'淨銷售額',data:dailyData.map(d=>d.netSales),borderColor:C.primary,backgroundColor:C.primaryLight,fill:true,tension:.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+fmt(v)}}}}});
-
-new Chart(document.getElementById('dailyOrdersChart'),{type:'bar',data:{labels:dailyData.map(d=>d.date),datasets:[{label:'訂單數',data:dailyData.map(d=>d.orders),backgroundColor:C.blue}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
-
-new Chart(document.getElementById('naplChart'),{type:'doughnut',data:{labels:['Active ('+napl.Active+')','Potential ('+napl.Potential+')','New ('+napl.New+')','Lost ('+napl.Lost+')'],datasets:[{data:[napl.Active,napl.Potential,napl.New,napl.Lost],backgroundColor:[C.green,C.blue,C.orange,C.primary]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
+el.innerHTML=`
+<div class="section-title">🏆 商品銷售排行榜</div>
+<div class="chart-box">
+<h3>Top 10 商品銷售金額</h3>
+<div class="chart-container" style="max-height:420px"><canvas id="productBarChart"></canvas></div>
+</div>
+<div class="chart-box">
+<h3>完整商品排行表格</h3>
+<div class="table-wrap"><table>
+<tr><th>#</th><th>商品名稱</th><th>銷售數量</th><th>訂單數</th><th>訂單金額</th><th>售價金額</th></tr>
+${allProducts.map((p,i)=>`<tr><td>${i+1}</td><td>${p.name}</td><td>${fmt(p.qty)}</td><td>${fmt(p.orders)}</td><td>$${fmt(p.amt)}</td><td>$${fmt(p.price)}</td></tr>`).join('')}
+</table></div>
+</div>
+`;
+const top10=allProducts.slice(0,10);
+new Chart(document.getElementById('productBarChart'),{type:'bar',data:{labels:top10.map(p=>p.name.length>14?p.name.slice(0,14)+'…':p.name),datasets:[{label:'訂單金額',data:top10.map(p=>p.amt),backgroundColor:colors,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'$'+fmt(v)}}}}});
 })();
 
-// === TAB 1: 銷售分析 ===
+// ===== TAB 7: Advice =====
 (function(){
-new Chart(document.getElementById('salesLineChart'),{type:'line',data:{labels:dailyData.map(d=>d.date),datasets:[{label:'淨銷售額',data:dailyData.map(d=>d.netSales),borderColor:C.primary,backgroundColor:C.primaryLight,fill:true,tension:.3,pointRadius:3},{label:'商品金額（原價）',data:dailyData.map(d=>d.productAmt),borderColor:C.blue,borderDash:[5,5],fill:false,tension:.3,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>'$'+fmt(v)}}}}});
-
-new Chart(document.getElementById('discountRateChart'),{type:'bar',data:{labels:dailyData.map(d=>d.date),datasets:[{label:'折扣率 %',data:dailyData.map(d=>+(d.discount/d.productAmt*100).toFixed(1)),backgroundColor:C.orange}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'%'}}}}});
-
-new Chart(document.getElementById('orderCountChart'),{type:'bar',data:{labels:dailyData.map(d=>d.date),datasets:[{label:'訂單數',data:dailyData.map(d=>d.orders),backgroundColor:C.green}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
-})();
-
-// === TAB 2: 訂單來源 ===
-(function(){
-new Chart(document.getElementById('channelPieChart'),{type:'doughnut',data:{labels:channels.map(c=>c.name),datasets:[{data:channels.map(c=>c.orders),backgroundColor:[C.green,C.blue,C.orange,C.purple]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
-
-const cancelRates = channels.map(c=>({name:c.name,rate:+(c.cancel/c.orders*100).toFixed(1)}));
-new Chart(document.getElementById('channelCancelChart'),{type:'bar',data:{labels:cancelRates.map(c=>c.name),datasets:[{label:'取消率 %',data:cancelRates.map(c=>c.rate),backgroundColor:[C.green,C.blue,C.orange,C.purple]}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{callback:v=>v+'%'}}}}});
-})();
-
-// === TAB 3: 配送分析 ===
-(function(){
-const sorted = [...delivery].sort((a,b)=>b.orders-a.orders);
-new Chart(document.getElementById('deliveryBarChart'),{type:'bar',data:{labels:sorted.map(d=>d.name),datasets:[{label:'訂單數',data:sorted.map(d=>d.orders),backgroundColor:C.palette}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}});
-
-new Chart(document.getElementById('deliveryPieChart'),{type:'doughnut',data:{labels:delivery.map(d=>d.name),datasets:[{data:delivery.map(d=>d.orders),backgroundColor:C.palette.concat(['#95A5A6'])}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}}}});
-})();
-
-// === TAB 4: 取消分析 ===
-(function(){
-new Chart(document.getElementById('cancelPieChart'),{type:'doughnut',data:{labels:cancelReasons.map(c=>c.reason+' ('+c.count+'筆)'),datasets:[{data:cancelReasons.map(c=>c.count),backgroundColor:C.palette}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
-
-const sortedC = [...cancelReasons].sort((a,b)=>b.amount-a.amount);
-new Chart(document.getElementById('cancelBarChart'),{type:'bar',data:{labels:sortedC.map(c=>c.reason),datasets:[{label:'取消金額',data:sortedC.map(c=>c.amount),backgroundColor:C.palette}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'$'+fmt(v)}}}}});
-})();
-
-// === TAB 5: FB廣告 ===
-(function(){
-const kpis=[
-{label:'廣告總花費',value:'$'+fmt(totalFBSpend),sub:'48 組廣告加總'},
-{label:'總購買次數',value:fmt(totalFBPurchases),sub:'廣告歸因購買'},
-{label:'整體 ROAS（淨銷售/花費）',value:overallROAS,sub:'淨銷售額 / 廣告花費'},
-{label:'平均 CPA',value:'$'+fmt(avgCPA),sub:'花費 / 購買次數'}
-];
-const g=document.getElementById('fbKPI');
-kpis.forEach(k=>{g.innerHTML+=`<div class="kpi-card"><div class="label">${k.label}</div><div class="value">${k.value}</div><div class="sub">${k.sub}</div></div>`;});
-
-// ROAS top 15
-const withROAS = fbAds.filter(a=>a.roas>0).sort((a,b)=>b.roas-a.roas).slice(0,15);
-new Chart(document.getElementById('roasChart'),{type:'bar',data:{labels:withROAS.map(a=>a.name.length>18?a.name.slice(0,18)+'…':a.name),datasets:[{label:'ROAS',data:withROAS.map(a=>a.roas),backgroundColor:withROAS.map(a=>a.roas>=5?C.green:a.roas>=3?C.orange:C.primary)}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}});
-
-// Spend vs Purchases (only those with purchases)
-const withPurch = fbAds.filter(a=>a.purchases>0).sort((a,b)=>b.spend-a.spend).slice(0,15);
-new Chart(document.getElementById('spendVsPurchaseChart'),{type:'bar',data:{labels:withPurch.map(a=>a.name.length>16?a.name.slice(0,16)+'…':a.name),datasets:[{label:'花費',data:withPurch.map(a=>a.spend),backgroundColor:C.primary,yAxisID:'y'},{label:'購買次數',data:withPurch.map(a=>a.purchases),backgroundColor:C.blue,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{y:{},y1:{position:'top',grid:{drawOnChartArea:false}}}}});
-
-// Table
-const t=document.getElementById('fbTable');
-let html='<thead><tr><th>廣告名稱</th><th>狀態</th><th>花費</th><th>曝光</th><th>觸及</th><th>購買數</th><th>ROAS</th><th>CPA</th></tr></thead><tbody>';
-fbAds.forEach(a=>{
-const statusBadge = a.status==='active'?'<span class="badge badge-green">投放中</span>':a.status==='inactive'?'<span class="badge badge-orange">已暫停</span>':'<span class="badge badge-red">未投放</span>';
-const cpa = a.purchases>0?'$'+fmt(Math.round(a.spend/a.purchases)):'-';
-html+=`<tr><td>${a.name}</td><td>${statusBadge}</td><td>$${fmt(a.spend)}</td><td>${fmt(a.impressions)}</td><td>${fmt(a.reach)}</td><td>${a.purchases}</td><td>${a.roas||'-'}</td><td>${cpa}</td></tr>`;
-});
-html+='</tbody>';
-t.innerHTML=html;
-})();
-
-// === TAB 6: 銷售排行榜 ===
-(function(){
-const top10 = products.slice(0,10);
-new Chart(document.getElementById('topProductsChart'),{type:'bar',data:{labels:top10.map(p=>p.name.length>20?p.name.slice(0,20)+'…':p.name),datasets:[{label:'訂單金額',data:top10.map(p=>p.orderAmt),backgroundColor:C.palette}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'$'+fmt(v)}}}}});
-
-const t=document.getElementById('productTable');
-let html='<thead><tr><th>#</th><th>商品名稱</th><th>售出數量</th><th>訂單數</th><th>訂單金額</th><th>售價金額</th><th>折扣率</th></tr></thead><tbody>';
-products.forEach((p,i)=>{
-const disc = ((1-p.orderAmt/p.saleAmt)*100).toFixed(1);
-html+=`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.qty}</td><td>${p.orders}</td><td>$${fmt(p.orderAmt)}</td><td>$${fmt(p.saleAmt)}</td><td>${disc}%</td></tr>`;
-});
-html+='</tbody>';
-t.innerHTML=html;
-})();
-
-// === TAB 7: 五大建議 ===
-(function(){
-const advices=[
-{title:'🔴 加碼「紅麴納豆膠囊」推廣力道，搶攻保健品市場',
-desc:'紅麴納豆膠囊 x6 為本月銷售冠軍，訂單金額達 $727,891，佔總淨銷額的 41%。建議投放更多針對健康保健族群的精準廣告，搭配 KOL 健康開箱合作，並考慮推出「訂閱制」每月定期配送方案，鎖定長期回購客群。紅麴轉換廣告中 ROAS 最高可達 15.72（紅麴_260312_轉換a），可將此素材作為主力投放。',
-kpi:'銷售冠軍 $727,891｜佔比 41%｜紅麴轉換廣告最高 ROAS 15.72'},
-{title:'📱 強化 App 購物體驗，iOS 貢獻超過 50% 營收',
-desc:'iOS App 淨銷售額 $928,532（佔 52%），Android $426,502（佔 24%），合計 App 通路貢獻 76% 營收。建議：(1) 加強 App 推播通知功能，針對會員日、新品上市做即時推播；(2) 優化 App 結帳流程降低棄單率；(3) 推出 App 專屬限時快閃活動。官網 PC 端僅佔 1.6%，可降低 PC 端廣告投放比重，將資源集中在行動裝置。',
-kpi:'iOS 訂單 749 筆（50.9%）｜App 合計佔比 76%｜官網 PC 僅 1.6%'},
-{title:'⚠️ 降低取消率，關注「其他」原因與未取貨問題',
-desc:'本月取消 108 筆，取消金額 $142,983。「其他」原因佔最多（37 筆、$60,543），「消費者未取貨」31 筆（$32,362），「逾期未付款」23 筆（$35,099）。建議：(1) 在「其他」取消原因中增設更細分的選項，找出真正痛點；(2) 導入取貨前 SMS/LINE 提醒機制；(3) 針對超商取貨付款訂單設定 48 小時提醒，減少未取貨損失。目前全家取貨付款佔最多訂單（557 筆），應優先在此通路導入提醒。',
-kpi:'取消 108 筆、$142,983｜「其他」37 筆、$60,543｜未取貨 31 筆'},
-{title:'💰 優化 FB 廣告預算分配，淘汰低效素材',
-desc:'FB 廣告總花費 $'+fmt(totalFBSpend)+'，歸因購買 '+totalFBPurchases+' 次，整體 ROAS '+overallROAS+'。表現最佳：氨基酸潔顏乳活動c（ROAS 15.58）、紅麴_260312_轉換a（ROAS 15.72）、氨基酸潔顏乳活動（ROAS 13.58）。表現較差：亮白保濕化妝水a（ROAS 1.66）、APP防曬d（ROAS 1.90）。建議將低 ROAS（<3）的廣告預算轉移至高 ROAS 素材，預估可提升整體 ROAS 至 12 以上。品牌認知廣告花費 $5,510 但僅帶來 3 次購買，應評估是否值得續投。',
-kpi:'廣告總花費 $'+fmt(totalFBSpend)+'｜整體 ROAS '+overallROAS+'｜最佳 ROAS 15.72'},
-{title:'🔄 啟動 Lost 會員喚回計畫，4,695 人待挽回',
-desc:'截至 2 月底，Lost 會員 4,695 人（佔 50.2%），過去 12 個月貢獻 $7,269,985。Active 會員從 12 月 1,847 人降至 2 月 1,340 人（-27.4%），Potential 從 1,227 升至 1,827（+48.9%），顯示有大量一次購客正從 New → Potential 流動但尚未進入 Active。建議：(1) 對 Lost 會員發送「我們想你了」專屬折扣券（限時 7 天）；(2) 針對 Potential 會員推送回購優惠，推動其轉化為 Active；(3) 設計會員分級制度（銅/銀/金），提升黏著度與終身價值。',
-kpi:'Lost 4,695 人（50.2%）｜Active 下降 27.4%｜Potential 上升 48.9%'}
-];
-const g=document.getElementById('adviceGrid');
-advices.forEach((a,i)=>{
-g.innerHTML+=`<div class="advice-card"><span class="num">${i+1}</span><h4>${a.title}</h4><p>${a.desc}</p><div class="kpi-ref">📊 ${a.kpi}</div></div>`;
-});
+const el=document.getElementById('tab7');
+el.innerHTML=`
+<div class="section-title">💡 五大行銷建議</div>
+<div class="advice-card">
+<h4>1. 📦 加強紅麴納豆膠囊的長期訂閱方案</h4>
+<p>紅麴納豆膠囊 x6（360日份）以 $821,387 訂單金額穩居銷售冠軍，佔全店營收超過 36%。3/12 直播日單日淨銷售額衝上 $451,254，顯示直播帶貨對此品項極為有效。建議推出「自動續購」訂閱制，搭配首次訂閱折扣，將單次爆量購買轉為持續穩定營收，同時降低對單次活動的依賴。</p>
+<div class="kpi-ref">📌 KPI 依據：紅麴膠囊 x6 銷售額 $821,387（佔比 36.1%）｜3/12 單日淨銷售 $451,254｜紅麴相關廣告 ROAS 最高達 18.69</div>
+</div>
+<div class="advice-card">
+<h4>2. 📱 優化 Android App 轉換率與客單價</h4>
+<p>iOS App 以 888 筆訂單貢獻淨銷售 $1,082,547（平均客單 $1,219），而 Android App 僅 411 筆訂單、淨銷售 $519,723（平均客單 $1,265）。Android 用戶購物車數僅 275，遠低於 iOS 的 549，顯示 Android 端流量導入不足。建議加強 Android App 的推播通知、專屬優惠券以及 Google Ads UAC 投放，提升 Android 端訂單量至少 30%。</p>
+<div class="kpi-ref">📌 KPI 依據：iOS 訂單 888 筆 vs Android 411 筆（差距 53.8%）｜Android 取消率 9.7% vs iOS 5.5%｜Android 購物車轉換率需提升</div>
+</div>
+<div class="advice-card">
+<h4>3. 💰 優化高 CPA 廣告組合，降低獲客成本</h4>
+<p>整體 FB 廣告花費 $${fmt(totalFbSpend)}，平均 CPA $${Math.round(avgCPA)}，但部分廣告 CPA 過高：「紅麴_260312_轉換」CPA 高達 $1,011、「紅麴_直播_0312」CPA $1,991、「APP防曬d」CPA $943。相比之下，「會員日_260305」CPA 僅 $75、「毛孔洗面乳組合d」CPA $114。建議暫停 CPA > $500 且 ROAS < 3 的廣告素材，將預算轉移至高效率素材，整體 CPA 可望降低 20-30%。</p>
+<div class="kpi-ref">📌 KPI 依據：FB 總花費 $${fmt(totalFbSpend)}｜平均 CPA $${Math.round(avgCPA)}｜最佳 CPA $75（會員日）vs 最差 CPA $1,991（直播）｜整體 ROAS ${overallROAS.toFixed(2)}</div>
+</div>
+<div class="advice-card">
+<h4>4. 🔄 啟動 Lost 會員喚回計畫</h4>
+<p>NAPL 分析顯示 Lost 會員高達 4,695 人（佔總會員 ${(naplData.Lost.members/totalMembers*100).toFixed(1)}%），過往 12 個月貢獻淨額 $7,269,985。相比 Active 會員 1,340 人貢獻 $13,309,895，Lost 會員人均貢獻僅 $1,549（Active 為 $9,933）。建議針對 Lost 會員發送「回歸禮金 $200」簡訊/EDM，搭配熱銷品組合（如氣墊粉餅+防曬組合 $53,452 的高轉換品項），目標喚回 10% Lost 會員即可增加約 $115 萬營收。</p>
+<div class="kpi-ref">📌 KPI 依據：Lost 會員 4,695 人（50.2%）｜Lost 過往營收 $7,269,985｜Active 人均貢獻 $9,933 vs Lost $1,549｜目標喚回率 10%</div>
+</div>
+<div class="advice-card">
+<h4>5. ❌ 降低「消費者未取貨」取消率</h4>
+<p>取消訂單分析中，「消費者未取貨」佔 42 筆（33.1%）、金額 $51,368 為最大宗，「消費者逾期未付款」25 筆（$39,594）次之。超商取貨付款（7-11 + 全家 + 萊爾富）合計 1,227 筆訂單佔比高達 68.5%，是未取貨的主要來源。建議：(1) 取貨前 24 小時自動發送 APP 推播+簡訊提醒；(2) 對未取貨超過 2 次的帳號限制「取貨付款」選項；(3) 提供「到店取貨折 $20」獎勵。預估可降低未取貨率 40%，每月減少 $20,000+ 損失。</p>
+<div class="kpi-ref">📌 KPI 依據：未取貨 42 筆（$51,368）｜逾期未付款 25 筆（$39,594）｜超商取貨佔總訂單 68.5%｜取消總金額 $176,346</div>
+</div>
+`;
 })();
 </script>
 </body>
